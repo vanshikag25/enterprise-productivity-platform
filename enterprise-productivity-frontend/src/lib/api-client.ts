@@ -1,0 +1,304 @@
+import axios from 'axios';
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+if (!API_BASE_URL) throw new Error('NEXT_PUBLIC_API_URL is not set. Check your .env.local file.');
+
+export const apiClient = axios.create({ baseURL: API_BASE_URL });
+
+apiClient.interceptors.response.use(
+  (response) => response,
+  (err) => {
+    if (axios.isAxiosError(err)) {
+      const serverMessage = (err.response?.data as { message?: string | string[] } | undefined)?.message;
+      if (serverMessage) err.message = Array.isArray(serverMessage) ? serverMessage.join(', ') : serverMessage;
+    }
+    return Promise.reject(err);
+  },
+);
+
+export type UserRole = 'super_admin' | 'organization_owner' | 'admin' | 'manager' | 'team_lead' | 'employee' | 'guest';
+
+export const USER_ROLES: UserRole[] = ['super_admin', 'organization_owner', 'admin', 'manager', 'team_lead', 'employee', 'guest'];
+
+export const USER_ROLE_RANK: Record<UserRole, number> = {
+  super_admin: 100,
+  organization_owner: 90,
+  admin: 80,
+  manager: 60,
+  team_lead: 50,
+  employee: 30,
+  guest: 10,
+};
+
+export const USER_ROLE_LABELS: Record<UserRole, string> = {
+  super_admin: 'Super Admin',
+  organization_owner: 'Organization Owner',
+  admin: 'Admin',
+  manager: 'Manager',
+  team_lead: 'Team Lead',
+  employee: 'Employee',
+  guest: 'Guest',
+};
+
+export function hasMinRole(role: string | null | undefined, minimum: UserRole): boolean {
+  if (!role || !(role in USER_ROLE_RANK)) return false;
+  return USER_ROLE_RANK[role as UserRole] >= USER_ROLE_RANK[minimum];
+}
+
+export interface ChatTokenResponse { streamToken: string; apiKey: string; }
+export async function fetchChatToken(clerkToken: string): Promise<ChatTokenResponse> {
+  const res = await apiClient.get<ChatTokenResponse>('/chat/token', { headers: { Authorization: `Bearer ${clerkToken}` } });
+  return res.data;
+}
+
+export interface UserDirectoryItem {
+  id: string; name: string; email: string; imageUrl: string | null;
+  online: boolean; lastSeen: string | null; department?: string; organization?: string; joinedAt: string; role: UserRole;
+}
+export interface UserDirectoryResponse { users: UserDirectoryItem[]; total: number; page: number; limit: number; totalPages: number; }
+export interface FetchUsersDirectoryParams {
+  search?: string; page?: number; limit?: number;
+  sortBy?: 'firstName' | 'lastName' | 'email' | 'createdAt'; sortOrder?: 'asc' | 'desc';
+}
+export async function fetchUsersDirectory(clerkToken: string, params: FetchUsersDirectoryParams = {}): Promise<UserDirectoryResponse> {
+  const res = await apiClient.get<UserDirectoryResponse>('/users', { headers: { Authorization: `Bearer ${clerkToken}` }, params });
+  return res.data;
+}
+
+export interface MeResponse {
+  id: string;
+  firstName: string | null;
+  lastName: string | null;
+  email: string;
+  imageUrl: string | null;
+  role: UserRole;
+}
+export async function fetchMe(token: string): Promise<MeResponse> {
+  const res = await apiClient.get<MeResponse>('/users/me', { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function updateUserRole(token: string, clerkId: string, role: UserRole): Promise<MeResponse> {
+  const res = await apiClient.patch<MeResponse>(`/users/${clerkId}/role`, { role }, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+
+export async function createDirectChannel(clerkToken: string, targetUserId: string): Promise<{ channelId: string }> {
+  const res = await apiClient.post<{ channelId: string }>('/chat/direct', { targetUserId }, { headers: { Authorization: `Bearer ${clerkToken}` } });
+  return res.data;
+}
+
+export interface CreateGroupChannelResponse { channelId: string; name: string | undefined; description: string | undefined; memberIds: string[]; }
+export async function createGroupChannel(clerkToken: string, groupName: string, memberIds: string[], description?: string): Promise<CreateGroupChannelResponse> {
+  const res = await apiClient.post<CreateGroupChannelResponse>('/chat/group', { groupName, memberIds, description }, { headers: { Authorization: `Bearer ${clerkToken}` } });
+  return res.data;
+}
+
+// --- Group chat management ---
+export type GroupMemberRole = 'owner' | 'moderator' | 'member';
+export type GroupUserRole = GroupMemberRole | 'admin';
+export interface GroupMemberInfo {
+  id: string;
+  name: string | null;
+  imageUrl: string | null;
+  role: GroupMemberRole;
+}
+export interface GroupInfo {
+  channelId: string;
+  name: string | null;
+  description: string | null;
+  avatarUrl: string | null;
+  memberCount: number;
+  createdById: string;
+  currentUserRole: GroupUserRole;
+  canManage: boolean;
+  canManageModerators: boolean;
+  members: GroupMemberInfo[];
+}
+
+export async function fetchGroupInfo(token: string, channelId: string): Promise<GroupInfo> {
+  const res = await apiClient.get<GroupInfo>(`/chat/groups/${channelId}`, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function updateGroupInfo(token: string, channelId: string, payload: { name?: string; description?: string }): Promise<GroupInfo> {
+  const res = await apiClient.patch<GroupInfo>(`/chat/groups/${channelId}`, payload, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function updateGroupAvatar(token: string, channelId: string, avatarUrl: string): Promise<GroupInfo> {
+  const res = await apiClient.put<GroupInfo>(`/chat/groups/${channelId}/avatar`, { avatarUrl }, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function removeGroupAvatar(token: string, channelId: string): Promise<GroupInfo> {
+  const res = await apiClient.delete<GroupInfo>(`/chat/groups/${channelId}/avatar`, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function addGroupMember(token: string, channelId: string, memberId: string): Promise<GroupInfo> {
+  const res = await apiClient.post<GroupInfo>(`/chat/groups/${channelId}/members/${memberId}`, {}, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function removeGroupMember(token: string, channelId: string, memberId: string): Promise<GroupInfo> {
+  const res = await apiClient.delete<GroupInfo>(`/chat/groups/${channelId}/members/${memberId}`, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function assignGroupModerator(token: string, channelId: string, memberId: string): Promise<GroupInfo> {
+  const res = await apiClient.post<GroupInfo>(`/chat/groups/${channelId}/moderators/${memberId}`, {}, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function removeGroupModerator(token: string, channelId: string, memberId: string): Promise<GroupInfo> {
+  const res = await apiClient.delete<GroupInfo>(`/chat/groups/${channelId}/moderators/${memberId}`, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function leaveGroup(token: string, channelId: string): Promise<void> {
+  await apiClient.post(`/chat/groups/${channelId}/leave`, {}, { headers: { Authorization: `Bearer ${token}` } });
+}
+
+// --- Tasks ---
+export interface TaskItem {
+  id: string; title: string; description: string | null; status: string; priority: string;
+  dueDate: string | null; createdBy: string; assignee: string | null; streamChannelId: string | null;
+  createdAt: string; updatedAt: string;
+}
+export interface TaskPayload {
+  title: string; description?: string; priority?: string; status?: string; dueDate?: string; assignee?: string;
+}
+
+export async function fetchTasks(token: string): Promise<TaskItem[]> {
+  const res = await apiClient.get<TaskItem[]>('/tasks', { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function fetchTask(token: string, id: string): Promise<TaskItem> {
+  const res = await apiClient.get<TaskItem>(`/tasks/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function createTask(token: string, payload: TaskPayload): Promise<TaskItem> {
+  const res = await apiClient.post<TaskItem>('/tasks', payload, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function updateTask(token: string, id: string, payload: Partial<TaskPayload>): Promise<TaskItem> {
+  const res = await apiClient.patch<TaskItem>(`/tasks/${id}`, payload, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function updateTaskStatus(token: string, id: string, status: string): Promise<TaskItem> {
+  const res = await apiClient.patch<TaskItem>(`/tasks/${id}/status`, { status }, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function getOrCreateTaskChannel(token: string, id: string): Promise<{ channelId: string }> {
+  const res = await apiClient.post<{ channelId: string }>(`/tasks/${id}/channel`, {}, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function deleteTask(token: string, id: string): Promise<void> {
+  await apiClient.delete(`/tasks/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+}
+// --- Meetings ---
+export interface MeetingItem {
+  id: string; title: string; description: string | null;
+  scheduledDate: string; startTime: string; endTime: string;
+  organizerId: string; participants: string[]; meetingStatus: string;
+  meetingChatChannelId: string | null; createdAt: string; updatedAt: string;
+}
+export interface MeetingPayload {
+  title: string; description?: string; scheduledDate: string;
+  startTime: string; endTime: string; participants: string[];
+}
+
+export async function fetchMeetings(token: string): Promise<MeetingItem[]> {
+  const res = await apiClient.get<MeetingItem[]>('/meetings', { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function createMeeting(token: string, payload: MeetingPayload): Promise<MeetingItem> {
+  const res = await apiClient.post<MeetingItem>('/meetings', payload, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function updateMeeting(token: string, id: string, payload: Partial<MeetingPayload>): Promise<MeetingItem> {
+  const res = await apiClient.patch<MeetingItem>(`/meetings/${id}`, payload, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function deleteMeeting(token: string, id: string): Promise<void> {
+  await apiClient.delete(`/meetings/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+}
+export async function joinMeeting(token: string, id: string): Promise<MeetingItem> {
+  const res = await apiClient.post<MeetingItem>(`/meetings/${id}/join`, {}, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function leaveMeeting(token: string, id: string): Promise<MeetingItem> {
+  const res = await apiClient.post<MeetingItem>(`/meetings/${id}/leave`, {}, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+// --- Channels / Departments ---
+export interface ChannelSummary {
+  id: string; name: string; description: string; kind: string;
+  departmentId: string | null; createdBy: string; createdAt: string; memberCount: number; frozen: boolean;
+}
+export interface DepartmentItem {
+  id: string; name: string; description: string | null; memberIds: string[]; channelId: string | null; createdBy: string; createdAt: string;
+}
+export interface ChannelMember { id: string; name: string; imageUrl: string | null; }
+
+export async function fetchChannels(token: string, kind: string): Promise<ChannelSummary[]> {
+  const res = await apiClient.get<ChannelSummary[]>('/channels', { headers: { Authorization: `Bearer ${token}` }, params: { kind } });
+  return res.data;
+}
+export async function createChannel(token: string, payload: { kind: string; name: string; description?: string; memberIds?: string[]; departmentId?: string }): Promise<ChannelSummary> {
+  const res = await apiClient.post<ChannelSummary>('/channels', payload, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function updateChannel(token: string, id: string, payload: { name?: string; description?: string }): Promise<ChannelSummary> {
+  const res = await apiClient.patch<ChannelSummary>(`/channels/${id}`, payload, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function deleteChannel(token: string, id: string): Promise<void> {
+  await apiClient.delete(`/channels/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+}
+export async function joinChannel(token: string, id: string): Promise<ChannelSummary> {
+  const res = await apiClient.post<ChannelSummary>(`/channels/${id}/join`, {}, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function leaveChannel(token: string, id: string): Promise<ChannelSummary> {
+  const res = await apiClient.post<ChannelSummary>(`/channels/${id}/leave`, {}, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function fetchChannelMembers(token: string, id: string): Promise<ChannelMember[]> {
+  const res = await apiClient.get<ChannelMember[]>(`/channels/${id}/members`, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function addChannelMember(token: string, id: string, memberId: string): Promise<ChannelSummary> {
+  const res = await apiClient.post<ChannelSummary>(`/channels/${id}/members/${memberId}`, {}, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function removeChannelMember(token: string, id: string, memberId: string): Promise<ChannelSummary> {
+  const res = await apiClient.delete<ChannelSummary>(`/channels/${id}/members/${memberId}`, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+
+export async function fetchMyDepartments(token: string): Promise<DepartmentItem[]> {
+  const res = await apiClient.get<DepartmentItem[]>('/departments/mine', { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function createDepartment(token: string, payload: { name: string; description?: string; memberIds?: string[] }): Promise<DepartmentItem> {
+  const res = await apiClient.post<DepartmentItem>('/departments', payload, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export interface NotificationItem {
+  id: string; userId: string; type: string; title: string;
+  description: string | null; actionUrl: string | null; isRead: boolean; createdAt: string;
+}
+
+export async function fetchNotifications(token: string): Promise<NotificationItem[]> {
+  const res = await apiClient.get<NotificationItem[]>('/notifications', { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function fetchUnreadCount(token: string): Promise<number> {
+  const res = await apiClient.get<number>('/notifications/unread-count', { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function markNotificationRead(token: string, id: string): Promise<void> {
+  await apiClient.patch(`/notifications/${id}/read`, {}, { headers: { Authorization: `Bearer ${token}` } });
+}
+export async function markAllNotificationsRead(token: string): Promise<void> {
+  await apiClient.patch('/notifications/read-all', {}, { headers: { Authorization: `Bearer ${token}` } });
+}
+export async function createSelfNotification(
+  token: string,
+  payload: { type: string; title: string; description?: string; actionUrl?: string },
+): Promise<void> {
+  await apiClient.post('/notifications/self', payload, { headers: { Authorization: `Bearer ${token}` } });
+}
