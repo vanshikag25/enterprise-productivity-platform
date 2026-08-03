@@ -5134,3 +5134,1084 @@ To learn more, including how to opt-out from the telemetry program, visit: https
 [32m[Nest] 52668  - [39m03/08/2026, 5:12:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
 [32m[Nest] 52668  - [39m03/08/2026, 5:13:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
 [32m[Nest] 52668  - [39m03/08/2026, 5:13:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:15:00 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[31m[Nest] 52668  - [39m03/08/2026, 5:15:02 pm [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mClerkAPIResponseError
+    at UserAPI.request [90m(C:\Users\Chirag Gupta\Desktop\enterprise-productivity\enterprise-productivity-backend\[39mnode_modules\[4m@clerk\backend[24m\src\api\request.ts:285:21[90m)[39m
+[90m    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)[39m
+    at async ClerkAuthGuard.canActivate [90m(C:\Users\Chirag Gupta\Desktop\enterprise-productivity\enterprise-productivity-backend\[39msrc\clerk\clerk-auth.guard.ts:45:23[90m)[39m
+    at async GuardsConsumer.tryActivate [90m(C:\Users\Chirag Gupta\Desktop\enterprise-productivity\enterprise-productivity-backend\[39mnode_modules\[4m@nestjs\core[24m\guards\guards-consumer.js:22:17[90m)[39m
+    at async canActivateFn [90m(C:\Users\Chirag Gupta\Desktop\enterprise-productivity\enterprise-productivity-backend\[39mnode_modules\[4m@nestjs\core[24m\router\router-execution-context.js:138:33[90m)[39m
+    at async [90mC:\Users\Chirag Gupta\Desktop\enterprise-productivity\enterprise-productivity-backend\[39mnode_modules\[4m@nestjs\core[24m\router\router-execution-context.js:42:31
+    at async [90mC:\Users\Chirag Gupta\Desktop\enterprise-productivity\enterprise-productivity-backend\[39mnode_modules\[4m@nestjs\core[24m\router\router-proxy.js:9:17 {
+  cause: [90mundefined[39m,
+  clerkError: [33mtrue[39m,
+  code: [32m'api_response_error'[39m,
+  longMessage: [90mundefined[39m,
+  docsUrl: [90mundefined[39m,
+  status: [90mundefined[39m,
+  clerkTraceId: [32m''[39m,
+  retryAfter: [90mundefined[39m,
+  errors: [
+    {
+      code: [32m'unexpected_error'[39m,
+      message: [32m'fetch failed'[39m
+    }
+  ]
+}
+[32m[Nest] 52668  - [39m03/08/2026, 5:15:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:15:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:16:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:16:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:17:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:17:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:18:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:18:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:19:54 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:19:54 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:20:51 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:20:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:21:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:21:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:22:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:22:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:23:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:23:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:24:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:24:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:25:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:25:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:26:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:26:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:27:51 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:27:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:28:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:28:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:29:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:29:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:30:43 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:30:43 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:30:48 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:30:48 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:30:58 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:30:58 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:31:08 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:31:08 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:31:18 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:31:18 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:31:28 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:31:28 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:31:38 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:31:38 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:31:48 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:31:48 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:31:58 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:31:58 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:32:08 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:32:08 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:32:12 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:32:12 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:32:12 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:32:12 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:32:13 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:32:14 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:32:21 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:32:21 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:32:31 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:32:31 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:32:41 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:32:41 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:32:51 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:32:51 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:33:01 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:33:01 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:33:11 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:33:12 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:33:21 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:33:21 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:33:31 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:33:31 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:33:41 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:33:41 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:33:53 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:33:53 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:34:00 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:34:00 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:34:00 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:34:00 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:34:01 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:34:02 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:34:11 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:34:11 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:34:19 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:34:19 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:34:29 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:34:29 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:34:39 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:34:40 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:34:49 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:34:49 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:34:59 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:34:59 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:35:10 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:35:10 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:35:19 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:35:20 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:35:21 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:35:21 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:35:21 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:35:21 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:35:22 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:35:23 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:35:31 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:35:31 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:35:41 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:35:41 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:35:46 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:35:46 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:35:46 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:35:46 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:35:47 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:35:47 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:35:55 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:35:55 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:36:05 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:36:05 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:36:15 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:36:15 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:36:25 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:36:25 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:36:35 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:36:35 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:36:45 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:36:45 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:36:55 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:36:55 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:37:05 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:37:05 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:37:15 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:37:15 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:37:15 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:37:16 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:37:17 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:37:18 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:37:27 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:37:27 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:37:36 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:37:41 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:37:45 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:37:49 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:37:56 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[31m[Nest] 52668  - [39m03/08/2026, 5:38:05 pm [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mClerkAPIResponseError
+    at UserAPI.request [90m(C:\Users\Chirag Gupta\Desktop\enterprise-productivity\enterprise-productivity-backend\[39mnode_modules\[4m@clerk\backend[24m\src\api\request.ts:285:21[90m)[39m
+[90m    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)[39m
+    at async ClerkAuthGuard.canActivate [90m(C:\Users\Chirag Gupta\Desktop\enterprise-productivity\enterprise-productivity-backend\[39msrc\clerk\clerk-auth.guard.ts:45:23[90m)[39m
+    at async GuardsConsumer.tryActivate [90m(C:\Users\Chirag Gupta\Desktop\enterprise-productivity\enterprise-productivity-backend\[39mnode_modules\[4m@nestjs\core[24m\guards\guards-consumer.js:22:17[90m)[39m
+    at async canActivateFn [90m(C:\Users\Chirag Gupta\Desktop\enterprise-productivity\enterprise-productivity-backend\[39mnode_modules\[4m@nestjs\core[24m\router\router-execution-context.js:138:33[90m)[39m
+    at async [90mC:\Users\Chirag Gupta\Desktop\enterprise-productivity\enterprise-productivity-backend\[39mnode_modules\[4m@nestjs\core[24m\router\router-execution-context.js:42:31
+    at async [90mC:\Users\Chirag Gupta\Desktop\enterprise-productivity\enterprise-productivity-backend\[39mnode_modules\[4m@nestjs\core[24m\router\router-proxy.js:9:17 {
+  cause: [90mundefined[39m,
+  clerkError: [33mtrue[39m,
+  code: [32m'api_response_error'[39m,
+  longMessage: [90mundefined[39m,
+  docsUrl: [90mundefined[39m,
+  status: [90mundefined[39m,
+  clerkTraceId: [32m''[39m,
+  retryAfter: [90mundefined[39m,
+  errors: [
+    {
+      code: [32m'unexpected_error'[39m,
+      message: [32m'fetch failed'[39m
+    }
+  ]
+}
+[32m[Nest] 52668  - [39m03/08/2026, 5:38:06 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:38:08 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:38:15 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:38:15 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:38:25 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:38:25 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:38:35 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:38:35 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:38:45 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:38:45 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:38:55 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:38:55 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:39:05 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:39:05 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:39:15 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:39:15 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:39:25 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:39:25 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:39:36 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:39:39 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:39:45 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:39:48 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:39:55 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:39:56 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:40:06 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:40:06 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:40:18 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:40:18 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:40:26 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:40:29 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:40:35 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:40:36 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:40:45 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:40:47 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:40:55 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:40:56 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:41:09 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:41:10 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:41:51 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:41:51 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:42:04 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:42:04 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:42:05 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:42:05 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:42:15 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:42:15 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:42:25 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:42:25 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:42:35 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:42:35 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:42:45 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:42:45 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:42:55 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:42:55 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:43:05 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:43:05 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:43:15 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:43:15 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:43:16 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:43:16 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:43:17 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:43:17 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:43:25 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:43:25 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:43:35 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:43:35 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:43:45 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:43:45 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:43:55 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:43:55 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:44:05 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:44:05 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:44:15 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:44:15 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:44:25 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:44:25 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:44:35 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:44:35 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:44:45 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:44:45 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:44:56 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:44:56 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:45:05 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:45:05 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:45:15 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:45:15 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:45:51 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:45:51 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:46:10 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:46:10 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:46:15 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:46:15 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:46:26 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:46:26 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:46:35 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:46:35 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:46:47 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:46:47 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:46:56 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:46:56 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:47:05 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:47:06 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:47:53 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:47:59 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:48:53 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:48:55 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:49:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:49:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:50:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:50:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:51:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:51:53 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:52:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[31m[Nest] 52668  - [39m03/08/2026, 5:53:01 pm [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mClerkAPIResponseError
+    at UserAPI.request [90m(C:\Users\Chirag Gupta\Desktop\enterprise-productivity\enterprise-productivity-backend\[39mnode_modules\[4m@clerk\backend[24m\src\api\request.ts:285:21[90m)[39m
+[90m    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)[39m
+    at async ClerkAuthGuard.canActivate [90m(C:\Users\Chirag Gupta\Desktop\enterprise-productivity\enterprise-productivity-backend\[39msrc\clerk\clerk-auth.guard.ts:45:23[90m)[39m
+    at async GuardsConsumer.tryActivate [90m(C:\Users\Chirag Gupta\Desktop\enterprise-productivity\enterprise-productivity-backend\[39mnode_modules\[4m@nestjs\core[24m\guards\guards-consumer.js:22:17[90m)[39m
+    at async canActivateFn [90m(C:\Users\Chirag Gupta\Desktop\enterprise-productivity\enterprise-productivity-backend\[39mnode_modules\[4m@nestjs\core[24m\router\router-execution-context.js:138:33[90m)[39m
+    at async [90mC:\Users\Chirag Gupta\Desktop\enterprise-productivity\enterprise-productivity-backend\[39mnode_modules\[4m@nestjs\core[24m\router\router-execution-context.js:42:31
+    at async [90mC:\Users\Chirag Gupta\Desktop\enterprise-productivity\enterprise-productivity-backend\[39mnode_modules\[4m@nestjs\core[24m\router\router-proxy.js:9:17 {
+  cause: [90mundefined[39m,
+  clerkError: [33mtrue[39m,
+  code: [32m'api_response_error'[39m,
+  longMessage: [90mundefined[39m,
+  docsUrl: [90mundefined[39m,
+  status: [90mundefined[39m,
+  clerkTraceId: [32m''[39m,
+  retryAfter: [90mundefined[39m,
+  errors: [
+    {
+      code: [32m'unexpected_error'[39m,
+      message: [32m'fetch failed'[39m
+    }
+  ]
+}
+[32m[Nest] 52668  - [39m03/08/2026, 5:53:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:53:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:54:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:54:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:55:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:55:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:56:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:56:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:57:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 5:57:52 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 8:59:38 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 8:59:38 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 9:00:07 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 9:00:07 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 9:00:10 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 9:00:10 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 9:01:42 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 9:01:42 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 9:01:49 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[32m[Nest] 52668  - [39m03/08/2026, 9:01:49 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream user synced: user_3HE0SV8kvYSMEx8ggz3MMpOGMYX[39m
+[2J[3J[H[[90m9:05:44 pm[0m] File change detected. Starting incremental compilation...
+
+[[90m9:05:53 pm[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m9:05:54 pm[0m] File change detected. Starting incremental compilation...
+
+[[90m9:05:57 pm[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m9:05:58 pm[0m] File change detected. Starting incremental compilation...
+
+[[90m9:06:00 pm[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m9:06:01 pm[0m] File change detected. Starting incremental compilation...
+
+[[90m9:06:03 pm[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m9:06:03 pm[0m] File change detected. Starting incremental compilation...
+
+[[90m9:06:05 pm[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m9:06:05 pm[0m] File change detected. Starting incremental compilation...
+
+[[90m9:06:06 pm[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m9:06:13 pm[0m] File change detected. Starting incremental compilation...
+
+[[90m9:06:15 pm[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m9:06:15 pm[0m] File change detected. Starting incremental compilation...
+
+[[90m9:06:17 pm[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m9:06:26 pm[0m] File change detected. Starting incremental compilation...
+
+[[90m9:06:28 pm[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m9:06:39 pm[0m] File change detected. Starting incremental compilation...
+
+[[90m9:06:40 pm[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m9:06:41 pm[0m] File change detected. Starting incremental compilation...
+
+[[90m9:06:43 pm[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m9:06:55 pm[0m] File change detected. Starting incremental compilation...
+
+[[90m9:06:58 pm[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m9:06:59 pm[0m] File change detected. Starting incremental compilation...
+
+[[90m9:07:01 pm[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m9:07:23 pm[0m] File change detected. Starting incremental compilation...
+
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +63ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mHealthModule dependencies initialized[39m[38;5;3m +90ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mStreamModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[DrizzleProvider] [39m[32mPostgreSQL connection established successfully.[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDatabaseModule dependencies initialized[39m[38;5;3m +3ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mUsersModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNotificationsModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDepartmentsModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTasksModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMeetingsModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mChannelsModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mProjectDocumentsModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mProjectsModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mProjectAnnouncementsModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mProjectMilestonesModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAiSummaryModule dependencies initialized[39m[38;5;3m +2ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mClerkModule dependencies initialized[39m[38;5;3m +3ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mHealthController {/health}:[39m[38;5;3m +13ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/health, GET} route[39m[38;5;3m +5ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mClerkTestController {/clerk-test}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/clerk-test/me, GET} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mStreamController {/stream}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/stream/token, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mUsersController {/users}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/users/me, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/users, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/users/:clerkId/role, PATCH} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mChatController {/chat}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/token, GET} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/direct, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/group, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId, PATCH} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/avatar, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/avatar, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/members/:memberId, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/members/:memberId, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/leave, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/moderators/:memberId, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/moderators/:memberId, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mTasksController {/tasks}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks/:id/channel, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks/:id, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks/:id/status, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mMeetingsController {/meetings}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings/:id, PATCH} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings/:id/join, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings/:id/leave, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mDepartmentsController {/departments}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments/mine, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments/:id, PATCH} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments/:id/members/:memberId, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments/:id/members/:memberId, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mChannelsController {/channels}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels, GET} route[39m[38;5;3m +17ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id/join, POST} route[39m[38;5;3m +6ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id/leave, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id/members, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id/members/:memberId, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id/members/:memberId, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mNotificationsController {/notifications}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/notifications, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/notifications/unread-count, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/notifications/:id/read, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/notifications/read-all, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/notifications/self, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mProjectsController {/projects}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id/members, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id/members, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id/members/:memberId, PATCH} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id/members/:memberId, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mProjectAnnouncementsController {/projects/:projectId/announcements}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements, POST} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements/:id, PATCH} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements/:id/pin, PATCH} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements/:id/reactions, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements/:id/reactions/:emoji, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mProjectDocumentsController {/projects/:projectId/documents}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/documents, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/documents, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/documents/:id/download, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/documents/:id/preview, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/documents/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mProjectMilestonesController {/projects/:projectId/milestones}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/milestones, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/milestones, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/milestones/:id, PATCH} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/milestones/:id/status, PATCH} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/milestones/:id/progress, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/milestones/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAiSummaryController {/projects/:projectId/ai-summary}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/ai-summary, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 89420  - [39m03/08/2026, 9:07:26 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream Chat server client initialized.[39m
+[[90m9:07:27 pm[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m9:07:27 pm[0m] File change detected. Starting incremental compilation...
+
+[[90m9:07:29 pm[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m9:07:35 pm[0m] File change detected. Starting incremental compilation...
+
+[[90m9:07:36 pm[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m9:07:48 pm[0m] File change detected. Starting incremental compilation...
+
+[[90m9:07:50 pm[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m9:08:07 pm[0m] File change detected. Starting incremental compilation...
+
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +36ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mHealthModule dependencies initialized[39m[38;5;3m +70ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mStreamModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[DrizzleProvider] [39m[32mPostgreSQL connection established successfully.[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDatabaseModule dependencies initialized[39m[38;5;3m +2ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mUsersModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNotificationsModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDepartmentsModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTasksModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMeetingsModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mChannelsModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mProjectDocumentsModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mProjectsModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mProjectAnnouncementsModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mProjectMilestonesModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAiSummaryModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mClerkModule dependencies initialized[39m[38;5;3m +3ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mHealthController {/health}:[39m[38;5;3m +12ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/health, GET} route[39m[38;5;3m +5ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mClerkTestController {/clerk-test}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/clerk-test/me, GET} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mStreamController {/stream}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/stream/token, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mUsersController {/users}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/users/me, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/users, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/users/:clerkId/role, PATCH} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mChatController {/chat}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/token, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/direct, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/group, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/avatar, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/avatar, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/members/:memberId, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/members/:memberId, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/leave, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/moderators/:memberId, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/moderators/:memberId, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mTasksController {/tasks}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks/:id/channel, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks/:id, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks/:id/status, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mMeetingsController {/meetings}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings/:id, PATCH} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings/:id/join, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings/:id/leave, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mDepartmentsController {/departments}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments/mine, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments/:id, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments/:id/members/:memberId, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments/:id/members/:memberId, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mChannelsController {/channels}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id/join, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id/leave, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id/members, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id/members/:memberId, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id/members/:memberId, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mNotificationsController {/notifications}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/notifications, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/notifications/unread-count, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/notifications/:id/read, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/notifications/read-all, PATCH} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/notifications/self, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mProjectsController {/projects}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id, PATCH} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id/members, GET} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id/members, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id/members/:memberId, PATCH} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id/members/:memberId, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mProjectAnnouncementsController {/projects/:projectId/announcements}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements/:id, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements/:id/pin, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements/:id/reactions, POST} route[39m[38;5;3m +39ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements/:id/reactions/:emoji, DELETE} route[39m[38;5;3m +22ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mProjectDocumentsController {/projects/:projectId/documents}:[39m[38;5;3m +7ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/documents, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/documents, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/documents/:id/download, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/documents/:id/preview, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/documents/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mProjectMilestonesController {/projects/:projectId/milestones}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/milestones, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/milestones, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/milestones/:id, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/milestones/:id/status, PATCH} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/milestones/:id/progress, PATCH} route[39m[38;5;3m +3ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/milestones/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAiSummaryController {/projects/:projectId/ai-summary}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/ai-summary, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 55608  - [39m03/08/2026, 9:08:08 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream Chat server client initialized.[39m
+[[90m9:08:09 pm[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m9:08:09 pm[0m] File change detected. Starting incremental compilation...
+
+[[90m9:08:11 pm[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m9:08:16 pm[0m] File change detected. Starting incremental compilation...
+
+[[90m9:08:18 pm[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m9:08:18 pm[0m] File change detected. Starting incremental compilation...
+
+[[90m9:08:20 pm[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m9:08:29 pm[0m] File change detected. Starting incremental compilation...
+
+[[90m9:08:32 pm[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m9:08:33 pm[0m] File change detected. Starting incremental compilation...
+
+[[90m9:08:34 pm[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m9:08:34 pm[0m] File change detected. Starting incremental compilation...
+
+[[90m9:08:36 pm[0m] Found 0 errors. Watching for file changes.
+
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:49 pm [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:49 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +43ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:49 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:49 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:49 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mHealthModule dependencies initialized[39m[38;5;3m +85ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:49 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:49 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mStreamModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[DrizzleProvider] [39m[32mPostgreSQL connection established successfully.[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDatabaseModule dependencies initialized[39m[38;5;3m +2ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mUsersModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNotificationsModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDepartmentsModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTasksModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMeetingsModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mChannelsModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mProjectDocumentsModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mProjectsModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mProjectAnnouncementsModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mProjectMilestonesModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAiSummaryModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mClerkModule dependencies initialized[39m[38;5;3m +2ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mHealthController {/health}:[39m[38;5;3m +11ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/health, GET} route[39m[38;5;3m +14ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mClerkTestController {/clerk-test}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/clerk-test/me, GET} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mStreamController {/stream}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/stream/token, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mUsersController {/users}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/users/me, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/users, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/users/:clerkId/role, PATCH} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mChatController {/chat}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/token, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/direct, POST} route[39m[38;5;3m +4ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/group, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId, PATCH} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/avatar, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/avatar, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/members/:memberId, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/members/:memberId, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/leave, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/moderators/:memberId, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/moderators/:memberId, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mTasksController {/tasks}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks/:id/channel, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks/:id, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks/:id/status, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mMeetingsController {/meetings}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings/:id, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings/:id/join, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings/:id/leave, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mDepartmentsController {/departments}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments/mine, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments/:id, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments/:id/members/:memberId, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments/:id/members/:memberId, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mChannelsController {/channels}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels, POST} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels, GET} route[39m[38;5;3m +10ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id, PATCH} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id/join, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id/leave, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id/members, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id/members/:memberId, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id/members/:memberId, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mNotificationsController {/notifications}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/notifications, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/notifications/unread-count, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/notifications/:id/read, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/notifications/read-all, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/notifications/self, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mProjectsController {/projects}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id/members, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id/members, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id/members/:memberId, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id/members/:memberId, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mProjectAnnouncementsController {/projects/:projectId/announcements}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements/:id, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements/:id/pin, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements/:id/reactions, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements/:id/reactions/:emoji, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mProjectDocumentsController {/projects/:projectId/documents}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/documents, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/documents, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/documents/:id/download, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/documents/:id/preview, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/documents/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mProjectMilestonesController {/projects/:projectId/milestones}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/milestones, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/milestones, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/milestones/:id, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/milestones/:id/status, PATCH} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/milestones/:id/progress, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/milestones/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAiSummaryController {/projects/:projectId/ai-summary}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/ai-summary, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:50 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream Chat server client initialized.[39m
+Attention: Clerk collects telemetry data from its SDKs when connected to development instances.
+The data collected is used to inform Clerk's product roadmap.
+To learn more, including how to opt-out from the telemetry program, visit: https://clerk.com/docs/telemetry.
+
+[32m[Nest] 50988  - [39m03/08/2026, 9:08:51 pm [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +755ms[39m
+🚀 Application is running on: http://localhost:3001
+[2J[3J[H[[90m9:09:06 pm[0m] File change detected. Starting incremental compilation...
+
+[[90m9:09:07 pm[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m9:09:17 pm[0m] File change detected. Starting incremental compilation...
+
+[[90m9:09:18 pm[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m9:09:41 pm[0m] File change detected. Starting incremental compilation...
+
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +43ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +2ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mHealthModule dependencies initialized[39m[38;5;3m +41ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mStreamModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[DrizzleProvider] [39m[32mPostgreSQL connection established successfully.[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDatabaseModule dependencies initialized[39m[38;5;3m +2ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mUsersModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNotificationsModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDepartmentsModule dependencies initialized[39m[38;5;3m +2ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTasksModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMeetingsModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mChannelsModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mProjectDocumentsModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mProjectsModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mProjectAnnouncementsModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mProjectMilestonesModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAiSummaryModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mClerkModule dependencies initialized[39m[38;5;3m +3ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mHealthController {/health}:[39m[38;5;3m +11ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/health, GET} route[39m[38;5;3m +6ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mClerkTestController {/clerk-test}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/clerk-test/me, GET} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mStreamController {/stream}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/stream/token, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mUsersController {/users}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/users/me, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/users, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/users/:clerkId/role, PATCH} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mChatController {/chat}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/token, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/direct, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/group, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/avatar, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/avatar, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/members/:memberId, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/members/:memberId, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/leave, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/moderators/:memberId, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/moderators/:memberId, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mTasksController {/tasks}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks/:id/channel, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks/:id, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks/:id/status, PATCH} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mMeetingsController {/meetings}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings/:id, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings/:id/join, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings/:id/leave, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mDepartmentsController {/departments}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments/mine, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments/:id, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments/:id/members/:memberId, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments/:id/members/:memberId, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mChannelsController {/channels}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id, PATCH} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id/join, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id/leave, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id/members, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id/members/:memberId, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id/members/:memberId, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mNotificationsController {/notifications}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/notifications, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/notifications/unread-count, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/notifications/:id/read, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/notifications/read-all, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/notifications/self, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mProjectsController {/projects}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id, PATCH} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id/members, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id/members, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id/members/:memberId, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id/members/:memberId, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mProjectAnnouncementsController {/projects/:projectId/announcements}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements/:id, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements/:id/pin, PATCH} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements/:id/reactions, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements/:id/reactions/:emoji, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mProjectDocumentsController {/projects/:projectId/documents}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/documents, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/documents, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/documents/:id/download, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/documents/:id/preview, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/documents/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mProjectMilestonesController {/projects/:projectId/milestones}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/milestones, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/milestones, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/milestones/:id, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/milestones/:id/status, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/milestones/:id/progress, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/milestones/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAiSummaryController {/projects/:projectId/ai-summary}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/ai-summary, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:42 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream Chat server client initialized.[39m
+Attention: Clerk collects telemetry data from its SDKs when connected to development instances.
+The data collected is used to inform Clerk's product roadmap.
+To learn more, including how to opt-out from the telemetry program, visit: https://clerk.com/docs/telemetry.
+
+[32m[Nest] 84504  - [39m03/08/2026, 9:09:43 pm [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +698ms[39m
+🚀 Application is running on: http://localhost:3001
+[[90m9:09:43 pm[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m9:09:44 pm[0m] File change detected. Starting incremental compilation...
+
+[[90m9:09:45 pm[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m9:09:57 pm[0m] File change detected. Starting incremental compilation...
+
+[[90m9:10:03 pm[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m9:10:13 pm[0m] File change detected. Starting incremental compilation...
+
+[[90m9:10:14 pm[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m9:10:14 pm[0m] File change detected. Starting incremental compilation...
+
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +43ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mHealthModule dependencies initialized[39m[38;5;3m +18ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mStreamModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[DrizzleProvider] [39m[32mPostgreSQL connection established successfully.[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDatabaseModule dependencies initialized[39m[38;5;3m +2ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mUsersModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNotificationsModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDepartmentsModule dependencies initialized[39m[38;5;3m +2ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTasksModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMeetingsModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mChannelsModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mProjectDocumentsModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mProjectsModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mProjectAnnouncementsModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mProjectMilestonesModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAiSummaryModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mClerkModule dependencies initialized[39m[38;5;3m +3ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mHealthController {/health}:[39m[38;5;3m +10ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/health, GET} route[39m[38;5;3m +5ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mClerkTestController {/clerk-test}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/clerk-test/me, GET} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mStreamController {/stream}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/stream/token, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mUsersController {/users}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/users/me, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/users, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/users/:clerkId/role, PATCH} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mChatController {/chat}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/token, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/direct, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/group, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/avatar, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/avatar, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/members/:memberId, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/members/:memberId, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/leave, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/moderators/:memberId, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/chat/groups/:channelId/moderators/:memberId, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mTasksController {/tasks}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks/:id/channel, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks/:id, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks/:id/status, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/tasks/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mMeetingsController {/meetings}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings/:id, PATCH} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings/:id/join, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/meetings/:id/leave, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mDepartmentsController {/departments}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments/mine, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments/:id, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments/:id/members/:memberId, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/departments/:id/members/:memberId, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mChannelsController {/channels}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id/join, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id/leave, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id/members, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id/members/:memberId, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/channels/:id/members/:memberId, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mNotificationsController {/notifications}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/notifications, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/notifications/unread-count, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/notifications/:id/read, PATCH} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/notifications/read-all, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/notifications/self, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mProjectsController {/projects}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id/members, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id/members, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id/members/:memberId, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:id/members/:memberId, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mProjectAnnouncementsController {/projects/:projectId/announcements}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements/:id, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements/:id/pin, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements/:id/reactions, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/announcements/:id/reactions/:emoji, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mProjectDocumentsController {/projects/:projectId/documents}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/documents, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/documents, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/documents/:id/download, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/documents/:id/preview, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/documents/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mProjectMilestonesController {/projects/:projectId/milestones}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/milestones, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/milestones, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/milestones/:id, PATCH} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/milestones/:id/status, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/milestones/:id/progress, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/milestones/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAiSummaryController {/projects/:projectId/ai-summary}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/projects/:projectId/ai-summary, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:25 pm [32m    LOG[39m [38;5;3m[StreamService] [39m[32mStream Chat server client initialized.[39m
+Attention: Clerk collects telemetry data from its SDKs when connected to development instances.
+The data collected is used to inform Clerk's product roadmap.
+To learn more, including how to opt-out from the telemetry program, visit: https://clerk.com/docs/telemetry.
+
+[32m[Nest] 18260  - [39m03/08/2026, 9:10:26 pm [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +615ms[39m
+🚀 Application is running on: http://localhost:3001
