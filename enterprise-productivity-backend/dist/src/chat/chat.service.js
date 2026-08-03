@@ -1,0 +1,252 @@
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+var ChatService_1;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ChatService = void 0;
+const common_1 = require("@nestjs/common");
+const drizzle_orm_1 = require("drizzle-orm");
+const node_postgres_1 = require("drizzle-orm/node-postgres");
+const drizzle_provider_1 = require("../database/drizzle.provider");
+const chat_channels_schema_1 = require("../database/schema/chat-channels.schema");
+const stream_service_1 = require("../stream/stream.service");
+const users_service_1 = require("../users/users.service");
+const notifications_service_1 = require("../notifications/notifications.service");
+const roles_1 = require("../rbac/roles");
+let ChatService = ChatService_1 = class ChatService {
+    constructor(db, streamService, usersService, notificationsService) {
+        this.db = db;
+        this.streamService = streamService;
+        this.usersService = usersService;
+        this.notificationsService = notificationsService;
+        this.logger = new common_1.Logger(ChatService_1.name);
+    }
+    async watchChannel(channelId) {
+        const channel = this.streamService
+            .getClient()
+            .channel('messaging', channelId);
+        await channel.watch();
+        return channel;
+    }
+    memberRole(member, createdById) {
+        if (member.user?.id && member.user.id === createdById)
+            return 'owner';
+        if (member.is_moderator ||
+            member.channel_role === 'channel_moderator' ||
+            member.channel_role === 'moderator') {
+            return 'moderator';
+        }
+        return 'member';
+    }
+    async resolveRole(channel, userId) {
+        const data = (channel.data ?? {});
+        if (userId === data.created_by_id)
+            return 'owner';
+        const member = (channel.state.members ?? {})[userId];
+        if (member) {
+            const role = this.memberRole(member, data.created_by_id);
+            if (role === 'moderator')
+                return 'moderator';
+        }
+        const user = await this.usersService.findByClerkId(userId);
+        if (user && (0, roles_1.hasMinRole)(user.role, 'manager'))
+            return 'admin';
+        return 'member';
+    }
+    assertCanManage(role) {
+        if (role !== 'owner' && role !== 'admin' && role !== 'moderator') {
+            throw new common_1.ForbiddenException('Only the group creator, a moderator, or an admin can manage this group.');
+        }
+    }
+    assertCanManageModerators(role) {
+        if (role !== 'owner' && role !== 'admin') {
+            throw new common_1.ForbiddenException('Only the group creator or an admin can assign moderators.');
+        }
+    }
+    async toGroupInfo(channel, channelId, role) {
+        const data = (channel.data ?? {});
+        const createdById = data.created_by_id ?? '';
+        const members = Object.values(channel.state.members ?? {}).map((m) => {
+            const member = m;
+            return {
+                id: member.user?.id ?? '',
+                name: member.user?.name ?? null,
+                imageUrl: member.user?.image ?? null,
+                role: this.memberRole(member, createdById),
+            };
+        });
+        const avatarRow = await this.db
+            .select()
+            .from(chat_channels_schema_1.chatChannelAvatars)
+            .where((0, drizzle_orm_1.eq)(chat_channels_schema_1.chatChannelAvatars.channelId, channelId))
+            .limit(1);
+        return {
+            channelId: channel.id ?? channelId,
+            name: data.name ?? null,
+            description: data.description ?? null,
+            avatarUrl: avatarRow[0]?.avatarUrl ?? null,
+            memberCount: members.length,
+            createdById,
+            currentUserRole: role,
+            canManage: role === 'owner' || role === 'admin' || role === 'moderator',
+            canManageModerators: role === 'owner' || role === 'admin',
+            members,
+        };
+    }
+    async getGroupInfo(channelId, userId) {
+        const channel = await this.watchChannel(channelId);
+        const role = await this.resolveRole(channel, userId);
+        return this.toGroupInfo(channel, channelId, role);
+    }
+    async updateGroup(channelId, userId, changes) {
+        const channel = await this.watchChannel(channelId);
+        const role = await this.resolveRole(channel, userId);
+        this.assertCanManage(role);
+        const set = {};
+        if (changes.name !== undefined)
+            set.name = changes.name;
+        if (changes.description !== undefined)
+            set.description = changes.description;
+        if (Object.keys(set).length === 0) {
+            throw new common_1.BadRequestException('Nothing to update.');
+        }
+        await channel.updatePartial({ set });
+        return this.getGroupInfo(channelId, userId);
+    }
+    async updateGroupAvatar(channelId, userId, avatarUrl) {
+        const channel = await this.watchChannel(channelId);
+        const role = await this.resolveRole(channel, userId);
+        this.assertCanManage(role);
+        await this.db
+            .insert(chat_channels_schema_1.chatChannelAvatars)
+            .values({ channelId, avatarUrl, updatedAt: new Date() })
+            .onConflictDoUpdate({
+            target: chat_channels_schema_1.chatChannelAvatars.channelId,
+            set: { avatarUrl, updatedAt: new Date() },
+        });
+        await channel.updatePartial({
+            set: { image: avatarUrl },
+        });
+        this.logger.log(`Group avatar updated: ${channelId}`);
+        return this.getGroupInfo(channelId, userId);
+    }
+    async removeGroupAvatar(channelId, userId) {
+        const channel = await this.watchChannel(channelId);
+        const role = await this.resolveRole(channel, userId);
+        this.assertCanManage(role);
+        await this.db
+            .delete(chat_channels_schema_1.chatChannelAvatars)
+            .where((0, drizzle_orm_1.eq)(chat_channels_schema_1.chatChannelAvatars.channelId, channelId));
+        await channel.updatePartial({
+            set: { image: '' },
+        });
+        this.logger.log(`Group avatar removed: ${channelId}`);
+        return this.getGroupInfo(channelId, userId);
+    }
+    async addMember(channelId, userId, memberId) {
+        const channel = await this.watchChannel(channelId);
+        const role = await this.resolveRole(channel, userId);
+        this.assertCanManage(role);
+        if ((channel.state.members ?? {})[memberId]) {
+            throw new common_1.BadRequestException('User is already a member of this group.');
+        }
+        await channel.addMembers([memberId]);
+        const data = (channel.data ?? {});
+        await this.notificationsService.create({
+            userId: memberId,
+            type: 'added_to_group',
+            title: 'Added to group',
+            description: data.name ?? 'a group',
+            actionUrl: `/dashboard?channel=${channelId}`,
+        });
+        return this.getGroupInfo(channelId, userId);
+    }
+    async removeMember(channelId, userId, memberId) {
+        const channel = await this.watchChannel(channelId);
+        const role = await this.resolveRole(channel, userId);
+        this.assertCanManage(role);
+        const data = (channel.data ?? {});
+        if (data.created_by_id === memberId) {
+            throw new common_1.BadRequestException('The group creator cannot be removed.');
+        }
+        if (userId === memberId) {
+            throw new common_1.BadRequestException('You cannot remove yourself from the group.');
+        }
+        const targetMember = (channel.state.members ?? {})[memberId];
+        if (!targetMember) {
+            throw new common_1.BadRequestException('User is not a member of this group.');
+        }
+        if (this.memberRole(targetMember, data.created_by_id) ===
+            'moderator' &&
+            role !== 'owner' &&
+            role !== 'admin') {
+            throw new common_1.ForbiddenException('Only the group creator or an admin can remove a moderator.');
+        }
+        await channel.removeMembers([memberId]);
+        await this.notificationsService.create({
+            userId: memberId,
+            type: 'removed_from_group',
+            title: 'Removed from group',
+            description: data.name ?? 'a group',
+        });
+        return this.getGroupInfo(channelId, userId);
+    }
+    async leaveGroup(channelId, userId) {
+        const channel = await this.watchChannel(channelId);
+        const data = (channel.data ?? {});
+        if (data.created_by_id === userId) {
+            throw new common_1.BadRequestException('The group creator cannot leave the group. Delete it or transfer ownership instead.');
+        }
+        await channel.removeMembers([userId]);
+        this.logger.log(`User ${userId} left group ${channelId}`);
+    }
+    async assignModerator(channelId, userId, memberId) {
+        const channel = await this.watchChannel(channelId);
+        const role = await this.resolveRole(channel, userId);
+        this.assertCanManageModerators(role);
+        if (!(channel.state.members ?? {})[memberId]) {
+            throw new common_1.BadRequestException('User is not a member of this group.');
+        }
+        await channel.addModerators([memberId]);
+        this.logger.log(`Moderator assigned: ${memberId} in ${channelId}`);
+        return this.getGroupInfo(channelId, userId);
+    }
+    async demoteModerator(channelId, userId, memberId) {
+        const channel = await this.watchChannel(channelId);
+        const role = await this.resolveRole(channel, userId);
+        this.assertCanManageModerators(role);
+        const data = (channel.data ?? {});
+        if (data.created_by_id === memberId) {
+            throw new common_1.BadRequestException('The group creator cannot be demoted.');
+        }
+        if (userId === memberId) {
+            throw new common_1.BadRequestException('You cannot change your own moderator role.');
+        }
+        if (!(channel.state.members ?? {})[memberId]) {
+            throw new common_1.BadRequestException('User is not a member of this group.');
+        }
+        await channel.demoteModerators([memberId]);
+        this.logger.log(`Moderator demoted: ${memberId} in ${channelId}`);
+        return this.getGroupInfo(channelId, userId);
+    }
+};
+exports.ChatService = ChatService;
+exports.ChatService = ChatService = ChatService_1 = __decorate([
+    (0, common_1.Injectable)(),
+    __param(0, (0, common_1.Inject)(drizzle_provider_1.DRIZZLE)),
+    __metadata("design:paramtypes", [node_postgres_1.NodePgDatabase,
+        stream_service_1.StreamService,
+        users_service_1.UsersService,
+        notifications_service_1.NotificationsService])
+], ChatService);
+//# sourceMappingURL=chat.service.js.map

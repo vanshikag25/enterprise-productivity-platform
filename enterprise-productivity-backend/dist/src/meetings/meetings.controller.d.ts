@@ -1,0 +1,93 @@
+import type { AuthObject } from '@clerk/backend';
+import { MeetingsService } from './meetings.service';
+import { CreateMeetingDto } from './dto/create-meeting.dto';
+import { UpdateMeetingDto } from './dto/update-meeting.dto';
+export declare class MeetingsController {
+    private readonly meetingsService;
+    constructor(meetingsService: MeetingsService);
+    create(auth: AuthObject, dto: CreateMeetingDto): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        description: string | null;
+        title: string;
+        scheduledDate: Date;
+        startTime: string;
+        endTime: string;
+        organizerId: string;
+        participants: string[];
+        meetingStatus: "Completed" | "Scheduled" | "Ongoing" | "Cancelled";
+        meetingChatChannelId: string | null;
+    }>;
+    findAll(): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        description: string | null;
+        title: string;
+        scheduledDate: Date;
+        startTime: string;
+        endTime: string;
+        organizerId: string;
+        participants: string[];
+        meetingStatus: "Completed" | "Scheduled" | "Ongoing" | "Cancelled";
+        meetingChatChannelId: string | null;
+    }[]>;
+    findOne(id: string): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        description: string | null;
+        title: string;
+        scheduledDate: Date;
+        startTime: string;
+        endTime: string;
+        organizerId: string;
+        participants: string[];
+        meetingStatus: "Completed" | "Scheduled" | "Ongoing" | "Cancelled";
+        meetingChatChannelId: string | null;
+    }>;
+    update(auth: AuthObject, id: string, dto: UpdateMeetingDto): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        description: string | null;
+        title: string;
+        scheduledDate: Date;
+        startTime: string;
+        endTime: string;
+        organizerId: string;
+        participants: string[];
+        meetingStatus: "Completed" | "Scheduled" | "Ongoing" | "Cancelled";
+        meetingChatChannelId: string | null;
+    }>;
+    remove(auth: AuthObject, id: string): Promise<void>;
+    join(auth: AuthObject, id: string): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        description: string | null;
+        title: string;
+        scheduledDate: Date;
+        startTime: string;
+        endTime: string;
+        organizerId: string;
+        participants: string[];
+        meetingStatus: "Completed" | "Scheduled" | "Ongoing" | "Cancelled";
+        meetingChatChannelId: string | null;
+    }>;
+    leave(auth: AuthObject, id: string): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        description: string | null;
+        title: string;
+        scheduledDate: Date;
+        startTime: string;
+        endTime: string;
+        organizerId: string;
+        participants: string[];
+        meetingStatus: "Completed" | "Scheduled" | "Ongoing" | "Cancelled";
+        meetingChatChannelId: string | null;
+    }>;
+}

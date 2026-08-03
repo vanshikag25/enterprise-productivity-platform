@@ -1,0 +1,228 @@
+import {
+  Inject,
+  Injectable,
+  ForbiddenException,
+  BadRequestException,
+  NotFoundException,
+  Logger,
+} from '@nestjs/common';
+import { randomUUID } from 'crypto';
+import type { ChannelData } from 'stream-chat';
+import { StreamService } from '../stream/stream.service';
+import { UsersService } from '../users/users.service';
+import { DepartmentsService } from '../departments/departments.service';
+import { NotificationsService } from '../notifications/notifications.service';
+import { hasMinRole, type UserRole } from '../rbac/roles';
+import { CreateChannelDto, UpdateChannelDto } from './dto/create-channel.dto';
+
+@Injectable()
+export class ChannelsService {
+  private readonly logger = new Logger(ChannelsService.name);
+
+  constructor(
+    private readonly streamService: StreamService,
+    private readonly usersService: UsersService,
+    private readonly departmentsService: DepartmentsService,
+    private readonly notificationsService: NotificationsService,
+  ) {}
+
+  private async requireRole(userId: string, minimum: UserRole) {
+    const user = await this.usersService.findByClerkId(userId);
+    if (!user || !hasMinRole(user.role, minimum)) {
+      throw new ForbiddenException('Insufficient permissions for this action');
+    }
+  }
+
+  private toSummary(channel: {
+    id?: string;
+    data?: unknown;
+    state: { members: Record<string, unknown> };
+  }) {
+    const data = (channel.data ?? {}) as Record<string, unknown>;
+    return {
+      id: channel.id,
+      name: data.name as string,
+      description: (data.description as string) ?? '',
+      kind: data.channel_kind as string,
+      departmentId: (data.department_id as string) ?? null,
+      createdBy: data.created_by_id as string,
+      createdAt: data.created_at as string,
+      memberCount: Object.keys(channel.state.members ?? {}).length,
+      frozen: Boolean(data.frozen),
+    };
+  }
+
+  async create(userId: string, dto: CreateChannelDto) {
+    await this.requireRole(userId, 'manager');
+
+    let members: string[];
+    let departmentId: string | undefined;
+
+    if (dto.kind === 'department') {
+      if (!dto.departmentId)
+        throw new BadRequestException('departmentId is required');
+      const dept = await this.departmentsService.findOne(dto.departmentId);
+      members = Array.from(new Set([userId, ...dept.memberIds]));
+      departmentId = dept.id;
+    } else {
+      members = Array.from(new Set([userId, ...(dto.memberIds ?? [])]));
+    }
+
+    const channelId = randomUUID();
+    const customData: Record<string, unknown> = {
+      name: dto.name,
+      description: dto.description ?? '',
+      channel_kind: dto.kind,
+      created_by_id: userId,
+      members,
+      ...(departmentId ? { department_id: departmentId } : {}),
+      ...(dto.kind === 'announcement' ? { frozen: true } : {}),
+    };
+
+    const channel = this.streamService
+      .getClient()
+      .channel('messaging', channelId, customData as unknown as ChannelData);
+    await channel.create();
+
+    if (dto.kind === 'announcement') {
+      try {
+        await channel.addModerators([userId]);
+      } catch (err) {
+        this.logger.warn(`Failed to set moderator: ${err}`);
+      }
+    }
+
+    if (dto.kind === 'department' && departmentId) {
+      await this.departmentsService.setChannelId(departmentId, channel.id!);
+    }
+
+    await this.notificationsService.createMany(
+      members
+        .filter((m) => m !== userId)
+        .map((m) => ({
+          userId: m,
+          type:
+            dto.kind === 'department'
+              ? 'added_to_department'
+              : 'added_to_group',
+          title:
+            dto.kind === 'department'
+              ? 'Added to department channel'
+              : 'Added to group',
+          description: dto.name,
+          actionUrl:
+            dto.kind === 'department'
+              ? '/department-channels'
+              : dto.kind === 'announcement'
+                ? '/announcements'
+                : '/organization-channels',
+        })),
+    );
+
+    return this.toSummary(channel);
+  }
+
+  async list(kind: string) {
+    const response = await this.streamService
+      .getClient()
+      .queryChannels(
+        { type: 'messaging', channel_kind: kind } as unknown as Record<
+          string,
+          unknown
+        >,
+        {},
+        { limit: 100 },
+      );
+    return response.map((c) => this.toSummary(c));
+  }
+
+  private async getWatchedChannel(id: string) {
+    const channel = this.streamService.getClient().channel('messaging', id);
+    await channel.watch();
+    return channel;
+  }
+
+  async findOne(id: string) {
+    const channel = await this.getWatchedChannel(id);
+    return this.toSummary(channel);
+  }
+
+  private async requireCreatorOrPrivileged(id: string, userId: string) {
+    const channel = await this.getWatchedChannel(id);
+    const data = (channel.data ?? {}) as Record<string, unknown>;
+    if (data.created_by_id === userId) return channel;
+    const user = await this.usersService.findByClerkId(userId);
+    if (user && hasMinRole(user.role, 'manager')) return channel;
+    throw new ForbiddenException(
+      'Only the creator, Manager, or a higher role can perform this action',
+    );
+  }
+
+  async update(id: string, userId: string, dto: UpdateChannelDto) {
+    const channel = await this.requireCreatorOrPrivileged(id, userId);
+    await channel.updatePartial({ set: { ...dto } as Record<string, unknown> });
+    return this.toSummary(channel);
+  }
+
+  async remove(id: string, userId: string): Promise<void> {
+    const channel = await this.requireCreatorOrPrivileged(id, userId);
+    await channel.delete();
+  }
+
+  async join(id: string, userId: string) {
+    const channel = await this.getWatchedChannel(id);
+    await channel.addMembers([userId]);
+    return this.toSummary(channel);
+  }
+
+  async leave(id: string, userId: string) {
+    const channel = await this.getWatchedChannel(id);
+    await channel.removeMembers([userId]);
+    return this.toSummary(channel);
+  }
+
+  async addMember(id: string, userId: string, memberId: string) {
+    await this.requireCreatorOrPrivileged(id, userId);
+    const channel = await this.getWatchedChannel(id);
+    await channel.addMembers([memberId]);
+
+    const data = (channel.data ?? {}) as Record<string, unknown>;
+    const kind = data.channel_kind as string;
+    await this.notificationsService.create({
+      userId: memberId,
+      type: kind === 'department' ? 'added_to_department' : 'added_to_group',
+      title:
+        kind === 'department'
+          ? 'Added to department channel'
+          : 'Added to group',
+      description: data.name as string,
+      actionUrl:
+        kind === 'department'
+          ? '/department-channels'
+          : '/organization-channels',
+    });
+
+    return this.toSummary(channel);
+  }
+
+  async removeMember(id: string, userId: string, memberId: string) {
+    await this.requireCreatorOrPrivileged(id, userId);
+    const channel = await this.getWatchedChannel(id);
+    await channel.removeMembers([memberId]);
+    return this.toSummary(channel);
+  }
+
+  async listMembers(id: string) {
+    const channel = await this.getWatchedChannel(id);
+    return Object.values(channel.state.members ?? {}).map((m) => {
+      const member = m as {
+        user?: { id?: string; name?: string; image?: string };
+      };
+      return {
+        id: member.user?.id,
+        name: member.user?.name,
+        imageUrl: member.user?.image,
+      };
+    });
+  }
+}

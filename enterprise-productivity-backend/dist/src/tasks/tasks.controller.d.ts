@@ -1,0 +1,78 @@
+import type { AuthObject } from '@clerk/backend';
+import { TasksService } from './tasks.service';
+import { CreateTaskDto } from './dto/create-task.dto';
+import { UpdateTaskDto } from './dto/update-task.dto';
+import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
+export declare class TasksController {
+    private readonly tasksService;
+    constructor(tasksService: TasksService);
+    create(auth: AuthObject, dto: CreateTaskDto): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        description: string | null;
+        status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
+        title: string;
+        priority: "Low" | "Medium" | "High" | "Critical";
+        dueDate: Date | null;
+        createdBy: string;
+        assignee: string | null;
+        streamChannelId: string | null;
+    }>;
+    findAll(): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        description: string | null;
+        status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
+        title: string;
+        priority: "Low" | "Medium" | "High" | "Critical";
+        dueDate: Date | null;
+        createdBy: string;
+        assignee: string | null;
+        streamChannelId: string | null;
+    }[]>;
+    findOne(id: string): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        description: string | null;
+        status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
+        title: string;
+        priority: "Low" | "Medium" | "High" | "Critical";
+        dueDate: Date | null;
+        createdBy: string;
+        assignee: string | null;
+        streamChannelId: string | null;
+    }>;
+    getOrCreateChannel(auth: AuthObject, id: string): Promise<{
+        channelId: string;
+    }>;
+    update(auth: AuthObject, id: string, dto: UpdateTaskDto): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        description: string | null;
+        status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
+        title: string;
+        priority: "Low" | "Medium" | "High" | "Critical";
+        dueDate: Date | null;
+        createdBy: string;
+        assignee: string | null;
+        streamChannelId: string | null;
+    }>;
+    updateStatus(auth: AuthObject, id: string, dto: UpdateTaskStatusDto): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        description: string | null;
+        status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
+        title: string;
+        priority: "Low" | "Medium" | "High" | "Critical";
+        dueDate: Date | null;
+        createdBy: string;
+        assignee: string | null;
+        streamChannelId: string | null;
+    }>;
+    remove(auth: AuthObject, id: string): Promise<void>;
+}
