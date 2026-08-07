@@ -31,6 +31,19 @@ let StreamService = StreamService_1 = class StreamService {
         this.logger.log('Stream Chat server client initialized.');
         await this.ensureAdminCanUseFrozenChannels();
         await this.ensureEveryoneMentionEnabled();
+        await this.ensurePollsEnabled();
+    }
+    async ensurePollsEnabled() {
+        try {
+            const channelType = await this.client.getChannelType('messaging');
+            if (!channelType.polls) {
+                await this.client.updateChannelType('messaging', { polls: true });
+                this.logger.log('Enabled polls for messaging channels.');
+            }
+        }
+        catch (err) {
+            this.logger.warn(`Failed to enable polls for messaging channels: ${err}`);
+        }
     }
     async ensureEveryoneMentionEnabled() {
         try {

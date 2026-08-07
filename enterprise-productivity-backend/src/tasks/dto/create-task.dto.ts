@@ -22,4 +22,9 @@ export class CreateTaskDto {
   @IsOptional() @IsIn(TASK_PRIORITIES) priority?: string;
   @IsOptional() @IsISO8601() dueDate?: string;
   @IsOptional() @IsString() assignee?: string;
+  @IsOptional() @IsString() sourceChannelId?: string;
+  @IsOptional() @IsString() sourceMessageId?: string;
+  @IsOptional() @IsString() sourceSenderId?: string;
+  @IsOptional() @IsString() sourceChannelName?: string;
+  @IsOptional() @IsString() sourceMessageUrl?: string;
 }

@@ -7,4 +7,9 @@ export declare class CreateTaskDto {
     priority?: string;
     dueDate?: string;
     assignee?: string;
+    sourceChannelId?: string;
+    sourceMessageId?: string;
+    sourceSenderId?: string;
+    sourceChannelName?: string;
+    sourceMessageUrl?: string;
 }

@@ -5,4 +5,8 @@ export declare class CreateMeetingDto {
     startTime: string;
     endTime: string;
     participants: string[];
+    sourceChannelId?: string;
+    sourceMessageId?: string;
+    sourceSenderId?: string;
+    sourceChannelName?: string;
 }

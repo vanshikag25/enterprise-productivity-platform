@@ -13,6 +13,7 @@ import { DRIZZLE } from '../database/drizzle.provider';
 import { meetings, Meeting } from '../database/schema/meetings.schema';
 import { StreamService } from '../stream/stream.service';
 import { NotificationsService } from '../notifications/notifications.service';
+import { MessageSourceService } from '../message-source/message-source.service';
 import { CreateMeetingDto } from './dto/create-meeting.dto';
 import { UpdateMeetingDto } from './dto/update-meeting.dto';
 
@@ -24,6 +25,7 @@ export class MeetingsService {
     @Inject(DRIZZLE) private readonly db: NodePgDatabase,
     private readonly streamService: StreamService,
     private readonly notificationsService: NotificationsService,
+    private readonly messageSourceService: MessageSourceService,
   ) {}
 
   private validateTimes(startTime: string, endTime: string) {
@@ -65,8 +67,21 @@ export class MeetingsService {
         organizerId: userId,
         participants: uniqueParticipants,
         meetingChatChannelId,
+        sourceChannelId: dto.sourceChannelId ?? null,
+        sourceMessageId: dto.sourceMessageId ?? null,
+        sourceSenderId: dto.sourceSenderId ?? null,
+        sourceChannelName: dto.sourceChannelName ?? null,
       })
       .returning();
+
+    if (dto.sourceChannelId && dto.sourceMessageId) {
+      await this.messageSourceService.confirmSourceMessage({
+        channelId: dto.sourceChannelId,
+        messageId: dto.sourceMessageId,
+        userId,
+        confirmationText: `Meeting "${meeting.title}" was created from this conversation.`,
+      });
+    }
 
     await this.notificationsService.createMany(
       uniqueParticipants

@@ -8,3 +8,5 @@ export * from './projects.schema';
 export * from './project-announcements.schema';
 export * from './project-documents.schema';
 export * from './project-milestones.schema';
+export * from './message-actions.schema';
+export * from './polls.schema';

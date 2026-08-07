@@ -5997,3 +5997,231 @@ Use resource-based auth checks instead. Move auth checks into each page, layout,
     at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
     at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
     at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Clerk: Clerk has been loaded with development keys. Development instances have strict usage limits and should not be used when deploying your application to production. Learn more: https://clerk.com/docs/deployments/overview (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_next_dist_1ybzpk2._.js:2489:13)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+ GET / 200 in 5.5s (next.js: 1447ms, proxy.ts: 1597ms, application-code: 2.4s)
+[browser] Clerk: Clerk has been loaded with development keys. Development instances have strict usage limits and should not be used when deploying your application to production. Learn more: https://clerk.com/docs/deployments/overview (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_next_dist_1ybzpk2._.js:2489:13)
+ GET /dashboard 200 in 496ms (next.js: 42ms, proxy.ts: 43ms, application-code: 412ms)
+[browser] Clerk: Clerk has been loaded with development keys. Development instances have strict usage limits and should not be used when deploying your application to production. Learn more: https://clerk.com/docs/deployments/overview (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_next_dist_1ybzpk2._.js:2489:13)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+[browser] Failed to fetch notifications: AxiosError: Network Error
+    at XMLHttpRequest.handleError (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:3186:25)
+    at Axios.request (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_axios_lib_1i00zly._.js:4313:49)
+    at async fetchNotifications (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:1955:17)
+    at async useNotifications.useCallback[refresh] (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2300:39) (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/src_1t361ac._.js:2307:25)
+ GET / 200 in 965ms (next.js: 21ms, proxy.ts: 707ms, application-code: 237ms)
+[browser] Clerk: Clerk has been loaded with development keys. Development instances have strict usage limits and should not be used when deploying your application to production. Learn more: https://clerk.com/docs/deployments/overview (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_next_dist_1ybzpk2._.js:2489:13)
+ GET /dashboard 200 in 337ms (next.js: 24ms, proxy.ts: 21ms, application-code: 292ms)
+[browser] Clerk: Clerk has been loaded with development keys. Development instances have strict usage limits and should not be used when deploying your application to production. Learn more: https://clerk.com/docs/deployments/overview (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_next_dist_1ybzpk2._.js:2489:13)
+Error [PageNotFoundError]: Cannot find module for page: /src/proxy
+    at ignore-listed frames {
+  code: 'ENOENT'
+}

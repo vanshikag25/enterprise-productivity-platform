@@ -29,6 +29,10 @@ export const meetings = pgTable('meetings', {
     .notNull()
     .default('Scheduled'),
   meetingChatChannelId: varchar('meeting_chat_channel_id', { length: 255 }),
+  sourceChannelId: varchar('source_channel_id', { length: 255 }),
+  sourceMessageId: varchar('source_message_id', { length: 255 }),
+  sourceSenderId: varchar('source_sender_id', { length: 255 }),
+  sourceChannelName: varchar('source_channel_name', { length: 255 }),
   createdAt: timestamp('created_at', { withTimezone: true })
     .defaultNow()
     .notNull(),

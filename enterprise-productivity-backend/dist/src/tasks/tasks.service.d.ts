@@ -11,6 +11,8 @@ export declare class TasksService {
     private readonly logger;
     constructor(db: NodePgDatabase, streamService: StreamService, notificationsService: NotificationsService);
     create(userId: string, dto: CreateTaskDto): Promise<Task>;
+    private linkSourceMessage;
+    findBySourceMessage(messageId: string): Promise<Task | null>;
     findAll(): Promise<Task[]>;
     findOne(id: string): Promise<Task>;
     getOrCreateChannel(id: string, userId: string): Promise<{

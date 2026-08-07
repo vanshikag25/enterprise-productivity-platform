@@ -2,14 +2,16 @@ import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { Meeting } from '../database/schema/meetings.schema';
 import { StreamService } from '../stream/stream.service';
 import { NotificationsService } from '../notifications/notifications.service';
+import { MessageSourceService } from '../message-source/message-source.service';
 import { CreateMeetingDto } from './dto/create-meeting.dto';
 import { UpdateMeetingDto } from './dto/update-meeting.dto';
 export declare class MeetingsService {
     private readonly db;
     private readonly streamService;
     private readonly notificationsService;
+    private readonly messageSourceService;
     private readonly logger;
-    constructor(db: NodePgDatabase, streamService: StreamService, notificationsService: NotificationsService);
+    constructor(db: NodePgDatabase, streamService: StreamService, notificationsService: NotificationsService, messageSourceService: MessageSourceService);
     private validateTimes;
     create(userId: string, dto: CreateMeetingDto): Promise<Meeting>;
     findAll(): Promise<Meeting[]>;

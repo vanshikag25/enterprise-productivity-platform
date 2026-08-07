@@ -42,4 +42,9 @@ export class CreateMeetingDto {
   @ArrayNotEmpty()
   @IsString({ each: true })
   participants: string[];
+
+  @IsOptional() @IsString() sourceChannelId?: string;
+  @IsOptional() @IsString() sourceMessageId?: string;
+  @IsOptional() @IsString() sourceSenderId?: string;
+  @IsOptional() @IsString() sourceChannelName?: string;
 }

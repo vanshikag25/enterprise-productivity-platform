@@ -25,6 +25,10 @@ exports.tasks = (0, pg_core_1.pgTable)('tasks', {
     createdBy: (0, pg_core_1.varchar)('created_by', { length: 255 }).notNull(),
     assignee: (0, pg_core_1.varchar)('assignee', { length: 255 }),
     streamChannelId: (0, pg_core_1.varchar)('stream_channel_id', { length: 255 }),
+    sourceChannelId: (0, pg_core_1.varchar)('source_channel_id', { length: 255 }),
+    sourceMessageId: (0, pg_core_1.varchar)('source_message_id', { length: 255 }),
+    sourceSenderId: (0, pg_core_1.varchar)('source_sender_id', { length: 255 }),
+    sourceChannelName: (0, pg_core_1.varchar)('source_channel_name', { length: 255 }),
     createdAt: (0, pg_core_1.timestamp)('created_at', { withTimezone: true })
         .defaultNow()
         .notNull(),

@@ -21,6 +21,10 @@ exports.meetings = (0, pg_core_1.pgTable)('meetings', {
         .notNull()
         .default('Scheduled'),
     meetingChatChannelId: (0, pg_core_1.varchar)('meeting_chat_channel_id', { length: 255 }),
+    sourceChannelId: (0, pg_core_1.varchar)('source_channel_id', { length: 255 }),
+    sourceMessageId: (0, pg_core_1.varchar)('source_message_id', { length: 255 }),
+    sourceSenderId: (0, pg_core_1.varchar)('source_sender_id', { length: 255 }),
+    sourceChannelName: (0, pg_core_1.varchar)('source_channel_name', { length: 255 }),
     createdAt: (0, pg_core_1.timestamp)('created_at', { withTimezone: true })
         .defaultNow()
         .notNull(),

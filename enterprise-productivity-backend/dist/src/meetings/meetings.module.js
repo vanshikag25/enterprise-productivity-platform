@@ -12,12 +12,18 @@ const meetings_service_1 = require("./meetings.service");
 const database_module_1 = require("../database/database.module");
 const stream_module_1 = require("../stream/stream.module");
 const notifications_module_1 = require("../notifications/notifications.module");
+const message_source_module_1 = require("../message-source/message-source.module");
 let MeetingsModule = class MeetingsModule {
 };
 exports.MeetingsModule = MeetingsModule;
 exports.MeetingsModule = MeetingsModule = __decorate([
     (0, common_1.Module)({
-        imports: [database_module_1.DatabaseModule, stream_module_1.StreamModule, notifications_module_1.NotificationsModule],
+        imports: [
+            database_module_1.DatabaseModule,
+            stream_module_1.StreamModule,
+            notifications_module_1.NotificationsModule,
+            message_source_module_1.MessageSourceModule,
+        ],
         providers: [meetings_service_1.MeetingsService],
         exports: [meetings_service_1.MeetingsService],
     })

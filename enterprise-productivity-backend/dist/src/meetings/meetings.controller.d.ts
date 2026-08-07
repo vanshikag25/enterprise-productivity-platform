@@ -11,6 +11,10 @@ export declare class MeetingsController {
         updatedAt: Date;
         description: string | null;
         title: string;
+        sourceChannelId: string | null;
+        sourceMessageId: string | null;
+        sourceSenderId: string | null;
+        sourceChannelName: string | null;
         scheduledDate: Date;
         startTime: string;
         endTime: string;
@@ -25,6 +29,10 @@ export declare class MeetingsController {
         updatedAt: Date;
         description: string | null;
         title: string;
+        sourceChannelId: string | null;
+        sourceMessageId: string | null;
+        sourceSenderId: string | null;
+        sourceChannelName: string | null;
         scheduledDate: Date;
         startTime: string;
         endTime: string;
@@ -39,6 +47,10 @@ export declare class MeetingsController {
         updatedAt: Date;
         description: string | null;
         title: string;
+        sourceChannelId: string | null;
+        sourceMessageId: string | null;
+        sourceSenderId: string | null;
+        sourceChannelName: string | null;
         scheduledDate: Date;
         startTime: string;
         endTime: string;
@@ -53,6 +65,10 @@ export declare class MeetingsController {
         updatedAt: Date;
         description: string | null;
         title: string;
+        sourceChannelId: string | null;
+        sourceMessageId: string | null;
+        sourceSenderId: string | null;
+        sourceChannelName: string | null;
         scheduledDate: Date;
         startTime: string;
         endTime: string;
@@ -68,6 +84,10 @@ export declare class MeetingsController {
         updatedAt: Date;
         description: string | null;
         title: string;
+        sourceChannelId: string | null;
+        sourceMessageId: string | null;
+        sourceSenderId: string | null;
+        sourceChannelName: string | null;
         scheduledDate: Date;
         startTime: string;
         endTime: string;
@@ -82,6 +102,10 @@ export declare class MeetingsController {
         updatedAt: Date;
         description: string | null;
         title: string;
+        sourceChannelId: string | null;
+        sourceMessageId: string | null;
+        sourceSenderId: string | null;
+        sourceChannelName: string | null;
         scheduledDate: Date;
         startTime: string;
         endTime: string;

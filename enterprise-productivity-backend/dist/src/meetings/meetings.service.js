@@ -21,11 +21,13 @@ const drizzle_provider_1 = require("../database/drizzle.provider");
 const meetings_schema_1 = require("../database/schema/meetings.schema");
 const stream_service_1 = require("../stream/stream.service");
 const notifications_service_1 = require("../notifications/notifications.service");
+const message_source_service_1 = require("../message-source/message-source.service");
 let MeetingsService = MeetingsService_1 = class MeetingsService {
-    constructor(db, streamService, notificationsService) {
+    constructor(db, streamService, notificationsService, messageSourceService) {
         this.db = db;
         this.streamService = streamService;
         this.notificationsService = notificationsService;
+        this.messageSourceService = messageSourceService;
         this.logger = new common_1.Logger(MeetingsService_1.name);
     }
     validateTimes(startTime, endTime) {
@@ -62,8 +64,20 @@ let MeetingsService = MeetingsService_1 = class MeetingsService {
             organizerId: userId,
             participants: uniqueParticipants,
             meetingChatChannelId,
+            sourceChannelId: dto.sourceChannelId ?? null,
+            sourceMessageId: dto.sourceMessageId ?? null,
+            sourceSenderId: dto.sourceSenderId ?? null,
+            sourceChannelName: dto.sourceChannelName ?? null,
         })
             .returning();
+        if (dto.sourceChannelId && dto.sourceMessageId) {
+            await this.messageSourceService.confirmSourceMessage({
+                channelId: dto.sourceChannelId,
+                messageId: dto.sourceMessageId,
+                userId,
+                confirmationText: `Meeting "${meeting.title}" was created from this conversation.`,
+            });
+        }
         await this.notificationsService.createMany(uniqueParticipants
             .filter((p) => p !== userId)
             .map((p) => ({
@@ -180,6 +194,7 @@ exports.MeetingsService = MeetingsService = MeetingsService_1 = __decorate([
     __param(0, (0, common_1.Inject)(drizzle_provider_1.DRIZZLE)),
     __metadata("design:paramtypes", [node_postgres_1.NodePgDatabase,
         stream_service_1.StreamService,
-        notifications_service_1.NotificationsService])
+        notifications_service_1.NotificationsService,
+        message_source_service_1.MessageSourceService])
 ], MeetingsService);
 //# sourceMappingURL=meetings.service.js.map

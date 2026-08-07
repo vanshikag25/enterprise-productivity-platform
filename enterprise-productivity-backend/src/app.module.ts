@@ -15,6 +15,11 @@ import { ProjectAnnouncementsModule } from './project-announcements/project-anno
 import { ProjectDocumentsModule } from './project-documents/project-documents.module';
 import { ProjectMilestonesModule } from './project-milestones/project-milestones.module';
 import { AiSummaryModule } from './ai-summary/ai-summary.module';
+import { NotesModule } from './notes/notes.module';
+import { RemindersModule } from './reminders/reminders.module';
+import { BookmarksModule } from './bookmarks/bookmarks.module';
+import { MessageSourceModule } from './message-source/message-source.module';
+import { PollsModule } from './polls/polls.module';
 
 @Module({
   imports: [
@@ -34,6 +39,11 @@ import { AiSummaryModule } from './ai-summary/ai-summary.module';
     ProjectDocumentsModule,
     ProjectMilestonesModule,
     AiSummaryModule,
+    MessageSourceModule,
+    NotesModule,
+    RemindersModule,
+    BookmarksModule,
+    PollsModule,
   ],
 })
 export class AppModule {}

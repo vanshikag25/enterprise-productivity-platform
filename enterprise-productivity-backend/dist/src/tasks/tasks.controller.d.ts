@@ -18,6 +18,10 @@ export declare class TasksController {
         createdBy: string;
         assignee: string | null;
         streamChannelId: string | null;
+        sourceChannelId: string | null;
+        sourceMessageId: string | null;
+        sourceSenderId: string | null;
+        sourceChannelName: string | null;
     }>;
     findAll(): Promise<{
         id: string;
@@ -31,7 +35,28 @@ export declare class TasksController {
         createdBy: string;
         assignee: string | null;
         streamChannelId: string | null;
+        sourceChannelId: string | null;
+        sourceMessageId: string | null;
+        sourceSenderId: string | null;
+        sourceChannelName: string | null;
     }[]>;
+    findBySourceMessage(messageId: string): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        description: string | null;
+        status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
+        title: string;
+        priority: "Low" | "Medium" | "High" | "Critical";
+        dueDate: Date | null;
+        createdBy: string;
+        assignee: string | null;
+        streamChannelId: string | null;
+        sourceChannelId: string | null;
+        sourceMessageId: string | null;
+        sourceSenderId: string | null;
+        sourceChannelName: string | null;
+    } | null>;
     findOne(id: string): Promise<{
         id: string;
         createdAt: Date;
@@ -44,6 +69,10 @@ export declare class TasksController {
         createdBy: string;
         assignee: string | null;
         streamChannelId: string | null;
+        sourceChannelId: string | null;
+        sourceMessageId: string | null;
+        sourceSenderId: string | null;
+        sourceChannelName: string | null;
     }>;
     getOrCreateChannel(auth: AuthObject, id: string): Promise<{
         channelId: string;
@@ -60,6 +89,10 @@ export declare class TasksController {
         createdBy: string;
         assignee: string | null;
         streamChannelId: string | null;
+        sourceChannelId: string | null;
+        sourceMessageId: string | null;
+        sourceSenderId: string | null;
+        sourceChannelName: string | null;
     }>;
     updateStatus(auth: AuthObject, id: string, dto: UpdateTaskStatusDto): Promise<{
         id: string;
@@ -73,6 +106,10 @@ export declare class TasksController {
         createdBy: string;
         assignee: string | null;
         streamChannelId: string | null;
+        sourceChannelId: string | null;
+        sourceMessageId: string | null;
+        sourceSenderId: string | null;
+        sourceChannelName: string | null;
     }>;
     remove(auth: AuthObject, id: string): Promise<void>;
 }

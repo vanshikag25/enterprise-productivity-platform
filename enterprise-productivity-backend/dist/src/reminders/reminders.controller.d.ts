@@ -1,0 +1,84 @@
+import type { AuthObject } from '@clerk/backend';
+import { RemindersService } from './reminders.service';
+import { CreateReminderDto } from './dto/create-reminder.dto';
+import { UpdateReminderDto } from './dto/update-reminder.dto';
+export declare class RemindersController {
+    private readonly remindersService;
+    constructor(remindersService: RemindersService);
+    create(auth: AuthObject, dto: CreateReminderDto): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        userId: string;
+        title: string;
+        priority: "Low" | "Medium" | "High";
+        sourceChannelId: string | null;
+        sourceMessageId: string | null;
+        sourceSenderId: string | null;
+        sourceChannelName: string | null;
+        scheduledFor: Date;
+        notes: string | null;
+        isTriggered: boolean;
+    }>;
+    findAll(auth: AuthObject, includeTriggered?: string): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        userId: string;
+        title: string;
+        priority: "Low" | "Medium" | "High";
+        sourceChannelId: string | null;
+        sourceMessageId: string | null;
+        sourceSenderId: string | null;
+        sourceChannelName: string | null;
+        scheduledFor: Date;
+        notes: string | null;
+        isTriggered: boolean;
+    }[]>;
+    findOne(auth: AuthObject, id: string): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        userId: string;
+        title: string;
+        priority: "Low" | "Medium" | "High";
+        sourceChannelId: string | null;
+        sourceMessageId: string | null;
+        sourceSenderId: string | null;
+        sourceChannelName: string | null;
+        scheduledFor: Date;
+        notes: string | null;
+        isTriggered: boolean;
+    }>;
+    update(auth: AuthObject, id: string, dto: UpdateReminderDto): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        userId: string;
+        title: string;
+        priority: "Low" | "Medium" | "High";
+        sourceChannelId: string | null;
+        sourceMessageId: string | null;
+        sourceSenderId: string | null;
+        sourceChannelName: string | null;
+        scheduledFor: Date;
+        notes: string | null;
+        isTriggered: boolean;
+    }>;
+    trigger(auth: AuthObject, id: string): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        userId: string;
+        title: string;
+        priority: "Low" | "Medium" | "High";
+        sourceChannelId: string | null;
+        sourceMessageId: string | null;
+        sourceSenderId: string | null;
+        sourceChannelName: string | null;
+        scheduledFor: Date;
+        notes: string | null;
+        isTriggered: boolean;
+    }>;
+    remove(auth: AuthObject, id: string): Promise<void>;
+}

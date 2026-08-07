@@ -42,6 +42,11 @@ export class TasksController {
     return this.tasksService.findAll();
   }
 
+  @Get('linked/:messageId')
+  findBySourceMessage(@Param('messageId') messageId: string) {
+    return this.tasksService.findBySourceMessage(messageId);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.tasksService.findOne(id);

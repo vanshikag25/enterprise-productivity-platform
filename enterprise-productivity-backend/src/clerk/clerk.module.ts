@@ -30,6 +30,12 @@ import { ProjectAnnouncementsController } from '../project-announcements/project
 import { ProjectDocumentsController } from '../project-documents/project-documents.controller';
 import { ProjectMilestonesController } from '../project-milestones/project-milestones.controller';
 import { AiSummaryController } from '../ai-summary/ai-summary.controller';
+import { NotesModule } from '../notes/notes.module';
+import { NotesController } from '../notes/notes.controller';
+import { RemindersModule } from '../reminders/reminders.module';
+import { RemindersController } from '../reminders/reminders.controller';
+import { BookmarksModule } from '../bookmarks/bookmarks.module';
+import { BookmarksController } from '../bookmarks/bookmarks.controller';
 
 @Module({
   imports: [
@@ -46,6 +52,9 @@ import { AiSummaryController } from '../ai-summary/ai-summary.controller';
     ProjectDocumentsModule,
     ProjectMilestonesModule,
     AiSummaryModule,
+    NotesModule,
+    RemindersModule,
+    BookmarksModule,
   ],
   controllers: [
     ClerkTestController,
@@ -62,6 +71,9 @@ import { AiSummaryController } from '../ai-summary/ai-summary.controller';
     ProjectDocumentsController,
     ProjectMilestonesController,
     AiSummaryController,
+    NotesController,
+    RemindersController,
+    BookmarksController,
   ],
   providers: [ClerkService, ClerkAuthGuard, ChatService, RolesGuard],
   exports: [ClerkService, ClerkAuthGuard, RolesGuard],

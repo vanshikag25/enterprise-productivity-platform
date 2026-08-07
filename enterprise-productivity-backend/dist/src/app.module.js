@@ -24,6 +24,11 @@ const project_announcements_module_1 = require("./project-announcements/project-
 const project_documents_module_1 = require("./project-documents/project-documents.module");
 const project_milestones_module_1 = require("./project-milestones/project-milestones.module");
 const ai_summary_module_1 = require("./ai-summary/ai-summary.module");
+const notes_module_1 = require("./notes/notes.module");
+const reminders_module_1 = require("./reminders/reminders.module");
+const bookmarks_module_1 = require("./bookmarks/bookmarks.module");
+const message_source_module_1 = require("./message-source/message-source.module");
+const polls_module_1 = require("./polls/polls.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -46,6 +51,11 @@ exports.AppModule = AppModule = __decorate([
             project_documents_module_1.ProjectDocumentsModule,
             project_milestones_module_1.ProjectMilestonesModule,
             ai_summary_module_1.AiSummaryModule,
+            message_source_module_1.MessageSourceModule,
+            notes_module_1.NotesModule,
+            reminders_module_1.RemindersModule,
+            bookmarks_module_1.BookmarksModule,
+            polls_module_1.PollsModule,
         ],
     })
 ], AppModule);

@@ -24,4 +24,6 @@ __exportStar(require("./projects.schema"), exports);
 __exportStar(require("./project-announcements.schema"), exports);
 __exportStar(require("./project-documents.schema"), exports);
 __exportStar(require("./project-milestones.schema"), exports);
+__exportStar(require("./message-actions.schema"), exports);
+__exportStar(require("./polls.schema"), exports);
 //# sourceMappingURL=index.js.map

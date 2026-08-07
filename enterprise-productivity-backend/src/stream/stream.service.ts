@@ -45,6 +45,21 @@ export class StreamService implements OnModuleInit {
 
     await this.ensureAdminCanUseFrozenChannels();
     await this.ensureEveryoneMentionEnabled();
+    await this.ensurePollsEnabled();
+  }
+
+  private async ensurePollsEnabled() {
+    try {
+      const channelType = await this.client.getChannelType('messaging');
+      if (!channelType.polls) {
+        await this.client.updateChannelType('messaging', { polls: true });
+        this.logger.log('Enabled polls for messaging channels.');
+      }
+    } catch (err) {
+      this.logger.warn(
+        `Failed to enable polls for messaging channels: ${err}`,
+      );
+    }
   }
 
   private async ensureEveryoneMentionEnabled() {

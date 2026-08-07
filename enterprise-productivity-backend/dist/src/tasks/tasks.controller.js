@@ -38,6 +38,9 @@ let TasksController = class TasksController {
     findAll() {
         return this.tasksService.findAll();
     }
+    findBySourceMessage(messageId) {
+        return this.tasksService.findBySourceMessage(messageId);
+    }
     findOne(id) {
         return this.tasksService.findOne(id);
     }
@@ -70,6 +73,13 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], TasksController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)('linked/:messageId'),
+    __param(0, (0, common_1.Param)('messageId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], TasksController.prototype, "findBySourceMessage", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),

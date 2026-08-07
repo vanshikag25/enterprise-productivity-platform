@@ -49,8 +49,16 @@ export class TasksService {
         createdBy: userId,
         assignee: dto.assignee ?? null,
         streamChannelId,
+        sourceChannelId: dto.sourceChannelId ?? null,
+        sourceMessageId: dto.sourceMessageId ?? null,
+        sourceSenderId: dto.sourceSenderId ?? null,
+        sourceChannelName: dto.sourceChannelName ?? null,
       })
       .returning();
+
+    if (dto.sourceChannelId && dto.sourceMessageId) {
+      await this.linkSourceMessage(task, dto);
+    }
 
     if (task.assignee && task.assignee !== userId) {
       await this.notificationsService.create({
@@ -63,6 +71,47 @@ export class TasksService {
     }
 
     return task;
+  }
+
+  private async linkSourceMessage(task: Task, dto: CreateTaskDto): Promise<void> {
+    const client = this.streamService.getClient();
+    const { sourceChannelId, sourceMessageId } = dto;
+    if (!sourceChannelId || !sourceMessageId) return;
+
+    try {
+      const { message } = await client.getMessage(sourceMessageId);
+      if (message.channel?.id && message.channel.id !== sourceChannelId) {
+        this.logger.warn(
+          `Message ${sourceMessageId} does not belong to channel ${sourceChannelId}; skipping link.`,
+        );
+        return;
+      }
+
+      await client.partialUpdateMessage(sourceMessageId, {
+        set: {
+          linked_task_id: task.id,
+          linked_task_title: task.title,
+        } as unknown as Parameters<
+          typeof client.partialUpdateMessage
+        >[1]['set'],
+      });
+
+      const channel = client.channel('messaging', sourceChannelId);
+      await channel.sendMessage({
+        text: `Task "${task.title}" was created from this conversation.`,
+        user_id: task.createdBy,
+      });
+    } catch (err) {
+      this.logger.warn(`Failed to link message ${sourceMessageId}: ${err}`);
+    }
+  }
+
+  async findBySourceMessage(messageId: string): Promise<Task | null> {
+    const [task] = await this.db
+      .select()
+      .from(tasks)
+      .where(eq(tasks.sourceMessageId, messageId));
+    return task ?? null;
   }
 
   async findAll(): Promise<Task[]> {

@@ -13,6 +13,7 @@ export declare class StreamService implements OnModuleInit {
     private apiKey;
     constructor(configService: ConfigService);
     onModuleInit(): Promise<void>;
+    private ensurePollsEnabled;
     private ensureEveryoneMentionEnabled;
     private ensureAdminCanUseFrozenChannels;
     getClient(): StreamChat;

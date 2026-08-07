@@ -71,6 +71,27 @@
       "when": 1785870000000,
       "tag": "0009_task_closed_status",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1785952657273,
+      "tag": "0010_task_message_source",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1785955408956,
+      "tag": "0011_light_tomas",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1786038472066,
+      "tag": "0012_polls",
+      "breakpoints": true
     }
   ]
 }

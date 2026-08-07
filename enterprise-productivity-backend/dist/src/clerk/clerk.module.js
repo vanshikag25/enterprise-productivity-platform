@@ -39,6 +39,12 @@ const project_announcements_controller_1 = require("../project-announcements/pro
 const project_documents_controller_1 = require("../project-documents/project-documents.controller");
 const project_milestones_controller_1 = require("../project-milestones/project-milestones.controller");
 const ai_summary_controller_1 = require("../ai-summary/ai-summary.controller");
+const notes_module_1 = require("../notes/notes.module");
+const notes_controller_1 = require("../notes/notes.controller");
+const reminders_module_1 = require("../reminders/reminders.module");
+const reminders_controller_1 = require("../reminders/reminders.controller");
+const bookmarks_module_1 = require("../bookmarks/bookmarks.module");
+const bookmarks_controller_1 = require("../bookmarks/bookmarks.controller");
 let ClerkModule = class ClerkModule {
 };
 exports.ClerkModule = ClerkModule;
@@ -58,6 +64,9 @@ exports.ClerkModule = ClerkModule = __decorate([
             project_documents_module_1.ProjectDocumentsModule,
             project_milestones_module_1.ProjectMilestonesModule,
             ai_summary_module_1.AiSummaryModule,
+            notes_module_1.NotesModule,
+            reminders_module_1.RemindersModule,
+            bookmarks_module_1.BookmarksModule,
         ],
         controllers: [
             clerk_test_controller_1.ClerkTestController,
@@ -74,6 +83,9 @@ exports.ClerkModule = ClerkModule = __decorate([
             project_documents_controller_1.ProjectDocumentsController,
             project_milestones_controller_1.ProjectMilestonesController,
             ai_summary_controller_1.AiSummaryController,
+            notes_controller_1.NotesController,
+            reminders_controller_1.RemindersController,
+            bookmarks_controller_1.BookmarksController,
         ],
         providers: [clerk_service_1.ClerkService, clerk_auth_guard_1.ClerkAuthGuard, chat_service_1.ChatService, roles_guard_1.RolesGuard],
         exports: [clerk_service_1.ClerkService, clerk_auth_guard_1.ClerkAuthGuard, roles_guard_1.RolesGuard],
