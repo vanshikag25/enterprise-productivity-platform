@@ -12,6 +12,7 @@ import {
   WithComponents,
   useChatContext,
   useChannelStateContext,
+  useChannelActionContext,
 } from 'stream-chat-react';
 import type { StreamChat } from 'stream-chat';
 import { UserList } from './user-list';
@@ -23,9 +24,12 @@ import { MessageReadStatus } from './message-read-status';
 import { reactionOptions } from './reaction-options';
 import { SingleChoiceReactionSelector } from './single-choice-reaction-selector';
 import { MessageActionsWithConfirm } from './message-actions-with-confirm';
+import { MessageActionsWithProductivity } from '@/components/message-actions/message-actions-with-productivity';
+import { PollContentWithManage } from '@/components/message-actions/poll-manage-actions';
 import { PinnedMessagesPanel } from './pinned-messages-panel';
 import { MessageSearchPanel } from './message-search-panel';
 import { GroupSettingsDrawer } from './group-settings-drawer';
+import { scrollToMessage } from './scroll-to-message';
 import { IconPin, IconSearch, IconSettings, IconUsers } from '@/components/ui/icons';
 
 interface ChatBodyProps {
@@ -46,6 +50,7 @@ export function ChatBody({ userId, client }: ChatBodyProps) {
   const openedChannelRef = useRef<string | null>(null);
 
   const requestedChannelId = searchParams.get('channel');
+  const requestedMessageId = searchParams.get('message');
   const shouldOpenGroupPanel = searchParams.get('startGroup') === '1';
 
   useEffect(() => {
@@ -61,7 +66,9 @@ export function ChatBody({ userId, client }: ChatBodyProps) {
       if (!isCancelled) {
         setActiveChannel(targetChannel);
         openedChannelRef.current = requestedChannelId;
-        router.replace(pathname);
+        // Leave the `message` param in place so JumpToMessage can navigate;
+        // it clears the URL itself once the jump completes.
+        if (!requestedMessageId) router.replace(pathname);
       }
     }
 
@@ -70,7 +77,7 @@ export function ChatBody({ userId, client }: ChatBodyProps) {
     return () => {
       isCancelled = true;
     };
-  }, [requestedChannelId, client, setActiveChannel, router, pathname]);
+  }, [requestedChannelId, requestedMessageId, client, setActiveChannel, router, pathname]);
 
   useEffect(() => {
     setShowPinned(false);
@@ -120,8 +127,9 @@ export function ChatBody({ userId, client }: ChatBodyProps) {
           <WithComponents
             overrides={{
               ReactionSelector: SingleChoiceReactionSelector,
-              MessageActions: MessageActionsWithConfirm,
+              MessageActions: MessageActionsWithProductivity,
               MessageStatus: MessageReadStatus,
+              PollContent: PollContentWithManage,
               reactionOptions,
             }}
           >
@@ -202,6 +210,12 @@ export function ChatBody({ userId, client }: ChatBodyProps) {
               {showGroupSettings && (
                 <GroupSettingsDrawer onClose={() => setShowGroupSettings(false)} />
               )}
+              {requestedMessageId && (
+                <JumpToMessage
+                  messageId={requestedMessageId}
+                  onHandled={() => router.replace(pathname)}
+                />
+              )}
             </Channel>
           </WithComponents>
         ) : (
@@ -216,6 +230,40 @@ export function ChatBody({ userId, client }: ChatBodyProps) {
       </div>
     </div>
   );
+}
+
+function JumpToMessage({
+  messageId,
+  onHandled,
+}: {
+  messageId: string;
+  onHandled: () => void;
+}) {
+  const { jumpToMessage } = useChannelActionContext();
+  const handledRef = useRef(false);
+
+  useEffect(() => {
+    if (handledRef.current) return;
+    handledRef.current = true;
+    let cancelled = false;
+
+    (async () => {
+      try {
+        await jumpToMessage(messageId, 50, 2000);
+      } catch {
+        // Fall back to a DOM-based scroll if the SDK cannot jump (e.g. the
+        // message is not in the loaded window).
+        scrollToMessage(messageId);
+      }
+      if (!cancelled) onHandled();
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [jumpToMessage, messageId, onHandled]);
+
+  return null;
 }
 
 function MessageComposerOrArchiveNotice() {

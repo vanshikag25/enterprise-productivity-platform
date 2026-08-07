@@ -198,6 +198,8 @@ export interface MeetingItem {
 export interface MeetingPayload {
   title: string; description?: string; scheduledDate: string;
   startTime: string; endTime: string; participants: string[];
+  sourceChannelId?: string; sourceMessageId?: string;
+  sourceSenderId?: string; sourceChannelName?: string;
 }
 
 export async function fetchMeetings(token: string): Promise<MeetingItem[]> {
@@ -301,4 +303,168 @@ export async function createSelfNotification(
   payload: { type: string; title: string; description?: string; actionUrl?: string },
 ): Promise<void> {
   await apiClient.post('/notifications/self', payload, { headers: { Authorization: `Bearer ${token}` } });
+}
+
+// --- Message actions: Notes ---
+export interface NoteItem {
+  id: string; userId: string; title: string; content: string;
+  sourceChannelId: string | null; sourceMessageId: string | null;
+  sourceSenderId: string | null; sourceChannelName: string | null;
+  sourceMessageText: string | null; createdAt: string; updatedAt: string;
+}
+export interface NotePayload {
+  title: string; content: string;
+  sourceChannelId?: string; sourceMessageId?: string;
+  sourceSenderId?: string; sourceChannelName?: string; sourceMessageText?: string;
+}
+
+export async function fetchNotes(token: string, search?: string): Promise<NoteItem[]> {
+  const res = await apiClient.get<NoteItem[]>('/notes', {
+    headers: { Authorization: `Bearer ${token}` },
+    params: search ? { search } : undefined,
+  });
+  return res.data;
+}
+export async function createNote(token: string, payload: NotePayload): Promise<NoteItem> {
+  const res = await apiClient.post<NoteItem>('/notes', payload, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function updateNote(token: string, id: string, payload: Partial<NotePayload>): Promise<NoteItem> {
+  const res = await apiClient.patch<NoteItem>(`/notes/${id}`, payload, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function deleteNote(token: string, id: string): Promise<void> {
+  await apiClient.delete(`/notes/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+}
+
+// --- Message actions: Reminders ---
+export type ReminderPriority = 'Low' | 'Medium' | 'High';
+export interface ReminderItem {
+  id: string; userId: string; title: string; scheduledFor: string;
+  priority: ReminderPriority; notes: string | null;
+  sourceChannelId: string | null; sourceMessageId: string | null;
+  sourceSenderId: string | null; sourceChannelName: string | null;
+  isTriggered: boolean; createdAt: string; updatedAt: string;
+}
+export interface ReminderPayload {
+  title: string; scheduledFor: string; priority?: ReminderPriority; notes?: string;
+  sourceChannelId?: string; sourceMessageId?: string;
+  sourceSenderId?: string; sourceChannelName?: string;
+}
+
+export async function fetchReminders(token: string, includeTriggered = false): Promise<ReminderItem[]> {
+  const res = await apiClient.get<ReminderItem[]>('/reminders', {
+    headers: { Authorization: `Bearer ${token}` },
+    params: includeTriggered ? { includeTriggered: 'true' } : undefined,
+  });
+  return res.data;
+}
+export async function createReminder(token: string, payload: ReminderPayload): Promise<ReminderItem> {
+  const res = await apiClient.post<ReminderItem>('/reminders', payload, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function updateReminder(token: string, id: string, payload: Partial<ReminderPayload>): Promise<ReminderItem> {
+  const res = await apiClient.patch<ReminderItem>(`/reminders/${id}`, payload, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function deleteReminder(token: string, id: string): Promise<void> {
+  await apiClient.delete(`/reminders/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+}
+export async function triggerReminder(token: string, id: string): Promise<ReminderItem> {
+  const res = await apiClient.post<ReminderItem>(`/reminders/${id}/trigger`, {}, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+
+// --- Message actions: Bookmarks ---
+export interface BookmarkItem {
+  id: string; userId: string; sourceChannelId: string; sourceMessageId: string;
+  sourceSenderId: string | null; sourceChannelName: string | null;
+  sourceMessageText: string | null; sourceSenderName: string | null; createdAt: string;
+}
+export interface BookmarkPayload {
+  sourceChannelId: string; sourceMessageId: string;
+  sourceSenderId?: string; sourceChannelName?: string;
+  sourceMessageText?: string; sourceSenderName?: string;
+}
+
+export async function fetchBookmarks(
+  token: string,
+  params: { channelId?: string; search?: string } = {},
+): Promise<BookmarkItem[]> {
+  const res = await apiClient.get<BookmarkItem[]>('/bookmarks', {
+    headers: { Authorization: `Bearer ${token}` },
+    params: params.channelId || params.search ? params : undefined,
+  });
+  return res.data;
+}
+export async function createBookmark(token: string, payload: BookmarkPayload): Promise<BookmarkItem> {
+  const res = await apiClient.post<BookmarkItem>('/bookmarks', payload, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function deleteBookmark(token: string, id: string): Promise<void> {
+  await apiClient.delete(`/bookmarks/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+}
+export async function fetchBookmarkByMessage(token: string, messageId: string): Promise<BookmarkItem | null> {
+  const res = await apiClient.get<BookmarkItem | null>(`/bookmarks/by-message/${messageId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+}
+
+// --- Polls ---
+export interface PollItem {
+  id: string;
+  streamPollId: string;
+  channelId: string;
+  messageId: string;
+  question: string;
+  createdBy: string;
+  deadline: string | null;
+  closedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+export interface CreatePollPayload {
+  channelId: string;
+  question: string;
+  options: string[];
+  multipleAnswers?: boolean;
+  anonymous?: boolean;
+  deadline?: string;
+}
+export interface UpdatePollPayload {
+  question?: string;
+  options?: string[];
+}
+export interface CreatePollResult {
+  streamPollId: string;
+  messageId: string;
+}
+
+export async function createPoll(token: string, payload: CreatePollPayload): Promise<CreatePollResult> {
+  const res = await apiClient.post<CreatePollResult>('/polls', payload, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function fetchPolls(token: string, channelId: string): Promise<PollItem[]> {
+  const res = await apiClient.get<PollItem[]>(`/polls/channel/${encodeURIComponent(channelId)}`, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function resolvePoll(token: string, streamPollId: string): Promise<PollItem> {
+  const res = await apiClient.get<PollItem>(`/polls/stream/${encodeURIComponent(streamPollId)}`, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function updatePoll(token: string, streamPollId: string, payload: UpdatePollPayload): Promise<PollItem> {
+  const res = await apiClient.patch<PollItem>(`/polls/stream/${encodeURIComponent(streamPollId)}`, payload, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function closePoll(token: string, streamPollId: string): Promise<PollItem> {
+  const res = await apiClient.post<PollItem>(`/polls/stream/${encodeURIComponent(streamPollId)}/close`, {}, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function finalizePoll(token: string, streamPollId: string): Promise<PollItem> {
+  const res = await apiClient.post<PollItem>(`/polls/stream/${encodeURIComponent(streamPollId)}/finalize`, {}, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function deletePoll(token: string, streamPollId: string): Promise<void> {
+  await apiClient.delete(`/polls/stream/${encodeURIComponent(streamPollId)}`, { headers: { Authorization: `Bearer ${token}` } });
 }

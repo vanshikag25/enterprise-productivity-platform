@@ -17,6 +17,10 @@ const ICON_CLASSES: Record<string, string> = {
   announcement: 'text-red-500 bg-red-50',
   added_to_group: 'text-emerald-500 bg-emerald-50',
   added_to_department: 'text-slate-500 bg-slate-100',
+  reminder: 'text-orange-500 bg-orange-50',
+  poll_created: 'text-fuchsia-500 bg-fuchsia-50',
+  poll_closed: 'text-fuchsia-500 bg-fuchsia-50',
+  poll_winner: 'text-emerald-500 bg-emerald-50',
 };
 
 const ICON_LABELS: Record<string, string> = {
@@ -30,6 +34,10 @@ const ICON_LABELS: Record<string, string> = {
   announcement: 'Announcement',
   added_to_group: 'Group',
   added_to_department: 'Department',
+  reminder: 'Reminder',
+  poll_created: 'Poll',
+  poll_closed: 'Poll',
+  poll_winner: 'Winner',
 };
 
 function timeAgo(iso: string): string {

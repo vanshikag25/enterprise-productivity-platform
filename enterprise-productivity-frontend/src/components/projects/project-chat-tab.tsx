@@ -15,7 +15,8 @@ import {
 } from 'stream-chat-react';
 import { useStreamChatContext } from '@/context/stream-chat-context';
 import { SingleChoiceReactionSelector } from '@/components/chat/single-choice-reaction-selector';
-import { MessageActionsWithConfirm } from '@/components/chat/message-actions-with-confirm';
+import { MessageActionsWithProductivity } from '@/components/message-actions/message-actions-with-productivity';
+import { PollContentWithManage } from '@/components/message-actions/poll-manage-actions';
 import { TypingIndicatorText } from '@/components/chat/typing-indicator-text';
 
 function ProjectChannelViewer({ channelId }: { channelId: string }) {
@@ -68,7 +69,8 @@ function ProjectChannelViewer({ channelId }: { channelId: string }) {
     <WithComponents
       overrides={{
         ReactionSelector: SingleChoiceReactionSelector,
-        MessageActions: MessageActionsWithConfirm,
+        MessageActions: MessageActionsWithProductivity,
+        PollContent: PollContentWithManage,
       }}
     >
       <Channel>

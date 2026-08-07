@@ -13,10 +13,15 @@ export function useNotifications() {
   const refresh = useCallback(async () => {
     const token = await getToken();
     if (!token) return;
-    const [list, count] = await Promise.all([fetchNotifications(token), fetchUnreadCount(token)]);
-    setItems(list);
-    setUnreadCount(count);
-    setIsLoading(false);
+    try {
+      const [list, count] = await Promise.all([fetchNotifications(token), fetchUnreadCount(token)]);
+      setItems(list);
+      setUnreadCount(count);
+    } catch (err) {
+      console.error('Failed to fetch notifications:', err);
+    } finally {
+      setIsLoading(false);
+    }
   }, [getToken]);
 
   useEffect(() => {

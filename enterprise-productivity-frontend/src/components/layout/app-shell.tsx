@@ -7,17 +7,22 @@ import { NotificationBell } from '@/components/notifications/notification-bell';
 import { ProfileMenu } from '@/components/layout/profile-menu';
 import { SidebarAccount } from '@/components/layout/sidebar-account';
 import { useRole } from '@/hooks/use-role';
+import { useReminderScheduler } from '@/hooks/use-reminder-scheduler';
+import { MessageActionModalHost } from '@/components/message-actions/message-action-modal-host';
 import { hasMinRole, type UserRole } from '@/lib/api-client';
 import {
+  IconBookmark,
   IconBuilding,
   IconCalendar,
   IconChat,
   IconChevronsLeft,
   IconChevronsRight,
+  IconClock,
   IconClose,
   IconDepartment,
   IconMenu,
   IconMegaphone,
+  IconNote,
   IconProject,
   IconShield,
   IconTasks,
@@ -35,6 +40,9 @@ const NAV_ITEMS: {
   { href: '/tasks', label: 'Tasks', icon: <IconTasks width={18} height={18} /> },
   { href: '/meetings', label: 'Meetings', icon: <IconCalendar width={18} height={18} /> },
   { href: '/announcements', label: 'Announcements', icon: <IconMegaphone width={18} height={18} /> },
+  { href: '/notes', label: 'My Notes', icon: <IconNote width={18} height={18} /> },
+  { href: '/saved-messages', label: 'Saved Messages', icon: <IconBookmark width={18} height={18} /> },
+  { href: '/reminders', label: 'Reminders', icon: <IconClock width={18} height={18} /> },
   { href: '/organization-channels', label: 'Org Channels', icon: <IconBuilding width={18} height={18} /> },
   { href: '/department-channels', label: 'Departments', icon: <IconDepartment width={18} height={18} /> },
   { href: '/projects', label: 'Projects', icon: <IconProject width={18} height={18} /> },
@@ -54,6 +62,7 @@ function getPageTitle(pathname: string): string {
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { role } = useRole();
+  useReminderScheduler();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -67,8 +76,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const title = getPageTitle(pathname ?? '');
 
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-slate-100">
-      {isMobileOpen && (
+    <MessageActionModalHost>
+      <div className="flex h-screen w-full overflow-hidden bg-slate-100">
+        {isMobileOpen && (
         <div
           className="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-sm md:hidden"
           onClick={() => setIsMobileOpen(false)}
@@ -174,6 +184,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
         <main className="min-w-0 flex-1 overflow-y-auto">{children}</main>
       </div>
-    </div>
+      </div>
+    </MessageActionModalHost>
   );
 }
