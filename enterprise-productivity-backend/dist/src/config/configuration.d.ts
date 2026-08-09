@@ -2,9 +2,9 @@ declare const _default: () => {
     port: number;
     nodeEnv: string;
     corsOrigin: string;
-    clerk: {
-        secretKey: string | undefined;
-        publishableKey: string | undefined;
+    auth: {
+        jwtSecret: string;
+        jwtExpiresIn: string;
     };
     database: {
         url: string | undefined;

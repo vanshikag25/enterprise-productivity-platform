@@ -1,4 +1,4 @@
-import type { AuthObject } from '@clerk/backend';
+import type { AuthObject } from '../auth/auth-object';
 import { StreamService } from '../stream/stream.service';
 import { ChatService, GroupInfo } from './chat.service';
 interface CreateDirectChannelBody {

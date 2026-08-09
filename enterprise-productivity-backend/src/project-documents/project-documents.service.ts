@@ -1,6 +1,5 @@
 import {
   BadRequestException,
-  ForbiddenException,
   Inject,
   Injectable,
   Logger,
@@ -208,11 +207,11 @@ export class ProjectDocumentsService implements OnModuleInit {
       ? await this.db
           .select()
           .from(users)
-          .where(inArray(users.clerkId, uploaderIds))
+          .where(inArray(users.username, uploaderIds))
       : [];
     const nameByUser = new Map(
       uploaders.map((u) => [
-        u.clerkId,
+        u.username,
         [u.firstName, u.lastName].filter(Boolean).join(' ') || u.email,
       ]),
     );

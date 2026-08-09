@@ -108,7 +108,8 @@ let RemindersService = class RemindersService {
             userId,
             type: 'reminder',
             title: `Reminder: ${reminder.title}`,
-            description: reminder.notes ?? `Scheduled for ${reminder.scheduledFor.toISOString()}`,
+            description: reminder.notes ??
+                `Scheduled for ${reminder.scheduledFor.toISOString()}`,
             actionUrl,
         });
         const [updated] = await this.db

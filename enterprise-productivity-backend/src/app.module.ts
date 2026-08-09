@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from './config/config.module';
 import { HealthModule } from './health/health.module';
-import { ClerkModule } from './clerk/clerk.module';
+import { AuthModule } from './auth/auth.module';
 import { DatabaseModule } from './database/database.module';
 import { UsersModule } from './users/users.module';
 import { StreamModule } from './stream/stream.module';
@@ -25,7 +25,7 @@ import { PollsModule } from './polls/polls.module';
   imports: [
     ConfigModule,
     HealthModule,
-    ClerkModule,
+    AuthModule,
     DatabaseModule,
     UsersModule,
     StreamModule,

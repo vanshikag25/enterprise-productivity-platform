@@ -1,4 +1,4 @@
-import type { AuthObject } from '@clerk/backend';
+import type { AuthObject } from '../auth/auth-object';
 import type { Response } from 'express';
 import { ProjectDocumentsService } from './project-documents.service';
 export declare class ProjectDocumentsController {

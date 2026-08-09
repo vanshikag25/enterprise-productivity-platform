@@ -6225,3 +6225,13 @@ Error [PageNotFoundError]: Cannot find module for page: /src/proxy
     at ignore-listed frames {
   code: 'ENOENT'
 }
+✓ Compiled in 16s
+ GET /dashboard 500 in 20.6s (next.js: 10.2s, application-code: 10.4s)
+ GET /dashboard 200 in 13.6s (next.js: 2.1s, application-code: 11.5s)
+ GET /dashboard 200 in 233ms (next.js: 43ms, application-code: 190ms)
+ GET /dashboard 200 in 13.7s (next.js: 2.4s, application-code: 11.3s)
+[browser] Clerk: Clerk has been loaded with development keys. Development instances have strict usage limits and should not be used when deploying your application to production. Learn more: https://clerk.com/docs/deployments/overview (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_next_dist_1ybzpk2._.js:2489:13)
+  Reload env: .env.local
+ GET /dashboard 200 in 2.3s (next.js: 1673ms, application-code: 621ms)
+[browser] Clerk: Clerk has been loaded with development keys. Development instances have strict usage limits and should not be used when deploying your application to production. Learn more: https://clerk.com/docs/deployments/overview (file://C:/Users/Chirag Gupta/Desktop/enterprise-productivity/enterprise-productivity-frontend/.next/dev/static/chunks/node_modules_next_dist_1ybzpk2._.js:2489:13)
+[?25h

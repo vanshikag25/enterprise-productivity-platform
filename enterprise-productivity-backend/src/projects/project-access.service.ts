@@ -55,7 +55,7 @@ export class ProjectAccessService {
     userId: string,
     minimum: ProjectMemberRole,
   ): Promise<boolean> {
-    const user = await this.usersService.findByClerkId(userId);
+    const user = await this.usersService.findByUsername(userId);
     if (!user) return false;
     if (hasMinRole(user.role, 'admin')) return true;
     if (minimum !== 'owner' && hasMinRole(user.role, 'manager')) return true;

@@ -1,4 +1,4 @@
-import type { AuthObject } from '@clerk/backend';
+import type { AuthObject } from '../auth/auth-object';
 import { NotificationsService } from './notifications.service';
 interface SelfNotificationBody {
     type: string;

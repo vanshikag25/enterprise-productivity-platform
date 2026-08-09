@@ -234,11 +234,11 @@ export class ProjectAnnouncementsService {
       ? await this.db
           .select()
           .from(users)
-          .where(inArray(users.clerkId, authorIds))
+          .where(inArray(users.username, authorIds))
       : [];
     const authorNames = new Map(
       authors.map((u) => [
-        u.clerkId,
+        u.username,
         [u.firstName, u.lastName].filter(Boolean).join(' ') || u.email,
       ]),
     );

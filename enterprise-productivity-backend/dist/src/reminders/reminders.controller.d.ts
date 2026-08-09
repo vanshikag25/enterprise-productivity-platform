@@ -1,4 +1,4 @@
-import type { AuthObject } from '@clerk/backend';
+import type { AuthObject } from '../auth/auth-object';
 import { RemindersService } from './reminders.service';
 import { CreateReminderDto } from './dto/create-reminder.dto';
 import { UpdateReminderDto } from './dto/update-reminder.dto';

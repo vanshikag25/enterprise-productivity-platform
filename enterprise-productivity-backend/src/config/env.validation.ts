@@ -7,8 +7,10 @@ export const envValidationSchema = Joi.object({
   PORT: Joi.number().default(3000),
   CORS_ORIGIN: Joi.string().default('*'),
 
-  CLERK_SECRET_KEY: Joi.string().required(),
-  CLERK_PUBLISHABLE_KEY: Joi.string().required(),
+  JWT_SECRET: Joi.string().required().messages({
+    'any.required': 'JWT_SECRET is required (use a long random string)',
+  }),
+  JWT_EXPIRES_IN: Joi.string().optional().default('7d'),
 
   DATABASE_URL: Joi.string().uri().required(),
 

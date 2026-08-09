@@ -1,8 +1,16 @@
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { User } from '../database/schema/users.schema';
-import { UpsertUserInput } from './interfaces/upsert-user.input';
 import { UserSortField, SortOrder } from './dto/list-users-query.dto';
 import { UserRole } from '../rbac/roles';
+export interface CreateUserInput {
+    username: string;
+    email: string;
+    passwordHash: string | null;
+    firstName?: string | null;
+    lastName?: string | null;
+    imageUrl?: string | null;
+    role?: UserRole;
+}
 export interface FindUsersParams {
     search?: string;
     page: number;
@@ -17,10 +25,19 @@ export interface FindUsersResult {
 export declare class UsersService {
     private readonly db;
     constructor(db: NodePgDatabase);
-    private superAdminCount;
-    upsertUser(authUser: UpsertUserInput): Promise<User>;
-    findAllExcept(clerkId: string): Promise<User[]>;
-    findByClerkId(clerkId: string): Promise<User | undefined>;
-    updateRole(actor: User, targetClerkId: string, newRole: UserRole): Promise<User>;
-    findUsersPaginated(currentClerkId: string, params: FindUsersParams): Promise<FindUsersResult>;
+    findByUsername(username: string): Promise<User | undefined>;
+    findByEmail(email: string): Promise<User | undefined>;
+    findAllExcept(username: string): Promise<User[]>;
+    count(): Promise<number>;
+    createUser(input: CreateUserInput): Promise<User>;
+    updatePassword(username: string, passwordHash: string): Promise<User>;
+    changeUsername(currentUsername: string, newUsername: string): Promise<User>;
+    removeUser(actor: User, targetUsername: string): Promise<void>;
+    updateProfile(username: string, patch: {
+        firstName?: string | null;
+        lastName?: string | null;
+        imageUrl?: string | null;
+    }): Promise<User>;
+    updateRole(actor: User, targetUsername: string, newRole: UserRole): Promise<User>;
+    findUsersPaginated(currentUsername: string, params: FindUsersParams): Promise<FindUsersResult>;
 }

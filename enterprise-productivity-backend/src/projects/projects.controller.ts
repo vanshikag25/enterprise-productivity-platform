@@ -9,9 +9,9 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import type { AuthObject } from '@clerk/backend';
-import { ClerkAuthGuard } from '../clerk/clerk-auth.guard';
-import { CurrentUser } from '../clerk/current-user.decorator';
+import type { AuthObject } from '../auth/auth-object';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { CurrentUser } from '../auth/current-user.decorator';
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
@@ -25,7 +25,7 @@ function requireUserId(auth: AuthObject): string {
 }
 
 @Controller('projects')
-@UseGuards(ClerkAuthGuard)
+@UseGuards(JwtAuthGuard)
 export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
 

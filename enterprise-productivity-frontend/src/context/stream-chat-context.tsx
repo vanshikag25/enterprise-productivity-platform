@@ -8,7 +8,7 @@ import {
   useState,
   type ReactNode,
 } from 'react';
-import { useAuth, useUser } from '@clerk/nextjs';
+import { useAuth, useUser } from '@/lib/auth';
 import { StreamChat } from 'stream-chat';
 import { fetchChatToken, createSelfNotification } from '@/lib/api-client';
 import { showBrowserNotification } from '@/hooks/use-browser-notifications';
@@ -72,7 +72,7 @@ export function StreamChatProvider({ children }: { children: ReactNode }) {
         const chatClient = StreamChat.getInstance(apiKey);
 
         await chatClient.connectUser(
-          { id: user.id, name: user.fullName ?? user.username ?? user.id, image: user.imageUrl },
+          { id: user.id, name: user.fullName ?? user.username ?? user.id, image: user.imageUrl ?? undefined },
           streamToken,
         );
 

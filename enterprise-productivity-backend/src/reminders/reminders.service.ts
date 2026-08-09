@@ -1,15 +1,8 @@
-import {
-  Inject,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { and, asc, eq } from 'drizzle-orm';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { DRIZZLE } from '../database/drizzle.provider';
-import {
-  reminders,
-  Reminder,
-} from '../database/schema/message-actions.schema';
+import { reminders, Reminder } from '../database/schema/message-actions.schema';
 import { NotificationsService } from '../notifications/notifications.service';
 import { CreateReminderDto } from './dto/create-reminder.dto';
 import { UpdateReminderDto } from './dto/update-reminder.dto';
@@ -39,10 +32,7 @@ export class RemindersService {
     return reminder;
   }
 
-  async findAll(
-    userId: string,
-    includeTriggered = false,
-  ): Promise<Reminder[]> {
+  async findAll(userId: string, includeTriggered = false): Promise<Reminder[]> {
     const conditions = [eq(reminders.userId, userId)];
     if (!includeTriggered) conditions.push(eq(reminders.isTriggered, false));
     return this.db
@@ -120,7 +110,8 @@ export class RemindersService {
       type: 'reminder',
       title: `Reminder: ${reminder.title}`,
       description:
-        reminder.notes ?? `Scheduled for ${reminder.scheduledFor.toISOString()}`,
+        reminder.notes ??
+        `Scheduled for ${reminder.scheduledFor.toISOString()}`,
       actionUrl,
     });
 

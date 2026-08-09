@@ -10,9 +10,9 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import type { AuthObject } from '@clerk/backend';
-import { ClerkAuthGuard } from '../clerk/clerk-auth.guard';
-import { CurrentUser } from '../clerk/current-user.decorator';
+import type { AuthObject } from '../auth/auth-object';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { CurrentUser } from '../auth/current-user.decorator';
 import { ProjectAnnouncementsService } from './project-announcements.service';
 import { CreateAnnouncementDto } from './dto/create-announcement.dto';
 import { UpdateAnnouncementDto } from './dto/update-announcement.dto';
@@ -25,7 +25,7 @@ function requireUserId(auth: AuthObject): string {
 }
 
 @Controller('projects/:projectId/announcements')
-@UseGuards(ClerkAuthGuard)
+@UseGuards(JwtAuthGuard)
 export class ProjectAnnouncementsController {
   constructor(
     private readonly announcementsService: ProjectAnnouncementsService,

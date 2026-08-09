@@ -94,7 +94,7 @@ export class ChatService {
       if (role === 'moderator') return 'moderator';
     }
 
-    const user = await this.usersService.findByClerkId(userId);
+    const user = await this.usersService.findByUsername(userId);
     if (user && hasMinRole(user.role, 'manager')) return 'admin';
 
     return 'member';

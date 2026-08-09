@@ -1,7 +1,7 @@
-﻿'use client';
+'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { useAuth } from '@clerk/nextjs';
+import { useAuth } from '@/lib/auth';
 import { fetchTasks, type TaskItem } from '@/lib/api-client';
 import { useTaskDirectory } from '@/hooks/use-task-directory';
 import { useRole } from '@/hooks/use-role';

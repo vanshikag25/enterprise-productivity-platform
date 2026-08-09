@@ -14,8 +14,8 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AiSummaryController = void 0;
 const common_1 = require("@nestjs/common");
-const clerk_auth_guard_1 = require("../clerk/clerk-auth.guard");
-const current_user_decorator_1 = require("../clerk/current-user.decorator");
+const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
+const current_user_decorator_1 = require("../auth/current-user.decorator");
 const ai_summary_service_1 = require("./ai-summary.service");
 function requireUserId(auth) {
     if (!auth.userId)
@@ -41,7 +41,7 @@ __decorate([
 ], AiSummaryController.prototype, "generate", null);
 exports.AiSummaryController = AiSummaryController = __decorate([
     (0, common_1.Controller)('projects/:projectId/ai-summary'),
-    (0, common_1.UseGuards)(clerk_auth_guard_1.ClerkAuthGuard),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __metadata("design:paramtypes", [ai_summary_service_1.AiSummaryService])
 ], AiSummaryController);
 //# sourceMappingURL=ai-summary.controller.js.map

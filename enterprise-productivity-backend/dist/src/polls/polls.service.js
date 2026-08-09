@@ -83,7 +83,7 @@ let PollsService = PollsService_1 = class PollsService {
     async assertCanManage(poll, userId) {
         if (poll.createdBy === userId)
             return;
-        const user = await this.usersService.findByClerkId(userId);
+        const user = await this.usersService.findByUsername(userId);
         if (user && (0, roles_1.hasMinRole)(user.role, 'manager'))
             return;
         throw new common_1.ForbiddenException('Only the poll creator, Manager, or a higher role can manage this poll');

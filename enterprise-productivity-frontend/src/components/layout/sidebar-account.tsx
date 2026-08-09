@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useClerk, useUser } from '@clerk/nextjs';
+import { useClerk, useUser } from '@/lib/auth';
 import { Avatar } from '@/components/ui/avatar';
 import { Spinner } from '@/components/ui/spinner';
 import { IconLogout } from '@/components/ui/icons';

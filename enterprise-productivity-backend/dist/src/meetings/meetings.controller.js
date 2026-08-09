@@ -14,8 +14,8 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MeetingsController = void 0;
 const common_1 = require("@nestjs/common");
-const clerk_auth_guard_1 = require("../clerk/clerk-auth.guard");
-const current_user_decorator_1 = require("../clerk/current-user.decorator");
+const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
+const current_user_decorator_1 = require("../auth/current-user.decorator");
 const roles_guard_1 = require("../rbac/roles.guard");
 const roles_decorator_1 = require("../rbac/roles.decorator");
 const roles_1 = require("../rbac/roles");
@@ -112,7 +112,7 @@ __decorate([
 ], MeetingsController.prototype, "leave", null);
 exports.MeetingsController = MeetingsController = __decorate([
     (0, common_1.Controller)('meetings'),
-    (0, common_1.UseGuards)(clerk_auth_guard_1.ClerkAuthGuard, roles_guard_1.RolesGuard),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     __metadata("design:paramtypes", [meetings_service_1.MeetingsService])
 ], MeetingsController);
 //# sourceMappingURL=meetings.controller.js.map

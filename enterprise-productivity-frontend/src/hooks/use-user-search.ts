@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useAuth } from '@clerk/nextjs';
+import { useAuth } from '@/lib/auth';
 import { fetchUsersDirectory, type UserDirectoryItem } from '@/lib/api-client';
 import { useDebouncedValue } from './use-debounced-value';
 import { usePagination } from './use-pagination';

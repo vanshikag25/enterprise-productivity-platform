@@ -7,7 +7,7 @@ import {
   type ReactElement,
   type ReactNode,
 } from 'react';
-import { useAuth } from '@clerk/nextjs';
+import { useAuth } from '@/lib/auth';
 import { createChannel, type ChannelSummary, type UserDirectoryItem } from '@/lib/api-client';
 import { GroupMemberPicker } from '@/components/chat/group-member-picker';
 import { useToast } from '@/hooks/use-toast';

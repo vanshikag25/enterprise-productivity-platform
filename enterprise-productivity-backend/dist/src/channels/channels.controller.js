@@ -14,8 +14,8 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ChannelsController = void 0;
 const common_1 = require("@nestjs/common");
-const clerk_auth_guard_1 = require("../clerk/clerk-auth.guard");
-const current_user_decorator_1 = require("../clerk/current-user.decorator");
+const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
+const current_user_decorator_1 = require("../auth/current-user.decorator");
 const channels_service_1 = require("./channels.service");
 const create_channel_dto_1 = require("./dto/create-channel.dto");
 function uid(auth) {
@@ -141,7 +141,7 @@ __decorate([
 ], ChannelsController.prototype, "removeMember", null);
 exports.ChannelsController = ChannelsController = __decorate([
     (0, common_1.Controller)('channels'),
-    (0, common_1.UseGuards)(clerk_auth_guard_1.ClerkAuthGuard),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __metadata("design:paramtypes", [channels_service_1.ChannelsService])
 ], ChannelsController);
 //# sourceMappingURL=channels.controller.js.map

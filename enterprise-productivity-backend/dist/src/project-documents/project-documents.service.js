@@ -153,10 +153,10 @@ let ProjectDocumentsService = ProjectDocumentsService_1 = class ProjectDocuments
             ? await this.db
                 .select()
                 .from(users_schema_1.users)
-                .where((0, drizzle_orm_1.inArray)(users_schema_1.users.clerkId, uploaderIds))
+                .where((0, drizzle_orm_1.inArray)(users_schema_1.users.username, uploaderIds))
             : [];
         const nameByUser = new Map(uploaders.map((u) => [
-            u.clerkId,
+            u.username,
             [u.firstName, u.lastName].filter(Boolean).join(' ') || u.email,
         ]));
         return rows.map((row) => ({

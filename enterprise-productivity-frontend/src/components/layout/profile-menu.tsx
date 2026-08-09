@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { useClerk, useUser } from '@clerk/nextjs';
+import { useClerk, useUser } from '@/lib/auth';
 import { Avatar } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Spinner } from '@/components/ui/spinner';

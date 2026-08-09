@@ -19,8 +19,8 @@ export declare class StreamService implements OnModuleInit {
     getClient(): StreamChat;
     getApiKey(): string;
     syncUser(user: User): Promise<void>;
-    createUserToken(clerkId: string): string;
+    createUserToken(username: string): string;
     getOrCreateDirectChannel(userId: string, targetUserId: string): Promise<string>;
     createGroupChannel(userId: string, groupName: string, description: string | undefined, memberIds: string[]): Promise<StreamChannelType>;
-    getUsersPresence(clerkIds: string[]): Promise<Map<string, UserPresence>>;
+    getUsersPresence(usernames: string[]): Promise<Map<string, UserPresence>>;
 }

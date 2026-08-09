@@ -1,15 +1,8 @@
-import {
-  Inject,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { and, desc, eq, or, sql, SQL } from 'drizzle-orm';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { DRIZZLE } from '../database/drizzle.provider';
-import {
-  userNotes,
-  UserNote,
-} from '../database/schema/message-actions.schema';
+import { userNotes, UserNote } from '../database/schema/message-actions.schema';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
 
@@ -34,10 +27,7 @@ export class NotesService {
     return note;
   }
 
-  async findAll(
-    userId: string,
-    search?: string,
-  ): Promise<UserNote[]> {
+  async findAll(userId: string, search?: string): Promise<UserNote[]> {
     const conditions: (SQL | undefined)[] = [eq(userNotes.userId, userId)];
     if (search && search.trim()) {
       const term = search.trim();

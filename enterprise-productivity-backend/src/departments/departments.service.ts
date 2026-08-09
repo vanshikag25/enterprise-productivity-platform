@@ -20,7 +20,7 @@ export class DepartmentsService {
   ) {}
 
   private async requireRole(userId: string, minimum: UserRole) {
-    const user = await this.usersService.findByClerkId(userId);
+    const user = await this.usersService.findByUsername(userId);
     if (!user || !hasMinRole(user.role, minimum)) {
       throw new ForbiddenException('Insufficient permissions for this action');
     }
@@ -41,7 +41,7 @@ export class DepartmentsService {
   }
 
   async findMine(userId: string): Promise<Department[]> {
-    const user = await this.usersService.findByClerkId(userId);
+    const user = await this.usersService.findByUsername(userId);
     const all = await this.db.select().from(departments);
     if (user && hasMinRole(user.role, 'admin')) return all;
     return all.filter((d) => d.memberIds.includes(userId));

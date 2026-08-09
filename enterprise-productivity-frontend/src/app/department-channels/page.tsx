@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useAuth } from '@clerk/nextjs';
+import { useAuth } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
 import { fetchMyDepartments, type DepartmentItem } from '@/lib/api-client';
 import { EmptyState } from '@/components/ui/empty-state';

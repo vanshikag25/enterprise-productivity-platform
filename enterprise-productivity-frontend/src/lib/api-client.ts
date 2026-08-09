@@ -67,18 +67,82 @@ export async function fetchUsersDirectory(clerkToken: string, params: FetchUsers
 
 export interface MeResponse {
   id: string;
+  username: string;
   firstName: string | null;
   lastName: string | null;
+  fullName: string;
   email: string;
   imageUrl: string | null;
   role: UserRole;
+  createdAt: string;
 }
 export async function fetchMe(token: string): Promise<MeResponse> {
   const res = await apiClient.get<MeResponse>('/users/me', { headers: { Authorization: `Bearer ${token}` } });
   return res.data;
 }
-export async function updateUserRole(token: string, clerkId: string, role: UserRole): Promise<MeResponse> {
-  const res = await apiClient.patch<MeResponse>(`/users/${clerkId}/role`, { role }, { headers: { Authorization: `Bearer ${token}` } });
+export async function updateUserRole(token: string, username: string, role: UserRole): Promise<MeResponse> {
+  const res = await apiClient.patch<MeResponse>(`/users/${encodeURIComponent(username)}/role`, { role }, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+
+export async function removeUser(token: string, username: string): Promise<void> {
+  await apiClient.delete(`/users/${encodeURIComponent(username)}`, { headers: { Authorization: `Bearer ${token}` } });
+}
+
+// --- Self-hosted auth ---
+export interface AuthSessionResponse {
+  token: string;
+  user: MeResponse;
+}
+
+export async function loginRequest(payload: {
+  username: string;
+  password: string;
+}): Promise<AuthSessionResponse> {
+  const res = await apiClient.post<AuthSessionResponse>('/auth/login', payload);
+  return res.data;
+}
+
+export async function registerRequest(payload: {
+  username: string;
+  email: string;
+  password: string;
+  firstName?: string;
+  lastName?: string;
+}): Promise<AuthSessionResponse> {
+  const res = await apiClient.post<AuthSessionResponse>('/auth/register', payload);
+  return res.data;
+}
+
+export async function updateProfileRequest(
+  token: string,
+  payload: { firstName?: string; lastName?: string; imageUrl?: string },
+): Promise<MeResponse> {
+  const res = await apiClient.patch<MeResponse>('/users/me', payload, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+}
+
+export async function changePasswordRequest(
+  token: string,
+  payload: { currentPassword: string; newPassword: string },
+): Promise<{ updated: boolean }> {
+  const res = await apiClient.post<{ updated: boolean }>('/users/me/password', payload, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+}
+
+export async function changeUsernameRequest(
+  token: string,
+  username: string,
+): Promise<AuthSessionResponse> {
+  const res = await apiClient.post<AuthSessionResponse>(
+    '/users/me/username',
+    { username },
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
   return res.data;
 }
 

@@ -10,9 +10,9 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import type { AuthObject } from '@clerk/backend';
-import { ClerkAuthGuard } from '../clerk/clerk-auth.guard';
-import { CurrentUser } from '../clerk/current-user.decorator';
+import type { AuthObject } from '../auth/auth-object';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { CurrentUser } from '../auth/current-user.decorator';
 import { NotesService } from './notes.service';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
@@ -24,7 +24,7 @@ function requireUserId(auth: AuthObject): string {
 }
 
 @Controller('notes')
-@UseGuards(ClerkAuthGuard)
+@UseGuards(JwtAuthGuard)
 export class NotesController {
   constructor(private readonly notesService: NotesService) {}
 
@@ -34,10 +34,7 @@ export class NotesController {
   }
 
   @Get()
-  findAll(
-    @CurrentUser() auth: AuthObject,
-    @Query('search') search?: string,
-  ) {
+  findAll(@CurrentUser() auth: AuthObject, @Query('search') search?: string) {
     return this.notesService.findAll(requireUserId(auth), search);
   }
 

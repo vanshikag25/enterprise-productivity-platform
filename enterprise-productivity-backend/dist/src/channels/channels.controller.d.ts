@@ -1,4 +1,4 @@
-import type { AuthObject } from '@clerk/backend';
+import type { AuthObject } from '../auth/auth-object';
 import { ChannelsService } from './channels.service';
 import { CreateChannelDto, UpdateChannelDto } from './dto/create-channel.dto';
 export declare class ChannelsController {

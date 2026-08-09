@@ -37,7 +37,7 @@ let ProjectsService = ProjectsService_1 = class ProjectsService {
         this.logger = new common_1.Logger(ProjectsService_1.name);
     }
     async create(userId, dto) {
-        const user = await this.usersService.findByClerkId(userId);
+        const user = await this.usersService.findByUsername(userId);
         if (!user || !(0, roles_1.hasMinRole)(user.role, 'manager')) {
             throw new common_1.ForbiddenException('Only Managers and above can create projects');
         }
@@ -56,7 +56,7 @@ let ProjectsService = ProjectsService_1 = class ProjectsService {
             .values(memberIds.map((memberId) => ({
             projectId: project.id,
             userId: memberId,
-            role: (memberId === userId ? 'owner' : 'member'),
+            role: memberId === userId ? 'owner' : 'member',
         })))
             .onConflictDoNothing();
         try {
@@ -96,7 +96,7 @@ let ProjectsService = ProjectsService_1 = class ProjectsService {
         };
     }
     async findAll(userId) {
-        const user = await this.usersService.findByClerkId(userId);
+        const user = await this.usersService.findByUsername(userId);
         const isOrgAdmin = Boolean(user && (0, roles_1.hasMinRole)(user.role, 'admin'));
         const rows = await this.db
             .select({ project: projects_schema_1.projects, memberCount: (0, drizzle_orm_1.count)(projects_schema_1.projectMembers.userId) })
@@ -207,7 +207,7 @@ let ProjectsService = ProjectsService_1 = class ProjectsService {
             imageUrl: users_schema_1.users.imageUrl,
         })
             .from(projects_schema_1.projectMembers)
-            .leftJoin(users_schema_1.users, (0, drizzle_orm_1.eq)(users_schema_1.users.clerkId, projects_schema_1.projectMembers.userId))
+            .leftJoin(users_schema_1.users, (0, drizzle_orm_1.eq)(users_schema_1.users.username, projects_schema_1.projectMembers.userId))
             .where((0, drizzle_orm_1.eq)(projects_schema_1.projectMembers.projectId, id))
             .orderBy(projects_schema_1.projectMembers.joinedAt);
         return rows.map((r) => ({
@@ -223,7 +223,7 @@ let ProjectsService = ProjectsService_1 = class ProjectsService {
         if (memberId === userId && role !== 'owner') {
             throw new common_1.BadRequestException('You cannot add yourself with that role');
         }
-        const target = await this.usersService.findByClerkId(memberId);
+        const target = await this.usersService.findByUsername(memberId);
         if (!target) {
             throw new common_1.BadRequestException('User not found in the organization');
         }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useAuth } from '@clerk/nextjs';
+import { useAuth } from '@/lib/auth';
 import { createNote, type NotePayload } from '@/lib/api-client';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';

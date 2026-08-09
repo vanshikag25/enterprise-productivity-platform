@@ -58,7 +58,7 @@ let ChatService = ChatService_1 = class ChatService {
             if (role === 'moderator')
                 return 'moderator';
         }
-        const user = await this.usersService.findByClerkId(userId);
+        const user = await this.usersService.findByUsername(userId);
         if (user && (0, roles_1.hasMinRole)(user.role, 'manager'))
             return 'admin';
         return 'member';

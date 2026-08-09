@@ -9,9 +9,9 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import type { AuthObject } from '@clerk/backend';
-import { ClerkAuthGuard } from '../clerk/clerk-auth.guard';
-import { CurrentUser } from '../clerk/current-user.decorator';
+import type { AuthObject } from '../auth/auth-object';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { CurrentUser } from '../auth/current-user.decorator';
 import { BookmarksService } from './bookmarks.service';
 import { CreateBookmarkDto } from './dto/create-bookmark.dto';
 
@@ -22,7 +22,7 @@ function requireUserId(auth: AuthObject): string {
 }
 
 @Controller('bookmarks')
-@UseGuards(ClerkAuthGuard)
+@UseGuards(JwtAuthGuard)
 export class BookmarksController {
   constructor(private readonly bookmarksService: BookmarksService) {}
 
@@ -48,10 +48,7 @@ export class BookmarksController {
     @CurrentUser() auth: AuthObject,
     @Param('messageId') messageId: string,
   ) {
-    return this.bookmarksService.findByMessage(
-      requireUserId(auth),
-      messageId,
-    );
+    return this.bookmarksService.findByMessage(requireUserId(auth), messageId);
   }
 
   @Delete(':id')

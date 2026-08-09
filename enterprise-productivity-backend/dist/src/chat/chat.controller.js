@@ -14,8 +14,8 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ChatController = void 0;
 const common_1 = require("@nestjs/common");
-const clerk_auth_guard_1 = require("../clerk/clerk-auth.guard");
-const current_user_decorator_1 = require("../clerk/current-user.decorator");
+const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
+const current_user_decorator_1 = require("../auth/current-user.decorator");
 const stream_service_1 = require("../stream/stream.service");
 const chat_service_1 = require("./chat.service");
 let ChatController = class ChatController {
@@ -109,7 +109,7 @@ let ChatController = class ChatController {
 exports.ChatController = ChatController;
 __decorate([
     (0, common_1.Get)('token'),
-    (0, common_1.UseGuards)(clerk_auth_guard_1.ClerkAuthGuard),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, current_user_decorator_1.CurrentUser)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -117,7 +117,7 @@ __decorate([
 ], ChatController.prototype, "getToken", null);
 __decorate([
     (0, common_1.Post)('direct'),
-    (0, common_1.UseGuards)(clerk_auth_guard_1.ClerkAuthGuard),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, current_user_decorator_1.CurrentUser)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -126,7 +126,7 @@ __decorate([
 ], ChatController.prototype, "createDirectChannel", null);
 __decorate([
     (0, common_1.Post)('group'),
-    (0, common_1.UseGuards)(clerk_auth_guard_1.ClerkAuthGuard),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, current_user_decorator_1.CurrentUser)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -135,7 +135,7 @@ __decorate([
 ], ChatController.prototype, "createGroupChannel", null);
 __decorate([
     (0, common_1.Get)('groups/:channelId'),
-    (0, common_1.UseGuards)(clerk_auth_guard_1.ClerkAuthGuard),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, current_user_decorator_1.CurrentUser)()),
     __param(1, (0, common_1.Param)('channelId')),
     __metadata("design:type", Function),
@@ -144,7 +144,7 @@ __decorate([
 ], ChatController.prototype, "getGroupInfo", null);
 __decorate([
     (0, common_1.Patch)('groups/:channelId'),
-    (0, common_1.UseGuards)(clerk_auth_guard_1.ClerkAuthGuard),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, current_user_decorator_1.CurrentUser)()),
     __param(1, (0, common_1.Param)('channelId')),
     __param(2, (0, common_1.Body)()),
@@ -154,7 +154,7 @@ __decorate([
 ], ChatController.prototype, "updateGroup", null);
 __decorate([
     (0, common_1.Put)('groups/:channelId/avatar'),
-    (0, common_1.UseGuards)(clerk_auth_guard_1.ClerkAuthGuard),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, current_user_decorator_1.CurrentUser)()),
     __param(1, (0, common_1.Param)('channelId')),
     __param(2, (0, common_1.Body)()),
@@ -164,7 +164,7 @@ __decorate([
 ], ChatController.prototype, "updateGroupAvatar", null);
 __decorate([
     (0, common_1.Delete)('groups/:channelId/avatar'),
-    (0, common_1.UseGuards)(clerk_auth_guard_1.ClerkAuthGuard),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, current_user_decorator_1.CurrentUser)()),
     __param(1, (0, common_1.Param)('channelId')),
     __metadata("design:type", Function),
@@ -173,7 +173,7 @@ __decorate([
 ], ChatController.prototype, "removeGroupAvatar", null);
 __decorate([
     (0, common_1.Post)('groups/:channelId/members/:memberId'),
-    (0, common_1.UseGuards)(clerk_auth_guard_1.ClerkAuthGuard),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, current_user_decorator_1.CurrentUser)()),
     __param(1, (0, common_1.Param)('channelId')),
     __param(2, (0, common_1.Param)('memberId')),
@@ -183,7 +183,7 @@ __decorate([
 ], ChatController.prototype, "addMember", null);
 __decorate([
     (0, common_1.Delete)('groups/:channelId/members/:memberId'),
-    (0, common_1.UseGuards)(clerk_auth_guard_1.ClerkAuthGuard),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, current_user_decorator_1.CurrentUser)()),
     __param(1, (0, common_1.Param)('channelId')),
     __param(2, (0, common_1.Param)('memberId')),
@@ -193,7 +193,7 @@ __decorate([
 ], ChatController.prototype, "removeMember", null);
 __decorate([
     (0, common_1.Post)('groups/:channelId/leave'),
-    (0, common_1.UseGuards)(clerk_auth_guard_1.ClerkAuthGuard),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, current_user_decorator_1.CurrentUser)()),
     __param(1, (0, common_1.Param)('channelId')),
     __metadata("design:type", Function),
@@ -202,7 +202,7 @@ __decorate([
 ], ChatController.prototype, "leaveGroup", null);
 __decorate([
     (0, common_1.Post)('groups/:channelId/moderators/:memberId'),
-    (0, common_1.UseGuards)(clerk_auth_guard_1.ClerkAuthGuard),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, current_user_decorator_1.CurrentUser)()),
     __param(1, (0, common_1.Param)('channelId')),
     __param(2, (0, common_1.Param)('memberId')),
@@ -212,7 +212,7 @@ __decorate([
 ], ChatController.prototype, "assignModerator", null);
 __decorate([
     (0, common_1.Delete)('groups/:channelId/moderators/:memberId'),
-    (0, common_1.UseGuards)(clerk_auth_guard_1.ClerkAuthGuard),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, current_user_decorator_1.CurrentUser)()),
     __param(1, (0, common_1.Param)('channelId')),
     __param(2, (0, common_1.Param)('memberId')),

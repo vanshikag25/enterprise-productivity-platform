@@ -12,7 +12,7 @@ import { hasMinRole, type UserRole } from './roles';
 
 /**
  * Enforces @Roles metadata against the DB user row attached to the request by
- * ClerkAuthGuard. Must run after ClerkAuthGuard in the guard chain.
+ * JwtAuthGuard. Must run after JwtAuthGuard in the guard chain.
  */
 @Injectable()
 export class RolesGuard implements CanActivate {

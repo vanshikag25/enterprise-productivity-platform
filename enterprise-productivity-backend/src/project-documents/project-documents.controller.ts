@@ -12,10 +12,10 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import type { AuthObject } from '@clerk/backend';
+import type { AuthObject } from '../auth/auth-object';
 import type { Response } from 'express';
-import { ClerkAuthGuard } from '../clerk/clerk-auth.guard';
-import { CurrentUser } from '../clerk/current-user.decorator';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { CurrentUser } from '../auth/current-user.decorator';
 import { ProjectDocumentsService } from './project-documents.service';
 import {
   documentFileFilter,
@@ -30,7 +30,7 @@ function requireUserId(auth: AuthObject): string {
 }
 
 @Controller('projects/:projectId/documents')
-@UseGuards(ClerkAuthGuard)
+@UseGuards(JwtAuthGuard)
 export class ProjectDocumentsController {
   constructor(private readonly documentsService: ProjectDocumentsService) {}
 

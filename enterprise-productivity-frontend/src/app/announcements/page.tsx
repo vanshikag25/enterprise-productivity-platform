@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useAuth } from '@clerk/nextjs';
+import { useAuth } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
 import { fetchChannels, type ChannelSummary } from '@/lib/api-client';
 import { CreateChannelModal } from '@/components/channels/create-channel-modal';

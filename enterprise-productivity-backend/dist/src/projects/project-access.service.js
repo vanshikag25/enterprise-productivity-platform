@@ -43,7 +43,7 @@ let ProjectAccessService = class ProjectAccessService {
         return row?.role ?? null;
     }
     async orgOverridePasses(userId, minimum) {
-        const user = await this.usersService.findByClerkId(userId);
+        const user = await this.usersService.findByUsername(userId);
         if (!user)
             return false;
         if ((0, roles_1.hasMinRole)(user.role, 'admin'))

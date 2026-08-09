@@ -14,8 +14,8 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PollsController = void 0;
 const common_1 = require("@nestjs/common");
-const clerk_auth_guard_1 = require("../clerk/clerk-auth.guard");
-const current_user_decorator_1 = require("../clerk/current-user.decorator");
+const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
+const current_user_decorator_1 = require("../auth/current-user.decorator");
 const polls_service_1 = require("./polls.service");
 const create_poll_dto_1 = require("./dto/create-poll.dto");
 const update_poll_dto_1 = require("./dto/update-poll.dto");
@@ -107,7 +107,7 @@ __decorate([
 ], PollsController.prototype, "remove", null);
 exports.PollsController = PollsController = __decorate([
     (0, common_1.Controller)('polls'),
-    (0, common_1.UseGuards)(clerk_auth_guard_1.ClerkAuthGuard),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __metadata("design:paramtypes", [polls_service_1.PollsService])
 ], PollsController);
 //# sourceMappingURL=polls.controller.js.map

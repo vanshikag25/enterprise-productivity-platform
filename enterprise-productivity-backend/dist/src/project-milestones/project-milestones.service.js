@@ -237,10 +237,10 @@ let ProjectMilestonesService = ProjectMilestonesService_1 = class ProjectMilesto
             ? await this.db
                 .select()
                 .from(users_schema_1.users)
-                .where((0, drizzle_orm_1.inArray)(users_schema_1.users.clerkId, ownerIds))
+                .where((0, drizzle_orm_1.inArray)(users_schema_1.users.username, ownerIds))
             : [];
         const nameByUser = new Map(owners.map((u) => [
-            u.clerkId,
+            u.username,
             [u.firstName, u.lastName].filter(Boolean).join(' ') || u.email,
         ]));
         return rows.map((row) => ({

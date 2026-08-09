@@ -13,8 +13,9 @@ exports.userRoleEnum = (0, pg_core_1.pgEnum)('user_role', [
 ]);
 exports.users = (0, pg_core_1.pgTable)('users', {
     id: (0, pg_core_1.uuid)('id').defaultRandom().primaryKey(),
-    clerkId: (0, pg_core_1.varchar)('clerk_id', { length: 255 }).notNull().unique(),
+    username: (0, pg_core_1.varchar)('username', { length: 255 }).notNull().unique(),
     email: (0, pg_core_1.varchar)('email', { length: 255 }).notNull().unique(),
+    passwordHash: (0, pg_core_1.varchar)('password_hash', { length: 255 }),
     firstName: (0, pg_core_1.varchar)('first_name', { length: 255 }),
     lastName: (0, pg_core_1.varchar)('last_name', { length: 255 }),
     imageUrl: (0, pg_core_1.varchar)('image_url', { length: 2048 }),

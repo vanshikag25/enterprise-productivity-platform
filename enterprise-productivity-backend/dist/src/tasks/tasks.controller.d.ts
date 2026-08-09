@@ -1,4 +1,4 @@
-import type { AuthObject } from '@clerk/backend';
+import type { AuthObject } from '../auth/auth-object';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
@@ -11,8 +11,8 @@ export declare class TasksController {
         createdAt: Date;
         updatedAt: Date;
         description: string | null;
-        status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
         title: string;
+        status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
         priority: "Low" | "Medium" | "High" | "Critical";
         dueDate: Date | null;
         createdBy: string;
@@ -28,8 +28,8 @@ export declare class TasksController {
         createdAt: Date;
         updatedAt: Date;
         description: string | null;
-        status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
         title: string;
+        status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
         priority: "Low" | "Medium" | "High" | "Critical";
         dueDate: Date | null;
         createdBy: string;
@@ -45,8 +45,8 @@ export declare class TasksController {
         createdAt: Date;
         updatedAt: Date;
         description: string | null;
-        status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
         title: string;
+        status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
         priority: "Low" | "Medium" | "High" | "Critical";
         dueDate: Date | null;
         createdBy: string;
@@ -62,8 +62,8 @@ export declare class TasksController {
         createdAt: Date;
         updatedAt: Date;
         description: string | null;
-        status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
         title: string;
+        status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
         priority: "Low" | "Medium" | "High" | "Critical";
         dueDate: Date | null;
         createdBy: string;
@@ -82,8 +82,8 @@ export declare class TasksController {
         createdAt: Date;
         updatedAt: Date;
         description: string | null;
-        status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
         title: string;
+        status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
         priority: "Low" | "Medium" | "High" | "Critical";
         dueDate: Date | null;
         createdBy: string;
@@ -99,8 +99,8 @@ export declare class TasksController {
         createdAt: Date;
         updatedAt: Date;
         description: string | null;
-        status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
         title: string;
+        status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
         priority: "Low" | "Medium" | "High" | "Critical";
         dueDate: Date | null;
         createdBy: string;

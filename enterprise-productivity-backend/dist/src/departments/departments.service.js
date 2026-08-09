@@ -26,7 +26,7 @@ let DepartmentsService = class DepartmentsService {
         this.usersService = usersService;
     }
     async requireRole(userId, minimum) {
-        const user = await this.usersService.findByClerkId(userId);
+        const user = await this.usersService.findByUsername(userId);
         if (!user || !(0, roles_1.hasMinRole)(user.role, minimum)) {
             throw new common_1.ForbiddenException('Insufficient permissions for this action');
         }
@@ -45,7 +45,7 @@ let DepartmentsService = class DepartmentsService {
         return dept;
     }
     async findMine(userId) {
-        const user = await this.usersService.findByClerkId(userId);
+        const user = await this.usersService.findByUsername(userId);
         const all = await this.db.select().from(departments_schema_1.departments);
         if (user && (0, roles_1.hasMinRole)(user.role, 'admin'))
             return all;

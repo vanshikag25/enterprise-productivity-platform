@@ -328,11 +328,11 @@ export class ProjectMilestonesService {
       ? await this.db
           .select()
           .from(users)
-          .where(inArray(users.clerkId, ownerIds))
+          .where(inArray(users.username, ownerIds))
       : [];
     const nameByUser = new Map(
       owners.map((u) => [
-        u.clerkId,
+        u.username,
         [u.firstName, u.lastName].filter(Boolean).join(' ') || u.email,
       ]),
     );

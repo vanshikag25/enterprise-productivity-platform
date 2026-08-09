@@ -10,9 +10,9 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import type { AuthObject } from '@clerk/backend';
-import { ClerkAuthGuard } from '../clerk/clerk-auth.guard';
-import { CurrentUser } from '../clerk/current-user.decorator';
+import type { AuthObject } from '../auth/auth-object';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { CurrentUser } from '../auth/current-user.decorator';
 import { ProjectMilestonesService } from './project-milestones.service';
 import { CreateMilestoneDto } from './dto/create-milestone.dto';
 import { UpdateMilestoneDto } from './dto/update-milestone.dto';
@@ -28,7 +28,7 @@ function requireUserId(auth: AuthObject): string {
 }
 
 @Controller('projects/:projectId/milestones')
-@UseGuards(ClerkAuthGuard)
+@UseGuards(JwtAuthGuard)
 export class ProjectMilestonesController {
   constructor(private readonly milestonesService: ProjectMilestonesService) {}
 

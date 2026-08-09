@@ -73,7 +73,10 @@ export class TasksService {
     return task;
   }
 
-  private async linkSourceMessage(task: Task, dto: CreateTaskDto): Promise<void> {
+  private async linkSourceMessage(
+    task: Task,
+    dto: CreateTaskDto,
+  ): Promise<void> {
     const client = this.streamService.getClient();
     const { sourceChannelId, sourceMessageId } = dto;
     if (!sourceChannelId || !sourceMessageId) return;

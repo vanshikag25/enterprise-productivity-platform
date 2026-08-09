@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import { useAuth } from '@clerk/nextjs';
+import { useAuth } from '@/lib/auth';
 import { fetchProject, type ProjectItem } from '@/lib/projects-api';
 import { hasMinRole } from '@/lib/api-client';
 import { useRole } from '@/hooks/use-role';

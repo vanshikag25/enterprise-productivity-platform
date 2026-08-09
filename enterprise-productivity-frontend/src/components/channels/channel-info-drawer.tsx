@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@clerk/nextjs';
+import { useAuth } from '@/lib/auth';
 import { fetchChannelMembers, addChannelMember, removeChannelMember, type ChannelSummary, type ChannelMember } from '@/lib/api-client';
 import { useUserSearch } from '@/hooks/use-user-search';
 import { useToast } from '@/hooks/use-toast';

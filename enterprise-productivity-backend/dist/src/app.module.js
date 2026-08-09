@@ -10,7 +10,7 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const config_module_1 = require("./config/config.module");
 const health_module_1 = require("./health/health.module");
-const clerk_module_1 = require("./clerk/clerk.module");
+const auth_module_1 = require("./auth/auth.module");
 const database_module_1 = require("./database/database.module");
 const users_module_1 = require("./users/users.module");
 const stream_module_1 = require("./stream/stream.module");
@@ -37,7 +37,7 @@ exports.AppModule = AppModule = __decorate([
         imports: [
             config_module_1.ConfigModule,
             health_module_1.HealthModule,
-            clerk_module_1.ClerkModule,
+            auth_module_1.AuthModule,
             database_module_1.DatabaseModule,
             users_module_1.UsersModule,
             stream_module_1.StreamModule,

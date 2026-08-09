@@ -1,9 +1,7 @@
 import {
-  Inject,
   Injectable,
   ForbiddenException,
   BadRequestException,
-  NotFoundException,
   Logger,
 } from '@nestjs/common';
 import { randomUUID } from 'crypto';
@@ -27,7 +25,7 @@ export class ChannelsService {
   ) {}
 
   private async requireRole(userId: string, minimum: UserRole) {
-    const user = await this.usersService.findByClerkId(userId);
+    const user = await this.usersService.findByUsername(userId);
     if (!user || !hasMinRole(user.role, minimum)) {
       throw new ForbiddenException('Insufficient permissions for this action');
     }
@@ -151,7 +149,7 @@ export class ChannelsService {
     const channel = await this.getWatchedChannel(id);
     const data = (channel.data ?? {}) as Record<string, unknown>;
     if (data.created_by_id === userId) return channel;
-    const user = await this.usersService.findByClerkId(userId);
+    const user = await this.usersService.findByUsername(userId);
     if (user && hasMinRole(user.role, 'manager')) return channel;
     throw new ForbiddenException(
       'Only the creator, Manager, or a higher role can perform this action',

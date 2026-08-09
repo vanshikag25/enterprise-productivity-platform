@@ -5,11 +5,11 @@ import { DatabaseModule } from '../database/database.module';
 import { StreamModule } from '../stream/stream.module';
 import { NotificationsModule } from '../notifications/notifications.module';
 import { UsersModule } from '../users/users.module';
-import { ClerkModule } from '../clerk/clerk.module';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [
-    ClerkModule,
+    AuthModule,
     DatabaseModule,
     StreamModule,
     NotificationsModule,

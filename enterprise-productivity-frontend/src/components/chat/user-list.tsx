@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useAuth } from '@clerk/nextjs';
+import { useAuth } from '@/lib/auth';
 import type { Channel as StreamChannel } from 'stream-chat';
 import {
   fetchUsersDirectory,

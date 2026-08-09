@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useAuth } from '@clerk/nextjs';
+import { useAuth } from '@/lib/auth';
 import { fetchUsersDirectory, type UserDirectoryItem } from '@/lib/api-client';
 
 export function useTaskDirectory() {

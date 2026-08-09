@@ -27,7 +27,7 @@ let ChannelsService = ChannelsService_1 = class ChannelsService {
         this.logger = new common_1.Logger(ChannelsService_1.name);
     }
     async requireRole(userId, minimum) {
-        const user = await this.usersService.findByClerkId(userId);
+        const user = await this.usersService.findByUsername(userId);
         if (!user || !(0, roles_1.hasMinRole)(user.role, minimum)) {
             throw new common_1.ForbiddenException('Insufficient permissions for this action');
         }
@@ -124,7 +124,7 @@ let ChannelsService = ChannelsService_1 = class ChannelsService {
         const data = (channel.data ?? {});
         if (data.created_by_id === userId)
             return channel;
-        const user = await this.usersService.findByClerkId(userId);
+        const user = await this.usersService.findByUsername(userId);
         if (user && (0, roles_1.hasMinRole)(user.role, 'manager'))
             return channel;
         throw new common_1.ForbiddenException('Only the creator, Manager, or a higher role can perform this action');

@@ -7,7 +7,7 @@ import {
   type ReactElement,
   type ReactNode,
 } from 'react';
-import { useAuth } from '@clerk/nextjs';
+import { useAuth } from '@/lib/auth';
 import { createProject, type ProjectItem } from '@/lib/projects-api';
 import type { UserDirectoryItem } from '@/lib/api-client';
 import { GroupMemberPicker } from '@/components/chat/group-member-picker';

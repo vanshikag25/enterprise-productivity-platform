@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { ClerkProvider } from '@clerk/nextjs';
+import { AuthProvider } from '@/lib/auth';
 import { Geist, Geist_Mono } from 'next/font/google';
 import 'stream-chat-react/dist/css/index.css';
 import './globals.css';
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <ClerkProvider>
+    <AuthProvider>
       <html lang="en">
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
           <ToastProvider>
@@ -27,6 +27,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           </ToastProvider>
         </body>
       </html>
-    </ClerkProvider>
+    </AuthProvider>
   );
 }

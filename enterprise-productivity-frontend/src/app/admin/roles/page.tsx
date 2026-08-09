@@ -2,10 +2,11 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { useAuth } from '@clerk/nextjs';
+import { useAuth } from '@/lib/auth';
 import {
   fetchUsersDirectory,
   updateUserRole,
+  removeUser,
   hasMinRole,
   USER_ROLES,
   USER_ROLE_LABELS,
@@ -23,7 +24,7 @@ import { Avatar } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input, Select } from '@/components/ui/form';
 import { PageHeader } from '@/components/ui/page-header';
-import { IconLock, IconShield } from '@/components/ui/icons';
+import { IconLock, IconShield, IconTrash } from '@/components/ui/icons';
 
 const PAGE_SIZE = 50;
 
@@ -123,6 +124,22 @@ export default function AdminRolesPage() {
     }
   }
 
+  async function handleRemoveUser(target: UserDirectoryItem) {
+    if (!window.confirm(`Remove ${target.name} (${target.email})? This cannot be undone.`)) return;
+    setBusyClerkId(target.id);
+    try {
+      const token = await getToken();
+      if (!token) throw new Error('Unable to retrieve Clerk session token.');
+      await removeUser(token, target.id);
+      showToast(`${target.name} was removed.`);
+      load();
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : 'Failed to remove user.', 'error');
+    } finally {
+      setBusyClerkId(null);
+    }
+  }
+
   if (roleLoading) return <UserListSkeleton />;
 
   if (!myRole || !hasMinRole(myRole, 'admin')) {
@@ -195,6 +212,18 @@ export default function AdminRolesPage() {
                     </Select>
                   ) : (
                     <Badge variant={ROLE_VARIANT[u.role]}>{USER_ROLE_LABELS[u.role]}</Badge>
+                  )}
+                  {myRole === 'super_admin' && u.id !== userId && (
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveUser(u)}
+                      disabled={busyClerkId === u.id}
+                      title={`Remove ${u.name}`}
+                      aria-label={`Remove ${u.name}`}
+                      className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-red-50 hover:text-red-600 disabled:opacity-50"
+                    >
+                      <IconTrash width={16} height={16} />
+                    </button>
                   )}
                 </div>
               );

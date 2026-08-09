@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@clerk/nextjs';
+import { useAuth } from '@/lib/auth';
 import { updateMeeting, deleteMeeting, joinMeeting, leaveMeeting, type MeetingItem, type MeetingPayload } from '@/lib/api-client';
 import { useToast } from '@/hooks/use-toast';
 import { useTaskDirectory } from '@/hooks/use-task-directory';

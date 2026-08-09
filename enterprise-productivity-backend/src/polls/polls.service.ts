@@ -116,7 +116,7 @@ export class PollsService implements OnModuleInit, OnModuleDestroy {
 
   private async assertCanManage(poll: Poll, userId: string): Promise<void> {
     if (poll.createdBy === userId) return;
-    const user = await this.usersService.findByClerkId(userId);
+    const user = await this.usersService.findByUsername(userId);
     if (user && hasMinRole(user.role, 'manager')) return;
     throw new ForbiddenException(
       'Only the poll creator, Manager, or a higher role can manage this poll',

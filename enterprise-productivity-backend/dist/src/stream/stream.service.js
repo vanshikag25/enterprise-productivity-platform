@@ -101,15 +101,15 @@ let StreamService = StreamService_1 = class StreamService {
             .filter((part) => Boolean(part))
             .join(' ');
         await this.client.upsertUser({
-            id: user.clerkId,
+            id: user.username,
             name: name || undefined,
             image: user.imageUrl ?? undefined,
             role: user.role === 'admin' ? 'admin' : 'user',
         });
-        this.logger.log(`Stream user synced: ${user.clerkId}`);
+        this.logger.log(`Stream user synced: ${user.username}`);
     }
-    createUserToken(clerkId) {
-        return this.client.createToken(clerkId);
+    createUserToken(username) {
+        return this.client.createToken(username);
     }
     async getOrCreateDirectChannel(userId, targetUserId) {
         const channel = this.client.channel('messaging', {
@@ -140,12 +140,12 @@ let StreamService = StreamService_1 = class StreamService {
         this.logger.log(`Group channel created: ${channel.id} ("${groupName}", ${uniqueMembers.length} members)`);
         return channel;
     }
-    async getUsersPresence(clerkIds) {
+    async getUsersPresence(usernames) {
         const presenceMap = new Map();
-        if (clerkIds.length === 0) {
+        if (usernames.length === 0) {
             return presenceMap;
         }
-        const response = await this.client.queryUsers({ id: { $in: clerkIds } });
+        const response = await this.client.queryUsers({ id: { $in: usernames } });
         for (const streamUser of response.users) {
             presenceMap.set(streamUser.id, {
                 online: Boolean(streamUser.online),

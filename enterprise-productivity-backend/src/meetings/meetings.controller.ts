@@ -9,9 +9,9 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import type { AuthObject } from '@clerk/backend';
-import { ClerkAuthGuard } from '../clerk/clerk-auth.guard';
-import { CurrentUser } from '../clerk/current-user.decorator';
+import type { AuthObject } from '../auth/auth-object';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { CurrentUser } from '../auth/current-user.decorator';
 import { RolesGuard } from '../rbac/roles.guard';
 import { Roles } from '../rbac/roles.decorator';
 import { UserRole } from '../rbac/roles';
@@ -26,7 +26,7 @@ function requireUserId(auth: AuthObject): string {
 }
 
 @Controller('meetings')
-@UseGuards(ClerkAuthGuard, RolesGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class MeetingsController {
   constructor(private readonly meetingsService: MeetingsService) {}
 

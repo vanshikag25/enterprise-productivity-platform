@@ -14,8 +14,9 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersController = void 0;
 const common_1 = require("@nestjs/common");
-const clerk_auth_guard_1 = require("../clerk/clerk-auth.guard");
-const current_user_decorator_1 = require("../clerk/current-user.decorator");
+const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
+const auth_service_1 = require("../auth/auth.service");
+const current_user_decorator_1 = require("../auth/current-user.decorator");
 const roles_guard_1 = require("../rbac/roles.guard");
 const roles_decorator_1 = require("../rbac/roles.decorator");
 const roles_1 = require("../rbac/roles");
@@ -23,28 +24,59 @@ const users_service_1 = require("./users.service");
 const stream_service_1 = require("../stream/stream.service");
 const list_users_query_dto_1 = require("./dto/list-users-query.dto");
 const update_user_role_dto_1 = require("./dto/update-user-role.dto");
+const update_profile_dto_1 = require("./dto/update-profile.dto");
+const change_password_dto_1 = require("./dto/change-password.dto");
+const change_username_dto_1 = require("./dto/change-username.dto");
 function requireUserId(auth) {
     if (!auth.userId)
         throw new common_1.UnauthorizedException('Session has no resolvable userId');
     return auth.userId;
 }
 let UsersController = class UsersController {
-    constructor(usersService, streamService) {
+    constructor(usersService, authService, streamService) {
         this.usersService = usersService;
+        this.authService = authService;
         this.streamService = streamService;
     }
     async me(auth) {
-        const user = await this.usersService.findByClerkId(requireUserId(auth));
+        const user = await this.usersService.findByUsername(requireUserId(auth));
         if (!user)
             throw new common_1.UnauthorizedException('User profile not found');
         return {
-            id: user.clerkId,
+            id: user.username,
+            username: user.username,
             firstName: user.firstName,
             lastName: user.lastName,
+            fullName: [user.firstName, user.lastName].filter(Boolean).join(' ') || '',
             email: user.email,
             imageUrl: user.imageUrl,
             role: user.role,
+            createdAt: user.createdAt.toISOString(),
         };
+    }
+    async updateMe(auth, dto) {
+        const user = await this.usersService.updateProfile(requireUserId(auth), dto);
+        return {
+            id: user.username,
+            username: user.username,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            fullName: [user.firstName, user.lastName].filter(Boolean).join(' ') || '',
+            email: user.email,
+            imageUrl: user.imageUrl,
+            role: user.role,
+            createdAt: user.createdAt.toISOString(),
+        };
+    }
+    async changePassword(auth, dto) {
+        const username = requireUserId(auth);
+        await this.authService.changePassword(username, dto.currentPassword, dto.newPassword);
+        return { id: username, updated: true };
+    }
+    async changeUsername(auth, dto) {
+        const username = requireUserId(auth);
+        const updated = await this.usersService.changeUsername(username, dto.username);
+        return this.authService.issueSession(updated);
     }
     async listUsers(auth, query) {
         if (!auth.userId) {
@@ -57,11 +89,11 @@ let UsersController = class UsersController {
             sortBy: query.sortBy,
             sortOrder: query.sortOrder,
         });
-        const presenceMap = await this.streamService.getUsersPresence(items.map((u) => u.clerkId));
+        const presenceMap = await this.streamService.getUsersPresence(items.map((u) => u.username));
         const usersResponse = items.map((u) => {
-            const presence = presenceMap.get(u.clerkId);
+            const presence = presenceMap.get(u.username);
             return {
-                id: u.clerkId,
+                id: u.username,
                 name: [u.firstName, u.lastName].filter(Boolean).join(' ') || u.email,
                 email: u.email,
                 imageUrl: u.imageUrl,
@@ -79,19 +111,26 @@ let UsersController = class UsersController {
             totalPages: Math.max(1, Math.ceil(total / query.limit)),
         };
     }
-    async updateRole(auth, clerkId, dto) {
-        const actor = await this.usersService.findByClerkId(requireUserId(auth));
+    async updateRole(auth, username, dto) {
+        const actor = await this.usersService.findByUsername(requireUserId(auth));
         if (!actor)
             throw new common_1.UnauthorizedException('User profile not found');
-        const updated = await this.usersService.updateRole(actor, clerkId, dto.role);
+        const updated = await this.usersService.updateRole(actor, username, dto.role);
         return {
-            id: updated.clerkId,
+            id: updated.username,
             name: [updated.firstName, updated.lastName].filter(Boolean).join(' ') ||
                 updated.email,
             email: updated.email,
             imageUrl: updated.imageUrl,
             role: updated.role,
         };
+    }
+    async removeUser(auth, username) {
+        const actor = await this.usersService.findByUsername(requireUserId(auth));
+        if (!actor)
+            throw new common_1.UnauthorizedException('User profile not found');
+        await this.usersService.removeUser(actor, username);
+        return { id: username, removed: true };
     }
 };
 exports.UsersController = UsersController;
@@ -103,6 +142,30 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "me", null);
 __decorate([
+    (0, common_1.Patch)('me'),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, update_profile_dto_1.UpdateProfileDto]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "updateMe", null);
+__decorate([
+    (0, common_1.Post)('me/password'),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, change_password_dto_1.ChangePasswordDto]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "changePassword", null);
+__decorate([
+    (0, common_1.Post)('me/username'),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, change_username_dto_1.ChangeUsernameDto]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "changeUsername", null);
+__decorate([
     (0, common_1.Get)(),
     __param(0, (0, current_user_decorator_1.CurrentUser)()),
     __param(1, (0, common_1.Query)()),
@@ -111,19 +174,29 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "listUsers", null);
 __decorate([
-    (0, common_1.Patch)(':clerkId/role'),
+    (0, common_1.Patch)(':username/role'),
     (0, roles_decorator_1.Roles)(roles_1.UserRole.ADMIN),
     __param(0, (0, current_user_decorator_1.CurrentUser)()),
-    __param(1, (0, common_1.Param)('clerkId')),
+    __param(1, (0, common_1.Param)('username')),
     __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String, update_user_role_dto_1.UpdateUserRoleDto]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "updateRole", null);
+__decorate([
+    (0, common_1.Delete)(':username'),
+    (0, roles_decorator_1.Roles)(roles_1.UserRole.SUPER_ADMIN),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
+    __param(1, (0, common_1.Param)('username')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "removeUser", null);
 exports.UsersController = UsersController = __decorate([
     (0, common_1.Controller)('users'),
-    (0, common_1.UseGuards)(clerk_auth_guard_1.ClerkAuthGuard, roles_guard_1.RolesGuard),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     __metadata("design:paramtypes", [users_service_1.UsersService,
+        auth_service_1.AuthService,
         stream_service_1.StreamService])
 ], UsersController);
 //# sourceMappingURL=users.controller.js.map

@@ -1,8 +1,4 @@
-import {
-  Inject,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { and, desc, eq, or, sql, SQL } from 'drizzle-orm';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { DRIZZLE } from '../database/drizzle.provider';
@@ -85,7 +81,9 @@ export class BookmarksService {
     const [bookmark] = await this.db
       .select()
       .from(messageBookmarks)
-      .where(and(eq(messageBookmarks.id, id), eq(messageBookmarks.userId, userId)));
+      .where(
+        and(eq(messageBookmarks.id, id), eq(messageBookmarks.userId, userId)),
+      );
     if (!bookmark) throw new NotFoundException(`Bookmark ${id} not found`);
     return bookmark;
   }
@@ -94,6 +92,8 @@ export class BookmarksService {
     await this.findOne(id, userId);
     await this.db
       .delete(messageBookmarks)
-      .where(and(eq(messageBookmarks.id, id), eq(messageBookmarks.userId, userId)));
+      .where(
+        and(eq(messageBookmarks.id, id), eq(messageBookmarks.userId, userId)),
+      );
   }
 }

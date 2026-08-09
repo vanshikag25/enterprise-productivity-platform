@@ -61,7 +61,7 @@ export class ProjectsService {
   ) {}
 
   async create(userId: string, dto: CreateProjectDto): Promise<ProjectSummary> {
-    const user = await this.usersService.findByClerkId(userId);
+    const user = await this.usersService.findByUsername(userId);
     if (!user || !hasMinRole(user.role, 'manager')) {
       throw new ForbiddenException(
         'Only Managers and above can create projects',
@@ -86,7 +86,7 @@ export class ProjectsService {
         memberIds.map((memberId) => ({
           projectId: project.id,
           userId: memberId,
-          role: (memberId === userId ? 'owner' : 'member') as ProjectMemberRole,
+          role: memberId === userId ? ('owner' as const) : ('member' as const),
         })),
       )
       .onConflictDoNothing();
@@ -140,7 +140,7 @@ export class ProjectsService {
   }
 
   async findAll(userId: string): Promise<ProjectSummary[]> {
-    const user = await this.usersService.findByClerkId(userId);
+    const user = await this.usersService.findByUsername(userId);
     const isOrgAdmin = Boolean(user && hasMinRole(user.role, 'admin'));
 
     const rows = await this.db
@@ -289,7 +289,7 @@ export class ProjectsService {
         imageUrl: users.imageUrl,
       })
       .from(projectMembers)
-      .leftJoin(users, eq(users.clerkId, projectMembers.userId))
+      .leftJoin(users, eq(users.username, projectMembers.userId))
       .where(eq(projectMembers.projectId, id))
       .orderBy(projectMembers.joinedAt);
 
@@ -313,7 +313,7 @@ export class ProjectsService {
       throw new BadRequestException('You cannot add yourself with that role');
     }
 
-    const target = await this.usersService.findByClerkId(memberId);
+    const target = await this.usersService.findByUsername(memberId);
     if (!target) {
       throw new BadRequestException('User not found in the organization');
     }

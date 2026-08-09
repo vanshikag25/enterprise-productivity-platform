@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useAuth } from '@clerk/nextjs';
+import { useAuth } from '@/lib/auth';
 import { fetchNotifications, fetchUnreadCount, markNotificationRead, markAllNotificationsRead, type NotificationItem } from '@/lib/api-client';
 
 const POLL_INTERVAL_MS = 10000;

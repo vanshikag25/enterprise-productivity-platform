@@ -10,9 +10,9 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import type { AuthObject } from '@clerk/backend';
-import { ClerkAuthGuard } from '../clerk/clerk-auth.guard';
-import { CurrentUser } from '../clerk/current-user.decorator';
+import type { AuthObject } from '../auth/auth-object';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { CurrentUser } from '../auth/current-user.decorator';
 import { RemindersService } from './reminders.service';
 import { CreateReminderDto } from './dto/create-reminder.dto';
 import { UpdateReminderDto } from './dto/update-reminder.dto';
@@ -24,7 +24,7 @@ function requireUserId(auth: AuthObject): string {
 }
 
 @Controller('reminders')
-@UseGuards(ClerkAuthGuard)
+@UseGuards(JwtAuthGuard)
 export class RemindersController {
   constructor(private readonly remindersService: RemindersService) {}
 

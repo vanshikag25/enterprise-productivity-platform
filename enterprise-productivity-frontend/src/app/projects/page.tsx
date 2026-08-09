@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useAuth } from '@clerk/nextjs';
+import { useAuth } from '@/lib/auth';
 import { listProjects, type ProjectItem } from '@/lib/projects-api';
 import { hasMinRole } from '@/lib/api-client';
 import { useRole } from '@/hooks/use-role';

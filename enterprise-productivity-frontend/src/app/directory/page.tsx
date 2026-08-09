@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@clerk/nextjs';
+import { useAuth } from '@/lib/auth';
 import { useUserSearch } from '@/hooks/use-user-search';
 import { usePresence } from '@/hooks/use-live-presence';
 import { useStreamChatContext } from '@/context/stream-chat-context';

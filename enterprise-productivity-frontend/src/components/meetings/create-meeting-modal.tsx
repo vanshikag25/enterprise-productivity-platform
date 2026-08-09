@@ -7,7 +7,7 @@ import {
   type ReactElement,
   type ReactNode,
 } from 'react';
-import { useAuth } from '@clerk/nextjs';
+import { useAuth } from '@/lib/auth';
 import { createMeeting, type MeetingItem, type MeetingPayload } from '@/lib/api-client';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';

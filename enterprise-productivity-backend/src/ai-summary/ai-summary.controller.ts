@@ -5,9 +5,9 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import type { AuthObject } from '@clerk/backend';
-import { ClerkAuthGuard } from '../clerk/clerk-auth.guard';
-import { CurrentUser } from '../clerk/current-user.decorator';
+import type { AuthObject } from '../auth/auth-object';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { CurrentUser } from '../auth/current-user.decorator';
 import { AiSummaryService } from './ai-summary.service';
 
 function requireUserId(auth: AuthObject): string {
@@ -17,7 +17,7 @@ function requireUserId(auth: AuthObject): string {
 }
 
 @Controller('projects/:projectId/ai-summary')
-@UseGuards(ClerkAuthGuard)
+@UseGuards(JwtAuthGuard)
 export class AiSummaryController {
   constructor(private readonly aiSummaryService: AiSummaryService) {}
 

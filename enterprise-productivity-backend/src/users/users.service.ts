@@ -2,15 +2,24 @@ import {
   Inject,
   Injectable,
   ForbiddenException,
-  NotFoundException,
+  ConflictException,
 } from '@nestjs/common';
 import { and, asc, desc, eq, ilike, ne, or, sql } from 'drizzle-orm';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { DRIZZLE } from '../database/drizzle.provider';
 import { users, User } from '../database/schema/users.schema';
-import { UpsertUserInput } from './interfaces/upsert-user.input';
 import { UserSortField, SortOrder } from './dto/list-users-query.dto';
 import { ROLE_RANK, UserRole } from '../rbac/roles';
+
+export interface CreateUserInput {
+  username: string;
+  email: string;
+  passwordHash: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
+  imageUrl?: string | null;
+  role?: UserRole;
+}
 
 export interface FindUsersParams {
   search?: string;
@@ -29,65 +38,149 @@ export interface FindUsersResult {
 export class UsersService {
   constructor(@Inject(DRIZZLE) private readonly db: NodePgDatabase) {}
 
-  private async superAdminCount(): Promise<number> {
+  async findByUsername(username: string): Promise<User | undefined> {
+    const [user] = await this.db
+      .select()
+      .from(users)
+      .where(eq(users.username, username));
+    return user;
+  }
+
+  async findByEmail(email: string): Promise<User | undefined> {
+    const [user] = await this.db.select().from(users).where(eq(users.email, email));
+    return user;
+  }
+
+  async findAllExcept(username: string): Promise<User[]> {
+    return this.db.select().from(users).where(ne(users.username, username));
+  }
+
+  async count(): Promise<number> {
     const [row] = await this.db
       .select({ n: sql<number>`count(*)::int` })
-      .from(users)
-      .where(eq(users.role, 'super_admin'));
+      .from(users);
     return row?.n ?? 0;
   }
 
-  async upsertUser(authUser: UpsertUserInput): Promise<User> {
-    const roleValue =
-      (await this.superAdminCount()) === 0
-        ? ('super_admin' as const)
-        : undefined;
+  async createUser(input: CreateUserInput): Promise<User> {
+    const existing = await this.findByUsername(input.username);
+    if (existing) {
+      throw new ConflictException(
+        'An account with that username already exists.',
+      );
+    }
+    const existingEmail = await this.findByEmail(input.email);
+    if (existingEmail) {
+      throw new ConflictException('An account with that email already exists.');
+    }
 
     const [user] = await this.db
       .insert(users)
       .values({
-        clerkId: authUser.clerkId,
-        email: authUser.email,
-        firstName: authUser.firstName ?? null,
-        lastName: authUser.lastName ?? null,
-        imageUrl: authUser.imageUrl ?? null,
-        ...(roleValue ? { role: roleValue } : {}),
-      })
-      .onConflictDoUpdate({
-        target: users.clerkId,
-        set: {
-          email: authUser.email,
-          firstName: authUser.firstName ?? null,
-          lastName: authUser.lastName ?? null,
-          imageUrl: authUser.imageUrl ?? null,
-          updatedAt: new Date(),
-          ...(roleValue ? { role: roleValue } : {}),
-        },
+        username: input.username,
+        email: input.email,
+        passwordHash: input.passwordHash,
+        firstName: input.firstName ?? null,
+        lastName: input.lastName ?? null,
+        imageUrl: input.imageUrl ?? null,
+        ...(input.role ? { role: input.role } : {}),
       })
       .returning();
 
     return user;
   }
 
-  async findAllExcept(clerkId: string): Promise<User[]> {
-    return this.db.select().from(users).where(ne(users.clerkId, clerkId));
+  async updatePassword(username: string, passwordHash: string): Promise<User> {
+    const [updated] = await this.db
+      .update(users)
+      .set({ passwordHash, updatedAt: new Date() })
+      .where(eq(users.username, username))
+      .returning();
+    if (!updated) throw new ForbiddenException('User profile not found');
+    return updated;
   }
 
-  async findByClerkId(clerkId: string): Promise<User | undefined> {
-    const [user] = await this.db
-      .select()
-      .from(users)
-      .where(eq(users.clerkId, clerkId));
-    return user;
+  async changeUsername(
+    currentUsername: string,
+    newUsername: string,
+  ): Promise<User> {
+    const username = newUsername.trim();
+
+    if (username === currentUsername) {
+      throw new ConflictException(
+        'New username is the same as the current one.',
+      );
+    }
+
+    const existing = await this.findByUsername(username);
+    if (existing) {
+      throw new ConflictException(
+        'An account with that username already exists.',
+      );
+    }
+
+    try {
+      const [updated] = await this.db
+        .update(users)
+        .set({ username, updatedAt: new Date() })
+        .where(eq(users.username, currentUsername))
+        .returning();
+      if (!updated) throw new ForbiddenException('User profile not found');
+      return updated;
+    } catch (err) {
+      // Race with another signup/rename hitting the unique constraint.
+      const reason = (err as { code?: string })?.code;
+      if (reason === '23505') {
+        throw new ConflictException(
+          'An account with that username already exists.',
+        );
+      }
+      throw err;
+    }
+  }
+
+  async removeUser(actor: User, targetUsername: string): Promise<void> {
+    if (actor.username === targetUsername) {
+      throw new ForbiddenException('You cannot remove your own account.');
+    }
+
+    const target = await this.findByUsername(targetUsername);
+    if (!target) {
+      throw new ForbiddenException('User not found');
+    }
+
+    const [removed] = await this.db
+      .delete(users)
+      .where(eq(users.username, targetUsername))
+      .returning({ username: users.username });
+
+    if (!removed) throw new ForbiddenException('User not found');
+  }
+
+  async updateProfile(
+    username: string,
+    patch: {
+      firstName?: string | null;
+      lastName?: string | null;
+      imageUrl?: string | null;
+    },
+  ): Promise<User> {
+    const [updated] = await this.db
+      .update(users)
+      .set({ ...patch, updatedAt: new Date() })
+      .where(eq(users.username, username))
+      .returning();
+    if (!updated) throw new ForbiddenException('User profile not found');
+    return updated;
   }
 
   async updateRole(
     actor: User,
-    targetClerkId: string,
+    targetUsername: string,
     newRole: UserRole,
   ): Promise<User> {
-    const target = await this.findByClerkId(targetClerkId);
-    if (!target) throw new NotFoundException('User not found');
+    const target = await this.findByUsername(targetUsername);
+    if (!target) throw new ForbiddenException('User not found');
 
     if (actor.role !== UserRole.SUPER_ADMIN) {
       if (
@@ -117,23 +210,24 @@ export class UsersService {
     const [updated] = await this.db
       .update(users)
       .set({ role: newRole, updatedAt: new Date() })
-      .where(eq(users.clerkId, targetClerkId))
+      .where(eq(users.username, targetUsername))
       .returning();
 
     return updated;
   }
 
   async findUsersPaginated(
-    currentClerkId: string,
+    currentUsername: string,
     params: FindUsersParams,
   ): Promise<FindUsersResult> {
     const { search, page, limit, sortBy, sortOrder } = params;
 
-    const baseCondition = ne(users.clerkId, currentClerkId);
+    const baseCondition = ne(users.username, currentUsername);
     const searchTerm = search?.trim();
 
     const searchCondition = searchTerm
       ? or(
+          ilike(users.username, `%${searchTerm}%`),
           ilike(users.firstName, `%${searchTerm}%`),
           ilike(users.lastName, `%${searchTerm}%`),
           ilike(users.email, `%${searchTerm}%`),

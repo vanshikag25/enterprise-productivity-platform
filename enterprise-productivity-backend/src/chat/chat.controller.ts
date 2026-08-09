@@ -11,9 +11,9 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import type { AuthObject } from '@clerk/backend';
-import { ClerkAuthGuard } from '../clerk/clerk-auth.guard';
-import { CurrentUser } from '../clerk/current-user.decorator';
+import type { AuthObject } from '../auth/auth-object';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { CurrentUser } from '../auth/current-user.decorator';
 import { StreamService } from '../stream/stream.service';
 import { ChatService, GroupInfo } from './chat.service';
 
@@ -51,7 +51,7 @@ export class ChatController {
   }
 
   @Get('token')
-  @UseGuards(ClerkAuthGuard)
+  @UseGuards(JwtAuthGuard)
   getToken(@CurrentUser() auth: AuthObject): {
     streamToken: string;
     apiKey: string;
@@ -64,7 +64,7 @@ export class ChatController {
   }
 
   @Post('direct')
-  @UseGuards(ClerkAuthGuard)
+  @UseGuards(JwtAuthGuard)
   async createDirectChannel(
     @CurrentUser() auth: AuthObject,
     @Body() body: CreateDirectChannelBody,
@@ -92,7 +92,7 @@ export class ChatController {
   }
 
   @Post('group')
-  @UseGuards(ClerkAuthGuard)
+  @UseGuards(JwtAuthGuard)
   async createGroupChannel(
     @CurrentUser() auth: AuthObject,
     @Body() body: CreateGroupChannelBody,
@@ -153,7 +153,7 @@ export class ChatController {
   }
 
   @Get('groups/:channelId')
-  @UseGuards(ClerkAuthGuard)
+  @UseGuards(JwtAuthGuard)
   getGroupInfo(
     @CurrentUser() auth: AuthObject,
     @Param('channelId') channelId: string,
@@ -162,7 +162,7 @@ export class ChatController {
   }
 
   @Patch('groups/:channelId')
-  @UseGuards(ClerkAuthGuard)
+  @UseGuards(JwtAuthGuard)
   updateGroup(
     @CurrentUser() auth: AuthObject,
     @Param('channelId') channelId: string,
@@ -172,7 +172,7 @@ export class ChatController {
   }
 
   @Put('groups/:channelId/avatar')
-  @UseGuards(ClerkAuthGuard)
+  @UseGuards(JwtAuthGuard)
   updateGroupAvatar(
     @CurrentUser() auth: AuthObject,
     @Param('channelId') channelId: string,
@@ -189,7 +189,7 @@ export class ChatController {
   }
 
   @Delete('groups/:channelId/avatar')
-  @UseGuards(ClerkAuthGuard)
+  @UseGuards(JwtAuthGuard)
   removeGroupAvatar(
     @CurrentUser() auth: AuthObject,
     @Param('channelId') channelId: string,
@@ -198,7 +198,7 @@ export class ChatController {
   }
 
   @Post('groups/:channelId/members/:memberId')
-  @UseGuards(ClerkAuthGuard)
+  @UseGuards(JwtAuthGuard)
   addMember(
     @CurrentUser() auth: AuthObject,
     @Param('channelId') channelId: string,
@@ -208,7 +208,7 @@ export class ChatController {
   }
 
   @Delete('groups/:channelId/members/:memberId')
-  @UseGuards(ClerkAuthGuard)
+  @UseGuards(JwtAuthGuard)
   removeMember(
     @CurrentUser() auth: AuthObject,
     @Param('channelId') channelId: string,
@@ -218,7 +218,7 @@ export class ChatController {
   }
 
   @Post('groups/:channelId/leave')
-  @UseGuards(ClerkAuthGuard)
+  @UseGuards(JwtAuthGuard)
   leaveGroup(
     @CurrentUser() auth: AuthObject,
     @Param('channelId') channelId: string,
@@ -227,7 +227,7 @@ export class ChatController {
   }
 
   @Post('groups/:channelId/moderators/:memberId')
-  @UseGuards(ClerkAuthGuard)
+  @UseGuards(JwtAuthGuard)
   assignModerator(
     @CurrentUser() auth: AuthObject,
     @Param('channelId') channelId: string,
@@ -241,7 +241,7 @@ export class ChatController {
   }
 
   @Delete('groups/:channelId/moderators/:memberId')
-  @UseGuards(ClerkAuthGuard)
+  @UseGuards(JwtAuthGuard)
   demoteModerator(
     @CurrentUser() auth: AuthObject,
     @Param('channelId') channelId: string,

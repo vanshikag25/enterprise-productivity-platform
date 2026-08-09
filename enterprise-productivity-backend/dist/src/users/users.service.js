@@ -23,55 +23,115 @@ let UsersService = class UsersService {
     constructor(db) {
         this.db = db;
     }
-    async superAdminCount() {
+    async findByUsername(username) {
+        const [user] = await this.db
+            .select()
+            .from(users_schema_1.users)
+            .where((0, drizzle_orm_1.eq)(users_schema_1.users.username, username));
+        return user;
+    }
+    async findByEmail(email) {
+        const [user] = await this.db.select().from(users_schema_1.users).where((0, drizzle_orm_1.eq)(users_schema_1.users.email, email));
+        return user;
+    }
+    async findAllExcept(username) {
+        return this.db.select().from(users_schema_1.users).where((0, drizzle_orm_1.ne)(users_schema_1.users.username, username));
+    }
+    async count() {
         const [row] = await this.db
             .select({ n: (0, drizzle_orm_1.sql) `count(*)::int` })
-            .from(users_schema_1.users)
-            .where((0, drizzle_orm_1.eq)(users_schema_1.users.role, 'super_admin'));
+            .from(users_schema_1.users);
         return row?.n ?? 0;
     }
-    async upsertUser(authUser) {
-        const roleValue = (await this.superAdminCount()) === 0
-            ? 'super_admin'
-            : undefined;
+    async createUser(input) {
+        const existing = await this.findByUsername(input.username);
+        if (existing) {
+            throw new common_1.ConflictException('An account with that username already exists.');
+        }
+        const existingEmail = await this.findByEmail(input.email);
+        if (existingEmail) {
+            throw new common_1.ConflictException('An account with that email already exists.');
+        }
         const [user] = await this.db
             .insert(users_schema_1.users)
             .values({
-            clerkId: authUser.clerkId,
-            email: authUser.email,
-            firstName: authUser.firstName ?? null,
-            lastName: authUser.lastName ?? null,
-            imageUrl: authUser.imageUrl ?? null,
-            ...(roleValue ? { role: roleValue } : {}),
-        })
-            .onConflictDoUpdate({
-            target: users_schema_1.users.clerkId,
-            set: {
-                email: authUser.email,
-                firstName: authUser.firstName ?? null,
-                lastName: authUser.lastName ?? null,
-                imageUrl: authUser.imageUrl ?? null,
-                updatedAt: new Date(),
-                ...(roleValue ? { role: roleValue } : {}),
-            },
+            username: input.username,
+            email: input.email,
+            passwordHash: input.passwordHash,
+            firstName: input.firstName ?? null,
+            lastName: input.lastName ?? null,
+            imageUrl: input.imageUrl ?? null,
+            ...(input.role ? { role: input.role } : {}),
         })
             .returning();
         return user;
     }
-    async findAllExcept(clerkId) {
-        return this.db.select().from(users_schema_1.users).where((0, drizzle_orm_1.ne)(users_schema_1.users.clerkId, clerkId));
+    async updatePassword(username, passwordHash) {
+        const [updated] = await this.db
+            .update(users_schema_1.users)
+            .set({ passwordHash, updatedAt: new Date() })
+            .where((0, drizzle_orm_1.eq)(users_schema_1.users.username, username))
+            .returning();
+        if (!updated)
+            throw new common_1.ForbiddenException('User profile not found');
+        return updated;
     }
-    async findByClerkId(clerkId) {
-        const [user] = await this.db
-            .select()
-            .from(users_schema_1.users)
-            .where((0, drizzle_orm_1.eq)(users_schema_1.users.clerkId, clerkId));
-        return user;
+    async changeUsername(currentUsername, newUsername) {
+        const username = newUsername.trim();
+        if (username === currentUsername) {
+            throw new common_1.ConflictException('New username is the same as the current one.');
+        }
+        const existing = await this.findByUsername(username);
+        if (existing) {
+            throw new common_1.ConflictException('An account with that username already exists.');
+        }
+        try {
+            const [updated] = await this.db
+                .update(users_schema_1.users)
+                .set({ username, updatedAt: new Date() })
+                .where((0, drizzle_orm_1.eq)(users_schema_1.users.username, currentUsername))
+                .returning();
+            if (!updated)
+                throw new common_1.ForbiddenException('User profile not found');
+            return updated;
+        }
+        catch (err) {
+            const reason = err?.code;
+            if (reason === '23505') {
+                throw new common_1.ConflictException('An account with that username already exists.');
+            }
+            throw err;
+        }
     }
-    async updateRole(actor, targetClerkId, newRole) {
-        const target = await this.findByClerkId(targetClerkId);
+    async removeUser(actor, targetUsername) {
+        if (actor.username === targetUsername) {
+            throw new common_1.ForbiddenException('You cannot remove your own account.');
+        }
+        const target = await this.findByUsername(targetUsername);
+        if (!target) {
+            throw new common_1.ForbiddenException('User not found');
+        }
+        const [removed] = await this.db
+            .delete(users_schema_1.users)
+            .where((0, drizzle_orm_1.eq)(users_schema_1.users.username, targetUsername))
+            .returning({ username: users_schema_1.users.username });
+        if (!removed)
+            throw new common_1.ForbiddenException('User not found');
+    }
+    async updateProfile(username, patch) {
+        const [updated] = await this.db
+            .update(users_schema_1.users)
+            .set({ ...patch, updatedAt: new Date() })
+            .where((0, drizzle_orm_1.eq)(users_schema_1.users.username, username))
+            .returning();
+        if (!updated)
+            throw new common_1.ForbiddenException('User profile not found');
+        return updated;
+    }
+    async updateRole(actor, targetUsername, newRole) {
+        const target = await this.findByUsername(targetUsername);
         if (!target)
-            throw new common_1.NotFoundException('User not found');
+            throw new common_1.ForbiddenException('User not found');
         if (actor.role !== roles_1.UserRole.SUPER_ADMIN) {
             if (newRole === roles_1.UserRole.SUPER_ADMIN ||
                 newRole === roles_1.UserRole.ORGANIZATION_OWNER) {
@@ -91,16 +151,16 @@ let UsersService = class UsersService {
         const [updated] = await this.db
             .update(users_schema_1.users)
             .set({ role: newRole, updatedAt: new Date() })
-            .where((0, drizzle_orm_1.eq)(users_schema_1.users.clerkId, targetClerkId))
+            .where((0, drizzle_orm_1.eq)(users_schema_1.users.username, targetUsername))
             .returning();
         return updated;
     }
-    async findUsersPaginated(currentClerkId, params) {
+    async findUsersPaginated(currentUsername, params) {
         const { search, page, limit, sortBy, sortOrder } = params;
-        const baseCondition = (0, drizzle_orm_1.ne)(users_schema_1.users.clerkId, currentClerkId);
+        const baseCondition = (0, drizzle_orm_1.ne)(users_schema_1.users.username, currentUsername);
         const searchTerm = search?.trim();
         const searchCondition = searchTerm
-            ? (0, drizzle_orm_1.or)((0, drizzle_orm_1.ilike)(users_schema_1.users.firstName, `%${searchTerm}%`), (0, drizzle_orm_1.ilike)(users_schema_1.users.lastName, `%${searchTerm}%`), (0, drizzle_orm_1.ilike)(users_schema_1.users.email, `%${searchTerm}%`), (0, drizzle_orm_1.ilike)((0, drizzle_orm_1.sql) `concat(${users_schema_1.users.firstName}, ' ', ${users_schema_1.users.lastName})`, `%${searchTerm}%`))
+            ? (0, drizzle_orm_1.or)((0, drizzle_orm_1.ilike)(users_schema_1.users.username, `%${searchTerm}%`), (0, drizzle_orm_1.ilike)(users_schema_1.users.firstName, `%${searchTerm}%`), (0, drizzle_orm_1.ilike)(users_schema_1.users.lastName, `%${searchTerm}%`), (0, drizzle_orm_1.ilike)(users_schema_1.users.email, `%${searchTerm}%`), (0, drizzle_orm_1.ilike)((0, drizzle_orm_1.sql) `concat(${users_schema_1.users.firstName}, ' ', ${users_schema_1.users.lastName})`, `%${searchTerm}%`))
             : undefined;
         const whereClause = searchCondition
             ? (0, drizzle_orm_1.and)(baseCondition, searchCondition)

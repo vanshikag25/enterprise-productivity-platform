@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react';
-import { useAuth } from '@clerk/nextjs';
+import { useAuth } from '@/lib/auth';
 import { fetchMe, hasMinRole, type MeResponse, type UserRole } from '@/lib/api-client';
 
 export type Permission =
@@ -69,8 +69,33 @@ export function RoleProvider({ children }: { children: ReactNode }) {
   }, [getToken]);
 
   useEffect(() => {
-    refresh();
-  }, [refresh]);
+    let cancelled = false;
+    getToken()
+      .then(async (token) => {
+        if (cancelled) return;
+        if (!token) {
+          setMe(null);
+          setError(null);
+          setIsLoading(false);
+          return;
+        }
+        const profile = await fetchMe(token);
+        if (cancelled) return;
+        setMe(profile);
+        setError(null);
+      })
+      .catch((err) => {
+        if (!cancelled) {
+          setError(err instanceof Error ? err.message : 'Failed to load profile.');
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setIsLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [getToken]);
 
   const hasRole = useCallback(
     (minimum: UserRole) => hasMinRole(me?.role, minimum),

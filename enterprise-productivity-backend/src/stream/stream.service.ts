@@ -56,9 +56,7 @@ export class StreamService implements OnModuleInit {
         this.logger.log('Enabled polls for messaging channels.');
       }
     } catch (err) {
-      this.logger.warn(
-        `Failed to enable polls for messaging channels: ${err}`,
-      );
+      this.logger.warn(`Failed to enable polls for messaging channels: ${err}`);
     }
   }
 
@@ -127,17 +125,17 @@ export class StreamService implements OnModuleInit {
       .join(' ');
 
     await this.client.upsertUser({
-      id: user.clerkId,
+      id: user.username,
       name: name || undefined,
       image: user.imageUrl ?? undefined,
       role: user.role === 'admin' ? 'admin' : 'user',
     });
 
-    this.logger.log(`Stream user synced: ${user.clerkId}`);
+    this.logger.log(`Stream user synced: ${user.username}`);
   }
 
-  createUserToken(clerkId: string): string {
-    return this.client.createToken(clerkId);
+  createUserToken(username: string): string {
+    return this.client.createToken(username);
   }
 
   async getOrCreateDirectChannel(
@@ -202,15 +200,15 @@ export class StreamService implements OnModuleInit {
   }
 
   async getUsersPresence(
-    clerkIds: string[],
+    usernames: string[],
   ): Promise<Map<string, UserPresence>> {
     const presenceMap = new Map<string, UserPresence>();
 
-    if (clerkIds.length === 0) {
+    if (usernames.length === 0) {
       return presenceMap;
     }
 
-    const response = await this.client.queryUsers({ id: { $in: clerkIds } });
+    const response = await this.client.queryUsers({ id: { $in: usernames } });
 
     for (const streamUser of response.users) {
       presenceMap.set(streamUser.id, {

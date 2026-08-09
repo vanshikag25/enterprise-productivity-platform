@@ -15,8 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProjectDocumentsController = void 0;
 const common_1 = require("@nestjs/common");
 const platform_express_1 = require("@nestjs/platform-express");
-const clerk_auth_guard_1 = require("../clerk/clerk-auth.guard");
-const current_user_decorator_1 = require("../clerk/current-user.decorator");
+const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
+const current_user_decorator_1 = require("../auth/current-user.decorator");
 const project_documents_service_1 = require("./project-documents.service");
 const document_storage_1 = require("./document-storage");
 function requireUserId(auth) {
@@ -99,7 +99,7 @@ __decorate([
 ], ProjectDocumentsController.prototype, "remove", null);
 exports.ProjectDocumentsController = ProjectDocumentsController = __decorate([
     (0, common_1.Controller)('projects/:projectId/documents'),
-    (0, common_1.UseGuards)(clerk_auth_guard_1.ClerkAuthGuard),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __metadata("design:paramtypes", [project_documents_service_1.ProjectDocumentsService])
 ], ProjectDocumentsController);
 //# sourceMappingURL=project-documents.controller.js.map
