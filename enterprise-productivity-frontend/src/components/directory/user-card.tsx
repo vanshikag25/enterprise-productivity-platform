@@ -52,18 +52,18 @@ export function UserCard({
         </div>
       </div>
 
-      <div className="flex gap-2">
-        <Button size="sm" className="flex-1" onClick={() => onMessage(user)} disabled={isMessaging}>
-          <IconMessageCircle width={14} height={14} />
-          {isMessaging ? '…' : 'Message'}
+      <div className="flex min-w-0 gap-2">
+        <Button size="sm" className="min-w-0 flex-1" onClick={() => onMessage(user)} disabled={isMessaging}>
+          <IconMessageCircle width={14} height={14} className="shrink-0" />
+          <span className="truncate">{isMessaging ? '…' : 'Message'}</span>
         </Button>
-        <Button variant="outline" size="sm" className="flex-1" onClick={() => onAddToGroup(user)}>
-          <IconPlus width={14} height={14} />
-          Add to Group
+        <Button variant="outline" size="sm" className="min-w-0 flex-1" onClick={() => onAddToGroup(user)}>
+          <IconPlus width={14} height={14} className="shrink-0" />
+          <span className="truncate">Add to Group</span>
         </Button>
-        <Button variant="outline" size="sm" className="flex-1" onClick={() => onViewProfile(user)}>
-          <IconUser width={14} height={14} />
-          Profile
+        <Button variant="outline" size="sm" className="min-w-0 flex-1" onClick={() => onViewProfile(user)}>
+          <IconUser width={14} height={14} className="shrink-0" />
+          <span className="truncate">Profile</span>
         </Button>
       </div>
     </div>
