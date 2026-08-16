@@ -20,6 +20,9 @@ exports.users = (0, pg_core_1.pgTable)('users', {
     lastName: (0, pg_core_1.varchar)('last_name', { length: 255 }),
     imageUrl: (0, pg_core_1.varchar)('image_url', { length: 2048 }),
     role: (0, exports.userRoleEnum)('role').notNull().default('employee'),
+    preferredLanguage: (0, pg_core_1.varchar)('preferred_language', { length: 64 })
+        .notNull()
+        .default('en'),
     createdAt: (0, pg_core_1.timestamp)('created_at', { withTimezone: true })
         .defaultNow()
         .notNull(),

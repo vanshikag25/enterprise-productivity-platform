@@ -8,7 +8,14 @@ import {
   type ReactNode,
 } from 'react';
 import { useAuth } from '@/lib/auth';
-import { createMeeting, type MeetingItem, type MeetingPayload } from '@/lib/api-client';
+import {
+  createMeeting,
+  createCreationRequest,
+  type MeetingItem,
+  type MeetingPayload,
+  type CreationRequestItem,
+} from '@/lib/api-client';
+import { useRole } from '@/hooks/use-role';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
@@ -19,10 +26,11 @@ export function CreateMeetingModal({
   onCreated,
   trigger,
 }: {
-  onCreated: (m: MeetingItem) => void;
+  onCreated: (item: MeetingItem | CreationRequestItem) => void;
   trigger?: ReactNode;
 }) {
   const { getToken } = useAuth();
+  const { can } = useRole();
   const { showToast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,7 +41,19 @@ export function CreateMeetingModal({
     setError(null);
     try {
       const token = await getToken();
-      if (!token) throw new Error('Unable to retrieve Clerk session token.');
+      if (!token) throw new Error('Unable to retrieve session token.');
+
+      if (!can('create_meeting')) {
+        const request = await createCreationRequest(token, {
+          entityType: 'meeting',
+          payload,
+        });
+        showToast('Meeting request submitted — a team lead will review it.');
+        onCreated(request);
+        setIsOpen(false);
+        return;
+      }
+
       const meeting = await createMeeting(token, payload);
       showToast('Meeting created.');
       onCreated(meeting);
@@ -45,8 +65,9 @@ export function CreateMeetingModal({
     }
   }
 
+  const requiresApproval = !can('create_meeting');
   const defaultTrigger = (
-    <Button size="sm">
+    <Button size="sm" onClick={() => setIsOpen(true)}>
       <IconCalendar width={15} height={15} /> New Meeting
     </Button>
   );
@@ -59,7 +80,19 @@ export function CreateMeetingModal({
           })
         : defaultTrigger}
       <Modal open={isOpen} onClose={() => setIsOpen(false)} title="New Meeting">
-        <MeetingForm isSubmitting={isSubmitting} error={error} submitLabel="Create" onSubmit={handleSubmit} onCancel={() => setIsOpen(false)} />
+        {requiresApproval && (
+          <div className="mb-3 rounded-lg border border-blue-100 bg-blue-50 px-3 py-2 text-xs text-blue-700">
+            Your meeting will be sent to a team lead for approval before it is
+            scheduled.
+          </div>
+        )}
+        <MeetingForm
+          isSubmitting={isSubmitting}
+          error={error}
+          submitLabel={requiresApproval ? 'Submit for approval' : 'Create'}
+          onSubmit={handleSubmit}
+          onCancel={() => setIsOpen(false)}
+        />
       </Modal>
     </>
   );

@@ -13,12 +13,16 @@ interface SaveNoteFromMessageModalProps {
   open: boolean;
   onClose: () => void;
   source: SourceMessageRef;
+  prefill?: Partial<NotePayload>;
+  onCreated?: (note: { id: string }) => void;
 }
 
 export function SaveNoteFromMessageModal({
   open,
   onClose,
   source,
+  prefill,
+  onCreated,
 }: SaveNoteFromMessageModalProps) {
   const { getToken } = useAuth();
   const { showToast } = useToast();
@@ -26,8 +30,8 @@ export function SaveNoteFromMessageModal({
     id: source.sourceMessageId ?? 'source',
     text: source.sourceMessageText,
   });
-  const [title, setTitle] = useState(snippet);
-  const [content, setContent] = useState('');
+  const [title, setTitle] = useState(prefill?.title ?? snippet);
+  const [content, setContent] = useState(prefill?.content ?? '');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [validationError, setValidationError] = useState<string | null>(null);
 
@@ -49,8 +53,9 @@ export function SaveNoteFromMessageModal({
         sourceChannelName: source.sourceChannelName,
         sourceMessageText: source.sourceMessageText,
       };
-      await createNote(token, payload);
+      const note = await createNote(token, payload);
       showToast('Note saved.');
+      onCreated?.({ id: note.id });
       onClose();
     } catch (err) {
       setValidationError(err instanceof Error ? err.message : 'Failed to save note.');

@@ -11,6 +11,7 @@ import {
   CreatePollActionItem,
   CreateReminderActionItem,
   SaveAsNoteActionItem,
+  TranslateMessageActionItem,
 } from './message-action-items';
 
 type MessageActionsComponentProps = ComponentProps<typeof MessageActions>;
@@ -21,6 +22,7 @@ const PRODUCTIVITY_ACTION_SET: MessageActionSetItem[] = [
   { type: 'saveAsNote', Component: SaveAsNoteActionItem, placement: 'dropdown' },
   { type: 'bookmarkMessage', Component: BookmarkMessageActionItem, placement: 'dropdown' },
   { type: 'createPoll', Component: CreatePollActionItem, placement: 'dropdown' },
+  { type: 'translateMessage', Component: TranslateMessageActionItem, placement: 'dropdown' },
 ];
 
 function MessageActionsWithProductivity(props: MessageActionsComponentProps) {

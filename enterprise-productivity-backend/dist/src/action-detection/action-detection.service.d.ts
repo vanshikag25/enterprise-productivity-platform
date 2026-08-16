@@ -1,0 +1,55 @@
+import { OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { NodePgDatabase } from 'drizzle-orm/node-postgres';
+import { StreamService } from '../stream/stream.service';
+import { ActionDetectionProvider, AiDetectedIntent } from './action-detection.provider';
+import { ResolveActionDto } from './dto/resolve-action.dto';
+export interface DetectedActionItem {
+    id: string;
+    channelId: string;
+    messageId: string;
+    senderId: string | null;
+    channelName: string | null;
+    intentType: AiDetectedIntent;
+    title: string;
+    summary: string | null;
+    confidence: number | null;
+    sourceMessageText: string | null;
+    meta: Record<string, unknown> | null;
+    status: 'pending' | 'created';
+    createdById: string | null;
+    resolvedEntityType: string | null;
+    resolvedEntityId: string | null;
+    resolutionNote: string | null;
+    dismissedByMe: boolean;
+    detectedAt: string;
+    createdAt: string;
+    updatedAt: string;
+}
+export declare class ActionDetectionService implements OnModuleInit, OnModuleDestroy {
+    private readonly db;
+    private readonly streamService;
+    private readonly configService;
+    private readonly provider;
+    private readonly logger;
+    private backfillTimer;
+    constructor(db: NodePgDatabase, streamService: StreamService, configService: ConfigService, provider: ActionDetectionProvider);
+    onModuleInit(): void;
+    onModuleDestroy(): void;
+    private client;
+    analyze(channelId: string, userId: string, messageId?: string): Promise<DetectedActionItem[]>;
+    list(channelId: string, userId: string): Promise<DetectedActionItem[]>;
+    findOne(actionId: string, userId: string): Promise<DetectedActionItem>;
+    dismiss(actionId: string, userId: string): Promise<DetectedActionItem>;
+    resolve(actionId: string, userId: string, dto: ResolveActionDto): Promise<DetectedActionItem>;
+    private storeOrGet;
+    private findByMessageAndIntent;
+    private getAction;
+    private resolveChannel;
+    private describeChannel;
+    private fetchTargetMessage;
+    private toDetectionMessage;
+    private runBackfill;
+    private backfillChannel;
+    private toItem;
+}

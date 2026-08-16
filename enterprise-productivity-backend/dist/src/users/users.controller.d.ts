@@ -21,7 +21,8 @@ export declare class UsersController {
         fullName: string;
         email: string;
         imageUrl: string | null;
-        role: "super_admin" | "organization_owner" | "admin" | "manager" | "team_lead" | "employee" | "guest";
+        role: string;
+        preferredLanguage: string;
         createdAt: string;
     }>;
     updateMe(auth: AuthObject, dto: UpdateProfileDto): Promise<{
@@ -32,9 +33,11 @@ export declare class UsersController {
         fullName: string;
         email: string;
         imageUrl: string | null;
-        role: "super_admin" | "organization_owner" | "admin" | "manager" | "team_lead" | "employee" | "guest";
+        role: string;
+        preferredLanguage: string;
         createdAt: string;
     }>;
+    private serializeMe;
     changePassword(auth: AuthObject, dto: ChangePasswordDto): Promise<{
         id: string;
         updated: boolean;

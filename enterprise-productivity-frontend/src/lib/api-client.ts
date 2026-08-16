@@ -74,6 +74,7 @@ export interface MeResponse {
   email: string;
   imageUrl: string | null;
   role: UserRole;
+  preferredLanguage: string;
   createdAt: string;
 }
 export async function fetchMe(token: string): Promise<MeResponse> {
@@ -116,7 +117,12 @@ export async function registerRequest(payload: {
 
 export async function updateProfileRequest(
   token: string,
-  payload: { firstName?: string; lastName?: string; imageUrl?: string },
+  payload: {
+    firstName?: string;
+    lastName?: string;
+    imageUrl?: string;
+    preferredLanguage?: string;
+  },
 ): Promise<MeResponse> {
   const res = await apiClient.patch<MeResponse>('/users/me', payload, {
     headers: { Authorization: `Bearer ${token}` },
@@ -531,4 +537,406 @@ export async function finalizePoll(token: string, streamPollId: string): Promise
 }
 export async function deletePoll(token: string, streamPollId: string): Promise<void> {
   await apiClient.delete(`/polls/stream/${encodeURIComponent(streamPollId)}`, { headers: { Authorization: `Bearer ${token}` } });
+}
+
+// --- Conversation AI summaries ---
+export type SummaryPeriodType = 'daily' | 'weekly' | 'manual';
+
+export interface ConversationSummaryItem {
+  id: string;
+  channelId: string;
+  periodType: SummaryPeriodType;
+  periodStart: string;
+  periodEnd: string;
+  overview: string;
+  keyDecisions: string[];
+  actionItems: string[];
+  unresolvedTopics: string[];
+  messageCount: number;
+  provider: string;
+  generatedAt: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export async function fetchConversationSummaries(
+  token: string,
+  channelId: string,
+): Promise<ConversationSummaryItem[]> {
+  const res = await apiClient.get<ConversationSummaryItem[]>('/chat/summaries', {
+    headers: { Authorization: `Bearer ${token}` },
+    params: { channelId },
+  });
+  return res.data;
+}
+
+export async function fetchDailySummary(
+  token: string,
+  channelId: string,
+): Promise<ConversationSummaryItem> {
+  const res = await apiClient.get<ConversationSummaryItem>('/chat/summaries/daily', {
+    headers: { Authorization: `Bearer ${token}` },
+    params: { channelId },
+  });
+  return res.data;
+}
+
+export async function fetchWeeklySummary(
+  token: string,
+  channelId: string,
+): Promise<ConversationSummaryItem> {
+  const res = await apiClient.get<ConversationSummaryItem>('/chat/summaries/weekly', {
+    headers: { Authorization: `Bearer ${token}` },
+    params: { channelId },
+  });
+  return res.data;
+}
+
+export async function generateConversationSummary(
+  token: string,
+  payload: {
+    channelId: string;
+    periodType: SummaryPeriodType;
+    start?: string;
+    end?: string;
+  },
+): Promise<ConversationSummaryItem> {
+  const res = await apiClient.post<ConversationSummaryItem>('/chat/summaries/generate', payload, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+}
+
+// --- Smart replies ---
+export interface SmartRepliesResponse {
+  suggestions: string[];
+  provider: string;
+}
+
+export async function fetchSmartReplies(
+  token: string,
+  channelId: string,
+): Promise<SmartRepliesResponse> {
+  const res = await apiClient.post<SmartRepliesResponse>(
+    '/chat/smart-replies',
+    { channelId },
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+  return res.data;
+}
+
+// --- Message translation ---
+export interface TranslationResponse {
+  messageId: string;
+  targetLanguage: string;
+  sourceLanguage: string | null;
+  translatedText: string;
+  cached: boolean;
+  provider: string;
+}
+
+export async function translateMessage(
+  token: string,
+  payload: { channelId: string; messageId: string; targetLanguage: string },
+): Promise<TranslationResponse> {
+  const res = await apiClient.post<TranslationResponse>(
+    '/chat/translate',
+    payload,
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+  return res.data;
+}
+
+// --- AI action detection ---
+export type AiDetectedIntent =
+  | 'task'
+  | 'meeting'
+  | 'deadline'
+  | 'reminder'
+  | 'decision'
+  | 'follow_up';
+
+export interface DetectedActionItem {
+  id: string;
+  channelId: string;
+  messageId: string;
+  senderId: string | null;
+  channelName: string | null;
+  intentType: AiDetectedIntent;
+  title: string;
+  summary: string | null;
+  confidence: number | null;
+  sourceMessageText: string | null;
+  meta: Record<string, unknown> | null;
+  status: 'pending' | 'created';
+  createdById: string | null;
+  resolvedEntityType: string | null;
+  resolvedEntityId: string | null;
+  resolutionNote: string | null;
+  dismissedByMe: boolean;
+  detectedAt: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AnalyzeMessageActionsResult {
+  actions: DetectedActionItem[];
+  provider: string;
+}
+
+export async function analyzeMessageActions(
+  token: string,
+  channelId: string,
+  messageId?: string,
+): Promise<AnalyzeMessageActionsResult> {
+  const res = await apiClient.post<AnalyzeMessageActionsResult | DetectedActionItem[]>(
+    '/chat/action-detection/analyze',
+    { channelId, messageId },
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+  const data = res.data;
+  if (Array.isArray(data)) return { actions: data, provider: 'mock' };
+  return data;
+}
+
+export async function fetchChannelActions(
+  token: string,
+  channelId: string,
+): Promise<DetectedActionItem[]> {
+  const res = await apiClient.get<DetectedActionItem[]>('/chat/action-detection', {
+    headers: { Authorization: `Bearer ${token}` },
+    params: { channelId },
+  });
+  return res.data;
+}
+
+export async function dismissAction(
+  token: string,
+  actionId: string,
+): Promise<DetectedActionItem> {
+  const res = await apiClient.post<DetectedActionItem>(
+    `/chat/action-detection/${actionId}/dismiss`,
+    {},
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+  return res.data;
+}
+
+export async function resolveAction(
+  token: string,
+  actionId: string,
+  payload: { entityType?: string; entityId?: string; note?: string },
+): Promise<DetectedActionItem> {
+  const res = await apiClient.post<DetectedActionItem>(
+    `/chat/action-detection/${actionId}/resolve`,
+    payload,
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+  return res.data;
+}
+
+// --- Creation requests (propose a task/meeting for team-lead approval) ---
+export type CreationRequestEntityType = 'task' | 'meeting';
+export type CreationRequestStatus = 'pending' | 'approved' | 'rejected';
+
+export interface CreationRequestItem {
+  id: string;
+  entityType: CreationRequestEntityType;
+  status: CreationRequestStatus;
+  title: string;
+  payload: Record<string, unknown>;
+  createdById: string;
+  sourceChannelId: string | null;
+  sourceMessageId: string | null;
+  sourceSenderId: string | null;
+  sourceChannelName: string | null;
+  sourceMessageText: string | null;
+  reviewedById: string | null;
+  reviewedAt: string | null;
+  reviewNote: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateCreationRequestPayload {
+  entityType: CreationRequestEntityType;
+  payload: TaskPayload | MeetingPayload | Record<string, unknown>;
+  sourceChannelId?: string;
+  sourceMessageId?: string;
+  sourceSenderId?: string;
+  sourceChannelName?: string;
+  sourceMessageText?: string;
+}
+
+export async function createCreationRequest(
+  token: string,
+  payload: CreateCreationRequestPayload,
+): Promise<CreationRequestItem> {
+  const res = await apiClient.post<CreationRequestItem>(
+    '/creation-requests',
+    payload,
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+  return res.data;
+}
+
+export async function fetchCreationRequests(
+  token: string,
+  entityType?: CreationRequestEntityType,
+): Promise<CreationRequestItem[]> {
+  const res = await apiClient.get<CreationRequestItem[]>('/creation-requests', {
+    headers: { Authorization: `Bearer ${token}` },
+    params: entityType ? { entityType } : undefined,
+  });
+  return res.data;
+}
+
+export async function approveCreationRequest(
+  token: string,
+  requestId: string,
+  note?: string,
+): Promise<{
+  request: CreationRequestItem;
+  entity: Record<string, unknown> | null;
+}> {
+  const res = await apiClient.post<{
+    request: CreationRequestItem;
+    entity: Record<string, unknown> | null;
+  }>(
+    `/creation-requests/${requestId}/approve`,
+    { note },
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+  return res.data;
+}
+
+export async function rejectCreationRequest(
+  token: string,
+  requestId: string,
+  note?: string,
+): Promise<CreationRequestItem> {
+  const res = await apiClient.post<CreationRequestItem>(
+    `/creation-requests/${requestId}/reject`,
+    { note },
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+  return res.data;
+}
+
+// --- AI natural-language search ---
+
+export interface AiSearchIntent {
+  keywords: string[];
+  startDate: string | null;
+  endDate: string | null;
+  users: string[];
+  channels: string[];
+  sources: string[];
+  intent: string;
+}
+
+export interface AiSearchResultItem {
+  id: string;
+  /** Content scope: chat | tasks | meetings | announcements | projects | milestones | departments. */
+  source: string;
+  preview: string;
+  senderId: string | null;
+  senderName: string | null;
+  senderImageUrl: string | null;
+  channelId: string;
+  channelName: string | null;
+  createdAt: string;
+  /** Deep link into the original conversation. */
+  url: string;
+  matchedKeywords: string[];
+}
+
+export interface AiSearchResponse {
+  query: string;
+  intent: AiSearchIntent;
+  provider: string;
+  total: number;
+  results: AiSearchResultItem[];
+}
+
+export async function searchNaturalLanguage(
+  token: string,
+  query: string,
+): Promise<AiSearchResponse> {
+  const res = await apiClient.post<AiSearchResponse>(
+    '/search/ai',
+    { query },
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+  return res.data;
+}
+
+// --- AI sentiment analysis (Manager+) ---
+
+export type SentimentCategory = 'positive' | 'frustration' | 'blocker' | 'neutral';
+
+export interface SentimentInsight {
+  messageId: string;
+  userId: string | null;
+  userName: string | null;
+  text: string;
+  createdAt: string | null;
+  category: SentimentCategory;
+  confidence: number;
+  /** Deep link into the original conversation. */
+  url: string;
+}
+
+export interface SentimentTrendPoint {
+  date: string;
+  positive: number;
+  frustration: number;
+  neutral: number;
+}
+
+export interface SentimentAnalysisResponse {
+  project: { id: string; name: string; channelId: string | null };
+  enabled: boolean;
+  insufficient: boolean;
+  analyzedCount: number;
+  provider: string;
+  overall: { label: string; score: number } | null;
+  positives: SentimentInsight[];
+  frustrations: SentimentInsight[];
+  blockers: SentimentInsight[];
+  trend: SentimentTrendPoint[];
+}
+
+export async function fetchSentimentStatus(
+  token: string,
+): Promise<{ enabled: boolean }> {
+  const res = await apiClient.get<{ enabled: boolean }>('/sentiment/status', {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+}
+
+export async function setSentimentStatus(
+  token: string,
+  enabled: boolean,
+): Promise<{ enabled: boolean }> {
+  const res = await apiClient.put<{ enabled: boolean }>(
+    '/sentiment/status',
+    { enabled },
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+  return res.data;
+}
+
+export async function analyzeSentiment(
+  token: string,
+  projectId: string,
+  days = 14,
+): Promise<SentimentAnalysisResponse> {
+  const res = await apiClient.post<SentimentAnalysisResponse>(
+    '/sentiment/analyze',
+    { projectId, days },
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+  return res.data;
 }

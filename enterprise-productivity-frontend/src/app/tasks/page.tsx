@@ -3,11 +3,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useAuth } from '@/lib/auth';
 import { fetchTasks, type TaskItem } from '@/lib/api-client';
+import type { CreationRequestItem } from '@/lib/api-client';
 import { useTaskDirectory } from '@/hooks/use-task-directory';
-import { useRole } from '@/hooks/use-role';
 import { CreateTaskModal } from '@/components/tasks/create-task-modal';
 import { TaskDetailDrawer } from '@/components/tasks/task-detail-drawer';
 import { TaskListSkeleton } from '@/components/tasks/task-list-skeleton';
+import { CreationRequestsSection } from '@/components/creation-requests/creation-requests-section';
 import { EmptyState } from '@/components/ui/empty-state';
 import { ErrorState } from '@/components/ui/error-state';
 import { Button } from '@/components/ui/button';
@@ -39,7 +40,6 @@ const PRIORITY_VARIANT: Record<string, 'gray' | 'blue' | 'amber' | 'red'> = {
 export default function TasksPage() {
   const { getToken, userId } = useAuth();
   const { users } = useTaskDirectory();
-  const { can } = useRole();
 
   const [tasks, setTasks] = useState<TaskItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -51,6 +51,15 @@ export default function TasksPage() {
   const [sortBy, setSortBy] = useState<'dueDate' | 'createdAt'>('createdAt');
   const [page, setPage] = useState(1);
   const [selected, setSelected] = useState<TaskItem | null>(null);
+  const [requestsVersion, setRequestsVersion] = useState(0);
+
+  function handleTaskCreated(item: TaskItem | CreationRequestItem) {
+    if ('payload' in item) {
+      setRequestsVersion((v) => v + 1);
+    } else {
+      setTasks((prev) => [item as TaskItem, ...prev]);
+    }
+  }
 
   async function loadTasks() {
     setIsLoading(true);
@@ -101,10 +110,14 @@ export default function TasksPage() {
         subtitle="Manage assignments, track progress, and close out work."
         icon={<IconTasks width={20} height={20} />}
         actions={
-          can('create_task') && (
-            <CreateTaskModal onCreated={(task) => setTasks((prev) => [task, ...prev])} />
-          )
+          <CreateTaskModal onCreated={handleTaskCreated} />
         }
+      />
+
+      <CreationRequestsSection
+        key={`requests-${requestsVersion}`}
+        entityType="task"
+        onEntityCreated={() => void loadTasks()}
       />
 
       <div className="mb-4 flex flex-wrap items-center gap-2">
@@ -141,7 +154,7 @@ export default function TasksPage() {
           icon={<IconTasks width={26} height={26} />}
           title="No tasks found"
           description={search || statusFilter || priorityFilter ? 'Try adjusting your filters.' : 'Create a task to get started.'}
-          action={can('create_task') && <CreateTaskModal onCreated={(task) => setTasks((prev) => [task, ...prev])} trigger={<Button size="sm"><IconPlus width={15} height={15} /> New task</Button>} />}
+          action={<CreateTaskModal onCreated={handleTaskCreated} trigger={<Button size="sm"><IconPlus width={15} height={15} /> New task</Button>} />}
         />
       )}
 

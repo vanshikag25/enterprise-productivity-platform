@@ -45,17 +45,7 @@ export class UsersController {
   async me(@CurrentUser() auth: AuthObject) {
     const user = await this.usersService.findByUsername(requireUserId(auth));
     if (!user) throw new UnauthorizedException('User profile not found');
-    return {
-      id: user.username,
-      username: user.username,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      fullName: [user.firstName, user.lastName].filter(Boolean).join(' ') || '',
-      email: user.email,
-      imageUrl: user.imageUrl,
-      role: user.role,
-      createdAt: user.createdAt.toISOString(),
-    };
+    return this.serializeMe(user);
   }
 
   @Patch('me')
@@ -67,6 +57,19 @@ export class UsersController {
       requireUserId(auth),
       dto,
     );
+    return this.serializeMe(user);
+  }
+
+  private serializeMe(user: {
+    username: string;
+    firstName: string | null;
+    lastName: string | null;
+    email: string;
+    imageUrl: string | null;
+    role: string;
+    preferredLanguage: string;
+    createdAt: Date;
+  }) {
     return {
       id: user.username,
       username: user.username,
@@ -76,6 +79,7 @@ export class UsersController {
       email: user.email,
       imageUrl: user.imageUrl,
       role: user.role,
+      preferredLanguage: user.preferredLanguage,
       createdAt: user.createdAt.toISOString(),
     };
   }

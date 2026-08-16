@@ -18,6 +18,7 @@ const drizzle_orm_1 = require("drizzle-orm");
 const node_postgres_1 = require("drizzle-orm/node-postgres");
 const drizzle_provider_1 = require("../database/drizzle.provider");
 const users_schema_1 = require("../database/schema/users.schema");
+const languages_1 = require("../languages");
 const roles_1 = require("../rbac/roles");
 let UsersService = class UsersService {
     constructor(db) {
@@ -119,9 +120,25 @@ let UsersService = class UsersService {
             throw new common_1.ForbiddenException('User not found');
     }
     async updateProfile(username, patch) {
+        let preferredLanguage;
+        if (patch.preferredLanguage !== undefined) {
+            const language = patch.preferredLanguage.trim().toLowerCase();
+            if (!(0, languages_1.isSupportedLanguage)(language)) {
+                throw new common_1.BadRequestException(`Unsupported preferred language "${patch.preferredLanguage}".`);
+            }
+            preferredLanguage = language;
+        }
         const [updated] = await this.db
             .update(users_schema_1.users)
-            .set({ ...patch, updatedAt: new Date() })
+            .set({
+            ...(patch.firstName !== undefined
+                ? { firstName: patch.firstName }
+                : {}),
+            ...(patch.lastName !== undefined ? { lastName: patch.lastName } : {}),
+            ...(patch.imageUrl !== undefined ? { imageUrl: patch.imageUrl } : {}),
+            ...(preferredLanguage !== undefined ? { preferredLanguage } : {}),
+            updatedAt: new Date(),
+        })
             .where((0, drizzle_orm_1.eq)(users_schema_1.users.username, username))
             .returning();
         if (!updated)

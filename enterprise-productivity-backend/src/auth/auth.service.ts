@@ -22,6 +22,7 @@ export interface SerializedUser {
   email: string;
   imageUrl: string | null;
   role: string;
+  preferredLanguage: string;
   createdAt: string;
 }
 
@@ -49,6 +50,7 @@ export class AuthService {
       email: user.email,
       imageUrl: user.imageUrl,
       role: user.role,
+      preferredLanguage: user.preferredLanguage,
       createdAt: user.createdAt.toISOString(),
     };
   }

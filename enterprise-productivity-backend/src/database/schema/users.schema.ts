@@ -19,6 +19,9 @@ export const users = pgTable('users', {
   lastName: varchar('last_name', { length: 255 }),
   imageUrl: varchar('image_url', { length: 2048 }),
   role: userRoleEnum('role').notNull().default('employee'),
+  preferredLanguage: varchar('preferred_language', { length: 64 })
+    .notNull()
+    .default('en'),
   createdAt: timestamp('created_at', { withTimezone: true })
     .defaultNow()
     .notNull(),

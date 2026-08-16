@@ -7,7 +7,6 @@ import {
   Channel,
   Window,
   MessageList,
-  MessageComposer,
   Thread,
   WithComponents,
   useChatContext,
@@ -20,6 +19,7 @@ import { NewGroupModal } from './new-group-modal';
 import { createCustomChannelListItem } from './custom-channel-list-item';
 import { ChatHeader } from './chat-header';
 import { TypingIndicatorText } from './typing-indicator-text';
+import { MessageComposerWithDrafts } from './message-composer-with-drafts';
 import { MessageReadStatus } from './message-read-status';
 import { reactionOptions } from './reaction-options';
 import { SingleChoiceReactionSelector } from './single-choice-reaction-selector';
@@ -28,9 +28,13 @@ import { MessageActionsWithProductivity } from '@/components/message-actions/mes
 import { PollContentWithManage } from '@/components/message-actions/poll-manage-actions';
 import { PinnedMessagesPanel } from './pinned-messages-panel';
 import { MessageSearchPanel } from './message-search-panel';
+import { ConversationSummaryPanel } from './conversation-summary-panel';
 import { GroupSettingsDrawer } from './group-settings-drawer';
 import { scrollToMessage } from './scroll-to-message';
-import { IconPin, IconSearch, IconSettings, IconUsers } from '@/components/ui/icons';
+import { AIActionDetectionProvider } from '@/components/action-detection/action-detection-context';
+import { TranslationProvider } from '@/components/chat/translation-context';
+import { MessageWithAiActions } from '@/components/action-detection/message-with-ai-actions';
+import { IconPin, IconSearch, IconSettings, IconSparkles, IconUsers } from '@/components/ui/icons';
 
 interface ChatBodyProps {
   userId: string;
@@ -42,6 +46,7 @@ export function ChatBody({ userId, client }: ChatBodyProps) {
   const [channelListKey, setChannelListKey] = useState(0);
   const [showPinned, setShowPinned] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
+  const [showSummary, setShowSummary] = useState(false);
   const [showGroupSettings, setShowGroupSettings] = useState(false);
 
   const router = useRouter();
@@ -82,6 +87,7 @@ export function ChatBody({ userId, client }: ChatBodyProps) {
   useEffect(() => {
     setShowPinned(false);
     setShowSearch(false);
+    setShowSummary(false);
     setShowGroupSettings(false);
   }, [channel]);
 
@@ -130,11 +136,14 @@ export function ChatBody({ userId, client }: ChatBodyProps) {
               MessageActions: MessageActionsWithProductivity,
               MessageStatus: MessageReadStatus,
               PollContent: PollContentWithManage,
+              MessageUI: MessageWithAiActions,
               reactionOptions,
             }}
           >
             <Channel>
-              <Window>
+              <AIActionDetectionProvider>
+                <TranslationProvider>
+                <Window>
                 <ChatHeader currentUserId={userId} />
 
                 <div className="flex items-center gap-1 border-b border-slate-100 px-3 py-1.5">
@@ -142,6 +151,7 @@ export function ChatBody({ userId, client }: ChatBodyProps) {
                     onClick={() => {
                       setShowPinned((v) => !v);
                       setShowSearch(false);
+                      setShowSummary(false);
                     }}
                     className={`inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-medium transition-colors ${showPinned ? 'bg-blue-50 text-blue-700' : 'text-slate-500 hover:bg-slate-100'}`}
                   >
@@ -152,11 +162,23 @@ export function ChatBody({ userId, client }: ChatBodyProps) {
                     onClick={() => {
                       setShowSearch((v) => !v);
                       setShowPinned(false);
+                      setShowSummary(false);
                     }}
                     className={`inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-medium transition-colors ${showSearch ? 'bg-blue-50 text-blue-700' : 'text-slate-500 hover:bg-slate-100'}`}
                   >
                     <IconSearch width={13} height={13} />
                     Search
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowSummary((v) => !v);
+                      setShowPinned(false);
+                      setShowSearch(false);
+                    }}
+                    className={`inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-medium transition-colors ${showSummary ? 'bg-blue-50 text-blue-700' : 'text-slate-500 hover:bg-slate-100'}`}
+                  >
+                    <IconSparkles width={13} height={13} />
+                    Summary
                   </button>
                   {isGroupChat && (
                     <button
@@ -164,6 +186,7 @@ export function ChatBody({ userId, client }: ChatBodyProps) {
                         setShowGroupSettings((v) => !v);
                         setShowPinned(false);
                         setShowSearch(false);
+                        setShowSummary(false);
                       }}
                       className={`inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-medium transition-colors ${showGroupSettings ? 'bg-blue-50 text-blue-700' : 'text-slate-500 hover:bg-slate-100'}`}
                     >
@@ -207,6 +230,9 @@ export function ChatBody({ userId, client }: ChatBodyProps) {
               {showSearch && (
                 <MessageSearchPanel onClose={() => setShowSearch(false)} />
               )}
+              {showSummary && (
+                <ConversationSummaryPanel onClose={() => setShowSummary(false)} />
+              )}
               {showGroupSettings && (
                 <GroupSettingsDrawer onClose={() => setShowGroupSettings(false)} />
               )}
@@ -216,6 +242,8 @@ export function ChatBody({ userId, client }: ChatBodyProps) {
                   onHandled={() => router.replace(pathname)}
                 />
               )}
+              </TranslationProvider>
+              </AIActionDetectionProvider>
             </Channel>
           </WithComponents>
         ) : (
@@ -279,5 +307,5 @@ function MessageComposerOrArchiveNotice() {
       </div>
     );
   }
-  return <MessageComposer audioRecordingEnabled />;
+  return <MessageComposerWithDrafts />;
 }

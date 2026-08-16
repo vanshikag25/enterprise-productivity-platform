@@ -22,12 +22,16 @@ interface CreateReminderFromMessageModalProps {
   open: boolean;
   onClose: () => void;
   source: SourceMessageRef;
+  prefill?: Partial<ReminderPayload>;
+  onCreated?: (reminder: { id: string }) => void;
 }
 
 export function CreateReminderFromMessageModal({
   open,
   onClose,
   source,
+  prefill,
+  onCreated,
 }: CreateReminderFromMessageModalProps) {
   const { getToken } = useAuth();
   const { showToast } = useToast();
@@ -35,12 +39,15 @@ export function CreateReminderFromMessageModal({
     id: source.sourceMessageId ?? 'source',
     text: source.sourceMessageText,
   });
-  const [title, setTitle] = useState(snippet);
+  const [title, setTitle] = useState(prefill?.title ?? snippet);
   const [scheduledFor, setScheduledFor] = useState(() =>
-    toLocalDateTimeValue(new Date(Date.now() + 60 * 60 * 1000)),
+    prefill?.scheduledFor ??
+      toLocalDateTimeValue(new Date(Date.now() + 60 * 60 * 1000)),
   );
-  const [priority, setPriority] = useState<ReminderPriority>('Medium');
-  const [notes, setNotes] = useState('');
+  const [priority, setPriority] = useState<ReminderPriority>(
+    prefill?.priority ?? 'Medium',
+  );
+  const [notes, setNotes] = useState(prefill?.notes ?? '');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [validationError, setValidationError] = useState<string | null>(null);
 
@@ -66,8 +73,9 @@ export function CreateReminderFromMessageModal({
         sourceSenderId: source.sourceSenderId,
         sourceChannelName: source.sourceChannelName,
       };
-      await createReminder(token, payload);
+      const reminder = await createReminder(token, payload);
       showToast('Reminder set.');
+      onCreated?.({ id: reminder.id });
       onClose();
     } catch (err) {
       setValidationError(err instanceof Error ? err.message : 'Failed to create reminder.');

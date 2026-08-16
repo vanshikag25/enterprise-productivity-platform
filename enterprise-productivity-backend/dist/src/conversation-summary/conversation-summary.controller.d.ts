@@ -1,0 +1,71 @@
+import type { AuthObject } from '../auth/auth-object';
+import { ConversationSummaryService } from './conversation-summary.service';
+import { GenerateConversationSummaryDto } from './dto/generate-conversation-summary.dto';
+export declare class ConversationSummaryController {
+    private readonly conversationSummaryService;
+    constructor(conversationSummaryService: ConversationSummaryService);
+    list(auth: AuthObject, channelId: string | undefined): Promise<{
+        id: string;
+        channelId: string;
+        periodType: string;
+        periodStart: Date;
+        periodEnd: Date;
+        overview: string;
+        keyDecisions: string[];
+        actionItems: string[];
+        unresolvedTopics: string[];
+        messageCount: number;
+        provider: string;
+        generatedAt: Date;
+        createdAt: Date;
+        updatedAt: Date;
+    }[]>;
+    getDaily(auth: AuthObject, channelId: string | undefined): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        channelId: string;
+        keyDecisions: string[];
+        actionItems: string[];
+        overview: string;
+        generatedAt: Date;
+        provider: string;
+        periodType: string;
+        periodStart: Date;
+        periodEnd: Date;
+        unresolvedTopics: string[];
+        messageCount: number;
+    }>;
+    getWeekly(auth: AuthObject, channelId: string | undefined): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        channelId: string;
+        keyDecisions: string[];
+        actionItems: string[];
+        overview: string;
+        generatedAt: Date;
+        provider: string;
+        periodType: string;
+        periodStart: Date;
+        periodEnd: Date;
+        unresolvedTopics: string[];
+        messageCount: number;
+    }>;
+    generate(auth: AuthObject, dto: GenerateConversationSummaryDto): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        channelId: string;
+        keyDecisions: string[];
+        actionItems: string[];
+        overview: string;
+        generatedAt: Date;
+        provider: string;
+        periodType: string;
+        periodStart: Date;
+        periodEnd: Date;
+        unresolvedTopics: string[];
+        messageCount: number;
+    }>;
+}

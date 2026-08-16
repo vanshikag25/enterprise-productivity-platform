@@ -12,6 +12,7 @@ export interface SerializedUser {
     email: string;
     imageUrl: string | null;
     role: string;
+    preferredLanguage: string;
     createdAt: string;
 }
 export interface AuthSession {

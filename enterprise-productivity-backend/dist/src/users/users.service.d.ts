@@ -37,6 +37,7 @@ export declare class UsersService {
         firstName?: string | null;
         lastName?: string | null;
         imageUrl?: string | null;
+        preferredLanguage?: string;
     }): Promise<User>;
     updateRole(actor: User, targetUsername: string, newRole: UserRole): Promise<User>;
     findUsersPaginated(currentUsername: string, params: FindUsersParams): Promise<FindUsersResult>;

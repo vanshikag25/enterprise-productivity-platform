@@ -2,12 +2,12 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { useAuth } from '@/lib/auth';
-import { fetchMeetings, type MeetingItem } from '@/lib/api-client';
+import { fetchMeetings, type MeetingItem, type CreationRequestItem } from '@/lib/api-client';
 import { useTaskDirectory } from '@/hooks/use-task-directory';
-import { useRole } from '@/hooks/use-role';
 import { CreateMeetingModal } from '@/components/meetings/create-meeting-modal';
 import { MeetingDetailDrawer } from '@/components/meetings/meeting-detail-drawer';
 import { MeetingListSkeleton } from '@/components/meetings/meeting-list-skeleton';
+import { CreationRequestsSection } from '@/components/creation-requests/creation-requests-section';
 import { EmptyState } from '@/components/ui/empty-state';
 import { ErrorState } from '@/components/ui/error-state';
 import { Badge } from '@/components/ui/badge';
@@ -29,7 +29,6 @@ const STATUS_VARIANT: Record<string, 'blue' | 'amber' | 'green' | 'red'> = {
 export default function MeetingsPage() {
   const { getToken, userId } = useAuth();
   const { users } = useTaskDirectory();
-  const { can } = useRole();
 
   const [meetings, setMeetings] = useState<MeetingItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -38,6 +37,15 @@ export default function MeetingsPage() {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [selected, setSelected] = useState<MeetingItem | null>(null);
+  const [requestsVersion, setRequestsVersion] = useState(0);
+
+  function handleMeetingCreated(item: MeetingItem | CreationRequestItem) {
+    if ('payload' in item) {
+      setRequestsVersion((v) => v + 1);
+    } else {
+      setMeetings((prev) => [item as MeetingItem, ...prev]);
+    }
+  }
 
   async function load() {
     setIsLoading(true);
@@ -75,10 +83,14 @@ export default function MeetingsPage() {
         subtitle="Schedule and coordinate with your team."
         icon={<IconCalendar width={20} height={20} />}
         actions={
-          can('create_meeting') && (
-            <CreateMeetingModal onCreated={(m) => setMeetings((prev) => [m, ...prev])} />
-          )
+          <CreateMeetingModal onCreated={handleMeetingCreated} />
         }
+      />
+
+      <CreationRequestsSection
+        key={`requests-${requestsVersion}`}
+        entityType="meeting"
+        onEntityCreated={() => void load()}
       />
 
       <div className="mb-4 flex flex-wrap items-center gap-2">
@@ -102,7 +114,7 @@ export default function MeetingsPage() {
           icon={<IconCalendar width={26} height={26} />}
           title="No meetings found"
           description={search || statusFilter ? 'Try adjusting your filters.' : 'Create a meeting to get started.'}
-          action={can('create_meeting') && <CreateMeetingModal onCreated={(m) => setMeetings((prev) => [m, ...prev])} trigger={<Button size="sm"><IconPlus width={15} height={15} /> New meeting</Button>} />}
+          action={<CreateMeetingModal onCreated={handleMeetingCreated} trigger={<Button size="sm"><IconPlus width={15} height={15} /> New meeting</Button>} />}
         />
       )}
 

@@ -13,5 +13,20 @@ declare const _default: () => {
         apiKey: string | undefined;
         secret: string | undefined;
     };
+    ai: {
+        provider: string;
+        openaiApiKey: string | undefined;
+        openaiModel: string;
+        openaiBaseUrl: string;
+    };
+    sentiment: {
+        enabled: boolean;
+    };
+    summaries: {
+        backfillIntervalMs: number;
+    };
+    actionDetection: {
+        backfillIntervalMs: number;
+    };
 };
 export default _default;

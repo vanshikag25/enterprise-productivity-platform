@@ -8,10 +8,11 @@ import { Card } from '@/components/ui/card';
 import { FullPageSpinner } from '@/components/ui/spinner';
 import { Spinner } from '@/components/ui/spinner';
 import { Button } from '@/components/ui/button';
-import { Input, Label } from '@/components/ui/form';
+import { Input, Label, Select } from '@/components/ui/form';
 import { PageHeader } from '@/components/ui/page-header';
-import { IconEdit, IconMail, IconShield, IconUser } from '@/components/ui/icons';
+import { IconEdit, IconLanguage, IconMail, IconShield, IconUser } from '@/components/ui/icons';
 import { useRole } from '@/hooks/use-role';
+import { SUPPORTED_LANGUAGES, languageLabel } from '@/lib/languages';
 import {
   USER_ROLE_LABELS,
   changeUsernameRequest,
@@ -24,7 +25,7 @@ const USERNAME_PATTERN = /^[a-zA-Z0-9_.-]{3,50}$/;
 export default function ProfilePage() {
   const { user, isLoaded } = useUser();
   const { getToken, setSession } = useAuth();
-  const { me, role, isLoading } = useRole();
+  const { me, role, isLoading, refresh } = useRole();
 
   const [isEditingUsername, setIsEditingUsername] = useState(false);
   const [newUsername, setNewUsername] = useState('');
@@ -38,6 +39,12 @@ export default function ProfilePage() {
   const [nameError, setNameError] = useState<string | null>(null);
   const [nameSuccess, setNameSuccess] = useState<string | null>(null);
   const [isSavingName, setIsSavingName] = useState(false);
+
+  const [isEditingLanguage, setIsEditingLanguage] = useState(false);
+  const [preferredLanguage, setPreferredLanguage] = useState('en');
+  const [languageError, setLanguageError] = useState<string | null>(null);
+  const [languageSuccess, setLanguageSuccess] = useState<string | null>(null);
+  const [isSavingLanguage, setIsSavingLanguage] = useState(false);
 
   if (!isLoaded || (isLoading && !me)) {
     return (
@@ -71,6 +78,40 @@ export default function ProfilePage() {
     setNameError(null);
     setNameSuccess(null);
     setIsEditingName(true);
+  }
+
+  function startEditingLanguage() {
+    setPreferredLanguage(user?.preferredLanguage ?? me?.preferredLanguage ?? 'en');
+    setLanguageError(null);
+    setLanguageSuccess(null);
+    setIsEditingLanguage(true);
+  }
+
+  async function handleLanguageSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (isSavingLanguage) return;
+
+    setIsSavingLanguage(true);
+    setLanguageError(null);
+    setLanguageSuccess(null);
+
+    try {
+      const token = await getToken();
+      if (!token) throw new Error('You are not signed in.');
+      const updated = await updateProfileRequest(token, {
+        preferredLanguage,
+      });
+      if (token) await setSession(token, updated);
+      await refresh();
+      setIsEditingLanguage(false);
+      setLanguageSuccess('Preferred language updated.');
+    } catch (err) {
+      setLanguageError(
+        err instanceof Error ? err.message : 'Failed to update language.',
+      );
+    } finally {
+      setIsSavingLanguage(false);
+    }
   }
 
   async function handleNameSubmit(e: FormEvent<HTMLFormElement>) {
@@ -330,6 +371,80 @@ export default function ProfilePage() {
                   onClick={() => {
                     setIsEditingName(false);
                     setNameError(null);
+                  }}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </form>
+          )}
+        </div>
+      </Card>
+
+      <Card className="mt-6">
+        <div className="px-5 py-4">
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-500">
+                <IconLanguage width={16} height={16} />
+              </span>
+              <div>
+                <p className="text-xs font-medium uppercase tracking-wide text-slate-400">Preferred language</p>
+                <p className="truncate text-sm font-medium text-slate-800">
+                  {languageLabel(user?.preferredLanguage ?? me?.preferredLanguage ?? 'en')}
+                </p>
+              </div>
+            </div>
+            {!isEditingLanguage && (
+              <Button type="button" variant="outline" size="sm" onClick={startEditingLanguage}>
+                Change
+              </Button>
+            )}
+          </div>
+
+          {languageSuccess && (
+            <div className="mt-3 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+              {languageSuccess}
+            </div>
+          )}
+
+          {isEditingLanguage && (
+            <form onSubmit={handleLanguageSubmit} className="mt-4 space-y-3">
+              {languageError && (
+                <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                  {languageError}
+                </div>
+              )}
+              <div className="space-y-1.5">
+                <Label htmlFor="preferredLanguage">Preferred language</Label>
+                <Select
+                  id="preferredLanguage"
+                  name="preferredLanguage"
+                  value={preferredLanguage}
+                  onChange={(e) => setPreferredLanguage(e.target.value)}
+                  className="max-w-xs"
+                >
+                  {SUPPORTED_LANGUAGES.map((l) => (
+                    <option key={l.code} value={l.code}>
+                      {l.label}
+                    </option>
+                  ))}
+                </Select>
+                <p className="text-xs text-slate-400">
+                  Used as the default language for AI features like message translation.
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <Button type="submit" size="sm" disabled={isSavingLanguage}>
+                  {isSavingLanguage ? <Spinner size={16} /> : 'Save language'}
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    setIsEditingLanguage(false);
+                    setLanguageError(null);
                   }}
                 >
                   Cancel

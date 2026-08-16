@@ -16,4 +16,15 @@ export const envValidationSchema = Joi.object({
 
   STREAM_API_KEY: Joi.string().required(),
   STREAM_SECRET: Joi.string().required(),
+
+  AI_PROVIDER: Joi.string().valid('mock', 'openai').default('mock'),
+  OPENAI_API_KEY: Joi.string().optional(),
+  OPENAI_MODEL: Joi.string().optional(),
+  OPENAI_BASE_URL: Joi.string().uri().optional(),
+  SENTIMENT_ANALYSIS_ENABLED: Joi.string()
+    .valid('true', 'false')
+    .optional()
+    .default('false'),
+  SUMMARIES_BACKFILL_INTERVAL_MS: Joi.number().optional(),
+  ACTION_DETECTION_BACKFILL_INTERVAL_MS: Joi.number().optional(),
 });

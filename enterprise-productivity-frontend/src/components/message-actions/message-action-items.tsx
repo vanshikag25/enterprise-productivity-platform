@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useAuth } from '@/lib/auth';
+import { useAuth, useUser } from '@/lib/auth';
 import {
   ContextMenuButton,
   useContextMenuContext,
@@ -15,10 +15,13 @@ import {
 } from '@/lib/api-client';
 import { useRole } from '@/hooks/use-role';
 import { useToast } from '@/hooks/use-toast';
+import { useMessageTranslation } from '@/components/chat/translation-context';
+import { languageLabel } from '@/lib/languages';
 import {
   IconBookmark,
   IconCalendarPlus,
   IconClock,
+  IconLanguage,
   IconNote,
   IconPoll,
 } from '@/components/ui/icons';
@@ -160,6 +163,46 @@ export function BookmarkMessageActionItem() {
       onClick={() => void handleToggle()}
     >
       Bookmark message
+    </ContextMenuButton>
+  );
+}
+
+export function TranslateMessageActionItem() {
+  const { closeMenu } = useContextMenuContext();
+  const { message } = useMessageContext();
+  const { channel } = useChannelStateContext();
+  const { user } = useUser();
+  const { getTranslation, translate, hideTranslation } = useMessageTranslation();
+
+  if (!message?.id || !message.text || !channel.id) return null;
+
+  const messageId = message.id;
+  const targetLanguage = user?.preferredLanguage || 'en';
+  const state = getTranslation(messageId);
+  const isBusy = state?.loading ?? false;
+
+  function handleClick() {
+    closeMenu();
+    if (state?.translatedText && !state.hidden) {
+      hideTranslation(messageId);
+    } else {
+      void translate(messageId, targetLanguage);
+    }
+  }
+
+  const label = state?.translatedText && !state.hidden
+    ? 'Show original'
+    : `Translate to ${languageLabel(targetLanguage)}`;
+
+  return (
+    <ContextMenuButton
+      className="str-chat__message-actions-list-item-button"
+      aria-label={label.toLowerCase()}
+      disabled={isBusy}
+      Icon={IconLanguage}
+      onClick={handleClick}
+    >
+      {label}
     </ContextMenuButton>
   );
 }

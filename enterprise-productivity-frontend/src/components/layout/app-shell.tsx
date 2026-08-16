@@ -22,8 +22,10 @@ import {
   IconDepartment,
   IconMenu,
   IconMegaphone,
+  IconMessageCircle,
   IconNote,
   IconProject,
+  IconSearch,
   IconShield,
   IconTasks,
   IconUsers,
@@ -36,6 +38,8 @@ const NAV_ITEMS: {
   minRole?: UserRole;
 }[] = [
   { href: '/dashboard', label: 'Chat', icon: <IconChat width={18} height={18} /> },
+  { href: '/search', label: 'AI Search', icon: <IconSearch width={18} height={18} /> },
+  { href: '/sentiment', label: 'Sentiment', icon: <IconMessageCircle width={18} height={18} />, minRole: 'manager' },
   { href: '/directory', label: 'Directory', icon: <IconUsers width={18} height={18} /> },
   { href: '/tasks', label: 'Tasks', icon: <IconTasks width={18} height={18} /> },
   { href: '/meetings', label: 'Meetings', icon: <IconCalendar width={18} height={18} /> },

@@ -29,6 +29,13 @@ const reminders_module_1 = require("./reminders/reminders.module");
 const bookmarks_module_1 = require("./bookmarks/bookmarks.module");
 const message_source_module_1 = require("./message-source/message-source.module");
 const polls_module_1 = require("./polls/polls.module");
+const conversation_summary_module_1 = require("./conversation-summary/conversation-summary.module");
+const smart_reply_module_1 = require("./smart-reply/smart-reply.module");
+const action_detection_module_1 = require("./action-detection/action-detection.module");
+const creation_requests_module_1 = require("./creation-requests/creation-requests.module");
+const nl_search_module_1 = require("./nl-search/nl-search.module");
+const sentiment_module_1 = require("./sentiment/sentiment.module");
+const translation_module_1 = require("./translation/translation.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -56,6 +63,13 @@ exports.AppModule = AppModule = __decorate([
             reminders_module_1.RemindersModule,
             bookmarks_module_1.BookmarksModule,
             polls_module_1.PollsModule,
+            conversation_summary_module_1.ConversationSummaryModule,
+            smart_reply_module_1.SmartReplyModule,
+            action_detection_module_1.ActionDetectionModule,
+            creation_requests_module_1.CreationRequestsModule,
+            nl_search_module_1.NlSearchModule,
+            sentiment_module_1.SentimentModule,
+            translation_module_1.TranslationModule,
         ],
     })
 ], AppModule);

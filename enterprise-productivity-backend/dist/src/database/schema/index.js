@@ -26,4 +26,9 @@ __exportStar(require("./project-documents.schema"), exports);
 __exportStar(require("./project-milestones.schema"), exports);
 __exportStar(require("./message-actions.schema"), exports);
 __exportStar(require("./polls.schema"), exports);
+__exportStar(require("./conversation-summaries.schema"), exports);
+__exportStar(require("./ai-actions.schema"), exports);
+__exportStar(require("./entity-creation-requests.schema"), exports);
+__exportStar(require("./app-settings.schema"), exports);
+__exportStar(require("./message-translations.schema"), exports);
 //# sourceMappingURL=index.js.map

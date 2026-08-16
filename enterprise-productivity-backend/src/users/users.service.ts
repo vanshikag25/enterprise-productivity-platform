@@ -3,11 +3,13 @@ import {
   Injectable,
   ForbiddenException,
   ConflictException,
+  BadRequestException,
 } from '@nestjs/common';
 import { and, asc, desc, eq, ilike, ne, or, sql } from 'drizzle-orm';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { DRIZZLE } from '../database/drizzle.provider';
 import { users, User } from '../database/schema/users.schema';
+import { isSupportedLanguage } from '../languages';
 import { UserSortField, SortOrder } from './dto/list-users-query.dto';
 import { ROLE_RANK, UserRole } from '../rbac/roles';
 
@@ -163,11 +165,30 @@ export class UsersService {
       firstName?: string | null;
       lastName?: string | null;
       imageUrl?: string | null;
+      preferredLanguage?: string;
     },
   ): Promise<User> {
+    let preferredLanguage: string | undefined;
+    if (patch.preferredLanguage !== undefined) {
+      const language = patch.preferredLanguage.trim().toLowerCase();
+      if (!isSupportedLanguage(language)) {
+        throw new BadRequestException(
+          `Unsupported preferred language "${patch.preferredLanguage}".`,
+        );
+      }
+      preferredLanguage = language;
+    }
     const [updated] = await this.db
       .update(users)
-      .set({ ...patch, updatedAt: new Date() })
+      .set({
+        ...(patch.firstName !== undefined
+          ? { firstName: patch.firstName }
+          : {}),
+        ...(patch.lastName !== undefined ? { lastName: patch.lastName } : {}),
+        ...(patch.imageUrl !== undefined ? { imageUrl: patch.imageUrl } : {}),
+        ...(preferredLanguage !== undefined ? { preferredLanguage } : {}),
+        updatedAt: new Date(),
+      })
       .where(eq(users.username, username))
       .returning();
     if (!updated) throw new ForbiddenException('User profile not found');

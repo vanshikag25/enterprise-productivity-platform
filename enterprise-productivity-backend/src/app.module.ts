@@ -20,6 +20,13 @@ import { RemindersModule } from './reminders/reminders.module';
 import { BookmarksModule } from './bookmarks/bookmarks.module';
 import { MessageSourceModule } from './message-source/message-source.module';
 import { PollsModule } from './polls/polls.module';
+import { ConversationSummaryModule } from './conversation-summary/conversation-summary.module';
+import { SmartReplyModule } from './smart-reply/smart-reply.module';
+import { ActionDetectionModule } from './action-detection/action-detection.module';
+import { CreationRequestsModule } from './creation-requests/creation-requests.module';
+import { NlSearchModule } from './nl-search/nl-search.module';
+import { SentimentModule } from './sentiment/sentiment.module';
+import { TranslationModule } from './translation/translation.module';
 
 @Module({
   imports: [
@@ -44,6 +51,13 @@ import { PollsModule } from './polls/polls.module';
     RemindersModule,
     BookmarksModule,
     PollsModule,
+    ConversationSummaryModule,
+    SmartReplyModule,
+    ActionDetectionModule,
+    CreationRequestsModule,
+    NlSearchModule,
+    SentimentModule,
+    TranslationModule,
   ],
 })
 export class AppModule {}

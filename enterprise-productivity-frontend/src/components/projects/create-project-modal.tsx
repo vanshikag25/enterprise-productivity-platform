@@ -74,7 +74,7 @@ export function CreateProjectModal({ onCreated, trigger }: CreateProjectModalPro
   }
 
   const defaultTrigger = (
-    <Button size="sm">
+    <Button size="sm" onClick={() => setIsOpen(true)}>
       <IconPlus width={15} height={15} /> New Project
     </Button>
   );

@@ -59,7 +59,7 @@ export function CreateChannelModal({ kind, onCreated, trigger }: CreateChannelMo
   }
 
   const defaultTrigger = (
-    <Button size="sm">
+    <Button size="sm" onClick={() => setIsOpen(true)}>
       <IconPlus width={15} height={15} />
       {kind === 'announcement' ? 'New Announcement Channel' : 'New Channel'}
     </Button>

@@ -15,5 +15,20 @@ exports.default = () => ({
         apiKey: process.env.STREAM_API_KEY,
         secret: process.env.STREAM_SECRET,
     },
+    ai: {
+        provider: process.env.AI_PROVIDER ?? 'mock',
+        openaiApiKey: process.env.OPENAI_API_KEY,
+        openaiModel: process.env.OPENAI_MODEL ?? 'gpt-4o-mini',
+        openaiBaseUrl: process.env.OPENAI_BASE_URL ?? 'https://api.openai.com/v1',
+    },
+    sentiment: {
+        enabled: (process.env.SENTIMENT_ANALYSIS_ENABLED ?? 'false') === 'true',
+    },
+    summaries: {
+        backfillIntervalMs: parseInt(process.env.SUMMARIES_BACKFILL_INTERVAL_MS ?? '3600000', 10),
+    },
+    actionDetection: {
+        backfillIntervalMs: parseInt(process.env.ACTION_DETECTION_BACKFILL_INTERVAL_MS ?? '900000', 10),
+    },
 });
 //# sourceMappingURL=configuration.js.map

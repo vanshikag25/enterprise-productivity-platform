@@ -42,20 +42,13 @@ let UsersController = class UsersController {
         const user = await this.usersService.findByUsername(requireUserId(auth));
         if (!user)
             throw new common_1.UnauthorizedException('User profile not found');
-        return {
-            id: user.username,
-            username: user.username,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            fullName: [user.firstName, user.lastName].filter(Boolean).join(' ') || '',
-            email: user.email,
-            imageUrl: user.imageUrl,
-            role: user.role,
-            createdAt: user.createdAt.toISOString(),
-        };
+        return this.serializeMe(user);
     }
     async updateMe(auth, dto) {
         const user = await this.usersService.updateProfile(requireUserId(auth), dto);
+        return this.serializeMe(user);
+    }
+    serializeMe(user) {
         return {
             id: user.username,
             username: user.username,
@@ -65,6 +58,7 @@ let UsersController = class UsersController {
             email: user.email,
             imageUrl: user.imageUrl,
             role: user.role,
+            preferredLanguage: user.preferredLanguage,
             createdAt: user.createdAt.toISOString(),
         };
     }

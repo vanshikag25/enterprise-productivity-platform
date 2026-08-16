@@ -8,7 +8,13 @@ import {
   type ReactNode,
 } from 'react';
 import { useAuth } from '@/lib/auth';
-import { createTask, type TaskItem } from '@/lib/api-client';
+import {
+  createTask,
+  createCreationRequest,
+  type TaskItem,
+  type CreationRequestItem,
+} from '@/lib/api-client';
+import { useRole } from '@/hooks/use-role';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
@@ -16,12 +22,13 @@ import { IconPlus } from '@/components/ui/icons';
 import { TaskForm } from './task-form';
 
 interface CreateTaskModalProps {
-  onCreated: (task: TaskItem) => void;
+  onCreated: (item: TaskItem | CreationRequestItem) => void;
   trigger?: ReactNode;
 }
 
 export function CreateTaskModal({ onCreated, trigger }: CreateTaskModalProps) {
   const { getToken } = useAuth();
+  const { can } = useRole();
   const { showToast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -32,7 +39,19 @@ export function CreateTaskModal({ onCreated, trigger }: CreateTaskModalProps) {
     setError(null);
     try {
       const token = await getToken();
-      if (!token) throw new Error('Unable to retrieve Clerk session token.');
+      if (!token) throw new Error('Unable to retrieve session token.');
+
+      if (!can('create_task')) {
+        const request = await createCreationRequest(token, {
+          entityType: 'task',
+          payload,
+        });
+        showToast('Task request submitted — a team lead will review it.');
+        onCreated(request);
+        setIsOpen(false);
+        return;
+      }
+
       const task = await createTask(token, payload);
       showToast('Task created.');
       onCreated(task);
@@ -44,8 +63,9 @@ export function CreateTaskModal({ onCreated, trigger }: CreateTaskModalProps) {
     }
   }
 
+  const requiresApproval = !can('create_task');
   const defaultTrigger = (
-    <Button size="sm">
+    <Button size="sm" onClick={() => setIsOpen(true)}>
       <IconPlus width={15} height={15} /> New Task
     </Button>
   );
@@ -62,10 +82,16 @@ export function CreateTaskModal({ onCreated, trigger }: CreateTaskModalProps) {
         onClose={() => setIsOpen(false)}
         title="New Task"
       >
+        {requiresApproval && (
+          <div className="mb-3 rounded-lg border border-blue-100 bg-blue-50 px-3 py-2 text-xs text-blue-700">
+            Your task will be sent to a team lead for approval before it is
+            created.
+          </div>
+        )}
         <TaskForm
           isSubmitting={isSubmitting}
           error={error}
-          submitLabel="Create"
+          submitLabel={requiresApproval ? 'Submit for approval' : 'Create'}
           onSubmit={handleSubmit}
           onCancel={() => setIsOpen(false)}
         />

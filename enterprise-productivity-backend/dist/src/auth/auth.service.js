@@ -66,6 +66,7 @@ let AuthService = AuthService_1 = class AuthService {
             email: user.email,
             imageUrl: user.imageUrl,
             role: user.role,
+            preferredLanguage: user.preferredLanguage,
             createdAt: user.createdAt.toISOString(),
         };
     }

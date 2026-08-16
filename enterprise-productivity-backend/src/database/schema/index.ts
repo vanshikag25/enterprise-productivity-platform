@@ -10,3 +10,8 @@ export * from './project-documents.schema';
 export * from './project-milestones.schema';
 export * from './message-actions.schema';
 export * from './polls.schema';
+export * from './conversation-summaries.schema';
+export * from './ai-actions.schema';
+export * from './entity-creation-requests.schema';
+export * from './app-settings.schema';
+export * from './message-translations.schema';
