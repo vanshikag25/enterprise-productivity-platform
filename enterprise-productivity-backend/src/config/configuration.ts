@@ -18,6 +18,11 @@ export default () => ({
     secret: process.env.STREAM_SECRET,
   },
 
+  video: {
+    apiKey: process.env.STREAM_VIDEO_KEY ?? process.env.STREAM_API_KEY,
+    secret: process.env.STREAM_VIDEO_SECRET ?? process.env.STREAM_SECRET,
+  },
+
   ai: {
     provider: process.env.AI_PROVIDER ?? 'mock',
     openaiApiKey: process.env.OPENAI_API_KEY,

@@ -16,6 +16,8 @@ export const envValidationSchema = Joi.object({
 
   STREAM_API_KEY: Joi.string().required(),
   STREAM_SECRET: Joi.string().required(),
+  STREAM_VIDEO_KEY: Joi.string().optional(),
+  STREAM_VIDEO_SECRET: Joi.string().optional(),
 
   AI_PROVIDER: Joi.string().valid('mock', 'openai').default('mock'),
   OPENAI_API_KEY: Joi.string().optional(),

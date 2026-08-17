@@ -13,6 +13,10 @@ declare const _default: () => {
         apiKey: string | undefined;
         secret: string | undefined;
     };
+    video: {
+        apiKey: string | undefined;
+        secret: string | undefined;
+    };
     ai: {
         provider: string;
         openaiApiKey: string | undefined;

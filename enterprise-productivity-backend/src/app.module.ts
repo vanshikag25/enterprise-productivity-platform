@@ -27,6 +27,8 @@ import { CreationRequestsModule } from './creation-requests/creation-requests.mo
 import { NlSearchModule } from './nl-search/nl-search.module';
 import { SentimentModule } from './sentiment/sentiment.module';
 import { TranslationModule } from './translation/translation.module';
+import { VideoModule } from './video/video.module';
+import { ModerationModule } from './moderation/moderation.module';
 
 @Module({
   imports: [
@@ -58,6 +60,8 @@ import { TranslationModule } from './translation/translation.module';
     NlSearchModule,
     SentimentModule,
     TranslationModule,
+    VideoModule,
+    ModerationModule,
   ],
 })
 export class AppModule {}

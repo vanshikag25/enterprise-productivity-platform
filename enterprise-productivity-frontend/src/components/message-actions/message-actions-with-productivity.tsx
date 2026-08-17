@@ -13,6 +13,12 @@ import {
   SaveAsNoteActionItem,
   TranslateMessageActionItem,
 } from './message-action-items';
+import {
+  ModeratorDeleteActionItem,
+  MuteUserActionItem,
+  ReportMessageActionItem,
+  ReportUserActionItem,
+} from './moderation-action-items';
 
 type MessageActionsComponentProps = ComponentProps<typeof MessageActions>;
 
@@ -23,6 +29,10 @@ const PRODUCTIVITY_ACTION_SET: MessageActionSetItem[] = [
   { type: 'bookmarkMessage', Component: BookmarkMessageActionItem, placement: 'dropdown' },
   { type: 'createPoll', Component: CreatePollActionItem, placement: 'dropdown' },
   { type: 'translateMessage', Component: TranslateMessageActionItem, placement: 'dropdown' },
+  { type: 'reportMessage', Component: ReportMessageActionItem, placement: 'dropdown' },
+  { type: 'reportUser', Component: ReportUserActionItem, placement: 'dropdown' },
+  { type: 'moderatorDelete', Component: ModeratorDeleteActionItem, placement: 'dropdown' },
+  { type: 'muteUser', Component: MuteUserActionItem, placement: 'dropdown' },
 ];
 
 function MessageActionsWithProductivity(props: MessageActionsComponentProps) {

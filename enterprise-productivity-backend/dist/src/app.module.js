@@ -36,6 +36,8 @@ const creation_requests_module_1 = require("./creation-requests/creation-request
 const nl_search_module_1 = require("./nl-search/nl-search.module");
 const sentiment_module_1 = require("./sentiment/sentiment.module");
 const translation_module_1 = require("./translation/translation.module");
+const video_module_1 = require("./video/video.module");
+const moderation_module_1 = require("./moderation/moderation.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -70,6 +72,8 @@ exports.AppModule = AppModule = __decorate([
             nl_search_module_1.NlSearchModule,
             sentiment_module_1.SentimentModule,
             translation_module_1.TranslationModule,
+            video_module_1.VideoModule,
+            moderation_module_1.ModerationModule,
         ],
     })
 ], AppModule);

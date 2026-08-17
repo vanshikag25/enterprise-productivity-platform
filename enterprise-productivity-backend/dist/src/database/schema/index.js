@@ -31,4 +31,5 @@ __exportStar(require("./ai-actions.schema"), exports);
 __exportStar(require("./entity-creation-requests.schema"), exports);
 __exportStar(require("./app-settings.schema"), exports);
 __exportStar(require("./message-translations.schema"), exports);
+__exportStar(require("./moderation.schema"), exports);
 //# sourceMappingURL=index.js.map

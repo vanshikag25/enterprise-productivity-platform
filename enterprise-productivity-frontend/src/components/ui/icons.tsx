@@ -431,3 +431,103 @@ export function IconLanguage({ ...props }: IconProps) {
     </Base>
   );
 }
+
+export function IconPhone({ ...props }: IconProps) {
+  return (
+    <Base {...props}>
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+    </Base>
+  );
+}
+
+export function IconPhoneOff({ ...props }: IconProps) {
+  return (
+    <Base {...props}>
+      <path d="M10.68 13.31a16 16 0 0 0 3.41 2.6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.42 19.42 0 0 1-3.33-2.67m-2.67-3.34a19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91" />
+      <path d="M22 2 2 22" />
+    </Base>
+  );
+}
+
+export function IconVideo({ ...props }: IconProps) {
+  return (
+    <Base {...props}>
+      <path d="m22 8-6 4 6 4V8Z" />
+      <rect x="2" y="6" width="14" height="12" rx="2" />
+    </Base>
+  );
+}
+
+export function IconVideoOff({ ...props }: IconProps) {
+  return (
+    <Base {...props}>
+      <path d="M10.66 6H14a2 2 0 0 1 2 2v2.5l5.25-3.5a.5.5 0 0 1 .75.43v9.14a.5.5 0 0 1-.75.43L16 15.5v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2" />
+      <path d="M2 2 22 22" />
+    </Base>
+  );
+}
+
+export function IconMic({ ...props }: IconProps) {
+  return (
+    <Base {...props}>
+      <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+      <path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3" />
+    </Base>
+  );
+}
+
+export function IconMicOff({ ...props }: IconProps) {
+  return (
+    <Base {...props}>
+      <path d="M16.14 15.28A8 8 0 0 0 19 10v-2M16 5.09A3 3 0 0 0 12 8v1M12 19v3M6 10v2a6 6 0 0 0 6 6M8.24 7.76A3 3 0 0 1 12 5" />
+      <path d="M2 2 22 22" />
+    </Base>
+  );
+}
+
+export function IconScreenShare({ ...props }: IconProps) {
+  return (
+    <Base {...props}>
+      <rect x="2" y="4" width="20" height="14" rx="2" />
+      <path d="M8 20h8M12 16v-6M9.5 12.5 12 10l2.5 2.5" />
+    </Base>
+  );
+}
+
+export function IconHand({ ...props }: IconProps) {
+  return (
+    <Base {...props}>
+      <path d="M18 11V6a2 2 0 0 0-4 0v5" />
+      <path d="M14 10V4a2 2 0 0 0-4 0v6" />
+      <path d="M10 10.5V6a2 2 0 0 0-4 0v7" />
+      <path d="M18 8a2 2 0 0 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" />
+    </Base>
+  );
+}
+
+export function IconRecord({ ...props }: IconProps) {
+  return (
+    <Base {...props}>
+      <circle cx="12" cy="12" r="9" />
+      <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none" />
+    </Base>
+  );
+}
+
+export function IconBlur({ ...props }: IconProps) {
+  return (
+    <Base {...props}>
+      <circle cx="12" cy="12" r="10" />
+      <path d="M8 7.5a6.5 6.5 0 0 1 0 9M16 7.5a6.5 6.5 0 0 0 0 9" strokeDasharray="2 2" />
+    </Base>
+  );
+}
+
+export function IconSend({ ...props }: IconProps) {
+  return (
+    <Base {...props}>
+      <path d="m22 2-7 20-4-9-9-4Z" />
+      <path d="M22 2 11 13" />
+    </Base>
+  );
+}

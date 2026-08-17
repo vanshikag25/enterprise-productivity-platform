@@ -51,6 +51,37 @@ export async function fetchChatToken(clerkToken: string): Promise<ChatTokenRespo
   return res.data;
 }
 
+// --- Voice / video calls (Stream Video) ---
+export interface VideoConnectResponse {
+  apiKey: string;
+  userId: string;
+  token: string;
+}
+export interface VideoTokenResponse extends VideoConnectResponse {
+  memberIds: string[];
+}
+
+export async function fetchVideoConnect(clerkToken: string): Promise<VideoConnectResponse> {
+  const res = await apiClient.post<VideoConnectResponse>(
+    '/video/connect',
+    {},
+    { headers: { Authorization: `Bearer ${clerkToken}` } },
+  );
+  return res.data;
+}
+
+export async function fetchVideoToken(
+  clerkToken: string,
+  payload: { channelId: string; kind: 'dm' | 'group' },
+): Promise<VideoTokenResponse> {
+  const res = await apiClient.post<VideoTokenResponse>(
+    '/video/token',
+    payload,
+    { headers: { Authorization: `Bearer ${clerkToken}` } },
+  );
+  return res.data;
+}
+
 export interface UserDirectoryItem {
   id: string; name: string; email: string; imageUrl: string | null;
   online: boolean; lastSeen: string | null; department?: string; organization?: string; joinedAt: string; role: UserRole;
@@ -936,6 +967,222 @@ export async function analyzeSentiment(
   const res = await apiClient.post<SentimentAnalysisResponse>(
     '/sentiment/analyze',
     { projectId, days },
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+  return res.data;
+}
+
+// --- Moderation (reports queue, actions, logs) ---
+
+export type ModerationActionType =
+  | 'message_delete'
+  | 'user_mute'
+  | 'user_unmute'
+  | 'member_remove'
+  | 'user_ban'
+  | 'user_unban'
+  | 'channel_lock'
+  | 'channel_unlock'
+  | 'report_review'
+  | 'report_resolve'
+  | 'report_dismiss';
+
+export type ModerationReportStatus =
+  | 'pending'
+  | 'reviewing'
+  | 'resolved'
+  | 'dismissed';
+
+export interface ModerationReportItem {
+  id: string;
+  reporterId: string;
+  reporterName: string;
+  targetType: 'message' | 'user';
+  targetMessageId: string | null;
+  targetUserId: string | null;
+  targetUserName: string | null;
+  targetMessageText: string | null;
+  channelId: string;
+  channelName: string | null;
+  reason: string;
+  description: string | null;
+  status: ModerationReportStatus;
+  reviewedBy: string | null;
+  reviewedAt: string | null;
+  resolutionNote: string | null;
+  createdAt: string;
+}
+
+export interface ModerationReportList {
+  items: ModerationReportItem[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
+export interface ModerationLogItem {
+  id: string;
+  moderatorId: string;
+  moderatorName: string;
+  moderatorRole: UserRole;
+  actionType: ModerationActionType;
+  targetUserId: string | null;
+  targetMessageId: string | null;
+  channelId: string | null;
+  reason: string | null;
+  createdAt: string;
+}
+
+export interface ModerationLogList {
+  items: ModerationLogItem[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
+export async function fetchModerationReports(
+  token: string,
+  params: {
+    page?: number;
+    limit?: number;
+    status?: ModerationReportStatus;
+  } = {},
+): Promise<ModerationReportList> {
+  const res = await apiClient.get<ModerationReportList>('/moderation/reports', {
+    headers: { Authorization: `Bearer ${token}` },
+    params,
+  });
+  return res.data;
+}
+
+export async function updateModerationReport(
+  token: string,
+  reportId: string,
+  payload: { action: 'review' | 'resolve' | 'dismiss'; note?: string },
+): Promise<ModerationReportItem> {
+  const res = await apiClient.patch<ModerationReportItem>(
+    `/moderation/reports/${reportId}`,
+    payload,
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+  return res.data;
+}
+
+export async function fetchModerationLogs(
+  token: string,
+  params: {
+    page?: number;
+    limit?: number;
+    actionType?: ModerationActionType;
+  } = {},
+): Promise<ModerationLogList> {
+  const res = await apiClient.get<ModerationLogList>('/moderation/logs', {
+    headers: { Authorization: `Bearer ${token}` },
+    params,
+  });
+  return res.data;
+}
+
+export async function deleteModerationMessage(
+  token: string,
+  messageId: string,
+  reason?: string,
+): Promise<{ id: string; deleted: boolean }> {
+  const res = await apiClient.post<{ id: string; deleted: boolean }>(
+    `/moderation/messages/${messageId}/delete`,
+    { reason },
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+  return res.data;
+}
+
+export async function muteModerationUser(
+  token: string,
+  payload: {
+    channelId: string;
+    targetUserId: string;
+    durationMinutes?: number;
+    reason?: string;
+  },
+): Promise<{ muted: boolean; targetUserId: string; channelId: string }> {
+  const res = await apiClient.post('/moderation/users/mute', payload, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+}
+
+export async function unmuteModerationUser(
+  token: string,
+  payload: { channelId: string; targetUserId: string; reason?: string },
+): Promise<{ muted: boolean; targetUserId: string; channelId: string }> {
+  const res = await apiClient.post('/moderation/users/unmute', payload, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+}
+
+export async function removeModerationMember(
+  token: string,
+  payload: { channelId: string; targetUserId: string; reason?: string },
+): Promise<{ removed: boolean; targetUserId: string }> {
+  const res = await apiClient.post('/moderation/users/remove', payload, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+}
+
+export async function banModerationUser(
+  token: string,
+  payload: {
+    channelId?: string;
+    targetUserId: string;
+    timeoutMinutes?: number;
+    reason?: string;
+  },
+): Promise<{ banned: boolean; targetUserId: string }> {
+  const res = await apiClient.post('/moderation/users/ban', payload, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+}
+
+export async function unbanModerationUser(
+  token: string,
+  payload: { channelId?: string; targetUserId: string; reason?: string },
+): Promise<{ banned: boolean; targetUserId: string }> {
+  const res = await apiClient.post('/moderation/users/unban', payload, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+}
+
+export async function setChannelLock(
+  token: string,
+  payload: { channelId: string; locked: boolean; reason?: string },
+): Promise<{ channelId: string; locked: boolean }> {
+  const res = await apiClient.post('/moderation/channels/lock', payload, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+}
+
+export async function createModerationReport(
+  token: string,
+  payload: {
+    targetType: 'message' | 'user';
+    targetMessageId?: string;
+    targetUserId?: string;
+    channelId: string;
+    channelName?: string;
+    reason: string;
+    description?: string;
+  },
+): Promise<ModerationReportItem> {
+  const res = await apiClient.post<ModerationReportItem>(
+    '/moderation/reports',
+    payload,
     { headers: { Authorization: `Bearer ${token}` } },
   );
   return res.data;

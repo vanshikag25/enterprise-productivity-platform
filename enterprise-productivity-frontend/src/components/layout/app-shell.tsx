@@ -9,8 +9,10 @@ import { SidebarAccount } from '@/components/layout/sidebar-account';
 import { useRole } from '@/hooks/use-role';
 import { useReminderScheduler } from '@/hooks/use-reminder-scheduler';
 import { MessageActionModalHost } from '@/components/message-actions/message-action-modal-host';
+import { CallFeatureProvider } from '@/components/calls/call-feature-provider';
 import { hasMinRole, type UserRole } from '@/lib/api-client';
 import {
+  IconAlertTriangle,
   IconBookmark,
   IconBuilding,
   IconCalendar,
@@ -51,6 +53,7 @@ const NAV_ITEMS: {
   { href: '/department-channels', label: 'Departments', icon: <IconDepartment width={18} height={18} /> },
   { href: '/projects', label: 'Projects', icon: <IconProject width={18} height={18} /> },
   { href: '/admin/roles', label: 'Admin', icon: <IconShield width={18} height={18} />, minRole: 'admin' },
+  { href: '/admin/moderation', label: 'Moderation', icon: <IconAlertTriangle width={18} height={18} />, minRole: 'team_lead' },
 ];
 
 function getPageTitle(pathname: string): string {
@@ -80,7 +83,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const title = getPageTitle(pathname ?? '');
 
   return (
-    <MessageActionModalHost>
+    <CallFeatureProvider>
+        <MessageActionModalHost>
       <div className="flex h-screen w-full overflow-hidden bg-slate-100">
         {isMobileOpen && (
         <div
@@ -189,6 +193,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <main className="min-w-0 flex-1 overflow-y-auto">{children}</main>
       </div>
       </div>
-    </MessageActionModalHost>
+        </MessageActionModalHost>
+    </CallFeatureProvider>
   );
 }
