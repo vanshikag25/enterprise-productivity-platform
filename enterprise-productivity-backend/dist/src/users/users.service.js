@@ -20,9 +20,11 @@ const drizzle_provider_1 = require("../database/drizzle.provider");
 const users_schema_1 = require("../database/schema/users.schema");
 const languages_1 = require("../languages");
 const roles_1 = require("../rbac/roles");
+const audit_service_1 = require("../audit/audit.service");
 let UsersService = class UsersService {
-    constructor(db) {
+    constructor(db, auditService) {
         this.db = db;
+        this.auditService = auditService;
     }
     async findByUsername(username) {
         const [user] = await this.db
@@ -32,7 +34,10 @@ let UsersService = class UsersService {
         return user;
     }
     async findByEmail(email) {
-        const [user] = await this.db.select().from(users_schema_1.users).where((0, drizzle_orm_1.eq)(users_schema_1.users.email, email));
+        const [user] = await this.db
+            .select()
+            .from(users_schema_1.users)
+            .where((0, drizzle_orm_1.eq)(users_schema_1.users.email, email));
         return user;
     }
     async findAllExcept(username) {
@@ -165,12 +170,30 @@ let UsersService = class UsersService {
                 throw new common_1.ForbiddenException('You cannot assign a role equal to or higher than your own');
             }
         }
-        const [updated] = await this.db
-            .update(users_schema_1.users)
-            .set({ role: newRole, updatedAt: new Date() })
-            .where((0, drizzle_orm_1.eq)(users_schema_1.users.username, targetUsername))
-            .returning();
-        return updated;
+        return this.db.transaction(async (tx) => {
+            const [updated] = await tx
+                .update(users_schema_1.users)
+                .set({ role: newRole, updatedAt: new Date() })
+                .where((0, drizzle_orm_1.eq)(users_schema_1.users.username, targetUsername))
+                .returning();
+            await this.auditService.record({
+                actionType: 'role_change',
+                actorId: actor.username,
+                actorRole: actor.role,
+                actorName: [actor.firstName, actor.lastName].filter(Boolean).join(' ') ||
+                    actor.username,
+                targetUserId: target.username,
+                targetUserName: [target.firstName, target.lastName].filter(Boolean).join(' ') ||
+                    target.username,
+                resourceType: 'user',
+                resourceId: target.username,
+                resourceName: target.username,
+                previousValue: { role: target.role },
+                newValue: { role: newRole },
+                reason: null,
+            }, { tx });
+            return updated;
+        });
     }
     async findUsersPaginated(currentUsername, params) {
         const { search, page, limit, sortBy, sortOrder } = params;
@@ -210,6 +233,7 @@ exports.UsersService = UsersService;
 exports.UsersService = UsersService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, common_1.Inject)(drizzle_provider_1.DRIZZLE)),
-    __metadata("design:paramtypes", [node_postgres_1.NodePgDatabase])
+    __metadata("design:paramtypes", [node_postgres_1.NodePgDatabase,
+        audit_service_1.AuditService])
 ], UsersService);
 //# sourceMappingURL=users.service.js.map

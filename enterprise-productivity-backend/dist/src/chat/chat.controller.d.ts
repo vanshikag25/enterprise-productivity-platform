@@ -16,6 +16,9 @@ interface UpdateGroupBody {
 interface UpdateGroupAvatarBody {
     avatarUrl: string;
 }
+interface EditMessageBody {
+    text: string;
+}
 export declare class ChatController {
     private readonly streamService;
     private readonly chatService;
@@ -43,5 +46,13 @@ export declare class ChatController {
     leaveGroup(auth: AuthObject, channelId: string): Promise<void>;
     assignModerator(auth: AuthObject, channelId: string, memberId: string): Promise<GroupInfo>;
     demoteModerator(auth: AuthObject, channelId: string, memberId: string): Promise<GroupInfo>;
+    editMessage(auth: AuthObject, messageId: string, body: EditMessageBody): Promise<{
+        id: string;
+        updated: boolean;
+    }>;
+    deleteMessage(auth: AuthObject, messageId: string): Promise<{
+        id: string;
+        deleted: boolean;
+    }>;
 }
 export {};

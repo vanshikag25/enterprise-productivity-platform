@@ -24,6 +24,7 @@ const departments_schema_1 = require("../database/schema/departments.schema");
 const users_schema_1 = require("../database/schema/users.schema");
 const stream_service_1 = require("../stream/stream.service");
 const users_service_1 = require("../users/users.service");
+const audit_service_1 = require("../audit/audit.service");
 const project_access_service_1 = require("../projects/project-access.service");
 const notifications_service_1 = require("../notifications/notifications.service");
 const roles_1 = require("../rbac/roles");
@@ -31,12 +32,13 @@ function fullName(user) {
     return [user?.firstName, user?.lastName].filter(Boolean).join(' ') || '';
 }
 let ModerationService = ModerationService_1 = class ModerationService {
-    constructor(db, streamService, usersService, projectAccess, notificationsService) {
+    constructor(db, streamService, usersService, projectAccess, notificationsService, auditService) {
         this.db = db;
         this.streamService = streamService;
         this.usersService = usersService;
         this.projectAccess = projectAccess;
         this.notificationsService = notificationsService;
+        this.auditService = auditService;
         this.logger = new common_1.Logger(ModerationService_1.name);
     }
     async onModuleInit() {
@@ -161,6 +163,23 @@ let ModerationService = ModerationService_1 = class ModerationService {
             reason: fields.reason ?? null,
         });
     }
+    async audit(actionType, actor, fields) {
+        await this.auditService.record({
+            actionType,
+            actorId: actor.username,
+            actorRole: actor.role,
+            actorName: fullName(actor) || actor.username,
+            targetUserId: fields.targetUserId ?? null,
+            targetUserName: fields.targetUserName ?? null,
+            resourceType: fields.resourceType ?? 'channel',
+            resourceId: fields.resourceId ?? null,
+            resourceName: fields.resourceName ?? null,
+            channelId: fields.channelId ?? null,
+            previousValue: fields.previousValue ?? null,
+            newValue: fields.newValue ?? null,
+            reason: fields.reason ?? null,
+        });
+    }
     async managedChannelIds(actor) {
         const ids = new Set();
         if (actor.role === 'manager') {
@@ -217,6 +236,14 @@ let ModerationService = ModerationService_1 = class ModerationService {
             channelId,
             reason,
         });
+        await this.audit('message_delete', actor, {
+            targetUserId: message.user?.id,
+            resourceType: 'message',
+            resourceId: messageId,
+            channelId,
+            newValue: { deleted: true },
+            reason,
+        });
         return { id: messageId, deleted: true };
     }
     async muteUser(actor, dto) {
@@ -240,6 +267,13 @@ let ModerationService = ModerationService_1 = class ModerationService {
             channelId: dto.channelId,
             reason: dto.reason,
         });
+        await this.audit('user_mute', actor, {
+            targetUserId: dto.targetUserId,
+            channelId: dto.channelId,
+            previousValue: { muted: false },
+            newValue: { muted: true, timeoutMinutes: dto.durationMinutes ?? null },
+            reason: dto.reason,
+        });
         return {
             muted: true,
             targetUserId: dto.targetUserId,
@@ -257,6 +291,13 @@ let ModerationService = ModerationService_1 = class ModerationService {
         await this.log(actor, 'user_unmute', {
             targetUserId: dto.targetUserId,
             channelId: dto.channelId,
+            reason: dto.reason,
+        });
+        await this.audit('user_unmute', actor, {
+            targetUserId: dto.targetUserId,
+            channelId: dto.channelId,
+            previousValue: { muted: true },
+            newValue: { muted: false },
             reason: dto.reason,
         });
         return {
@@ -297,6 +338,12 @@ let ModerationService = ModerationService_1 = class ModerationService {
             channelId: dto.channelId,
             reason: dto.reason,
         });
+        await this.audit('member_remove', actor, {
+            targetUserId: dto.targetUserId,
+            targetUserName: data.name ?? null,
+            channelId: dto.channelId,
+            reason: dto.reason,
+        });
         return { removed: true, targetUserId: dto.targetUserId };
     }
     async banUser(actor, dto) {
@@ -324,6 +371,12 @@ let ModerationService = ModerationService_1 = class ModerationService {
             channelId: dto.channelId,
             reason: dto.reason,
         });
+        await this.audit('user_ban', actor, {
+            targetUserId: dto.targetUserId,
+            channelId: dto.channelId,
+            newValue: { banned: true, timeoutMinutes: dto.timeoutMinutes ?? null },
+            reason: dto.reason,
+        });
         return { banned: true, targetUserId: dto.targetUserId };
     }
     async unbanUser(actor, dto) {
@@ -341,6 +394,12 @@ let ModerationService = ModerationService_1 = class ModerationService {
         await this.log(actor, 'user_unban', {
             targetUserId: dto.targetUserId,
             channelId: dto.channelId,
+            reason: dto.reason,
+        });
+        await this.audit('user_unban', actor, {
+            targetUserId: dto.targetUserId,
+            channelId: dto.channelId,
+            newValue: { banned: false },
             reason: dto.reason,
         });
         return { banned: false, targetUserId: dto.targetUserId };
@@ -377,6 +436,14 @@ let ModerationService = ModerationService_1 = class ModerationService {
         });
         await this.log(actor, dto.locked ? 'channel_lock' : 'channel_unlock', {
             channelId: dto.channelId,
+            reason: dto.reason,
+        });
+        await this.audit(dto.locked ? 'channel_lock' : 'channel_unlock', actor, {
+            resourceType: 'channel',
+            resourceId: dto.channelId,
+            channelId: dto.channelId,
+            previousValue: { locked: !dto.locked },
+            newValue: { locked: dto.locked },
             reason: dto.reason,
         });
         return { channelId: dto.channelId, locked: dto.locked };
@@ -552,6 +619,15 @@ let ModerationService = ModerationService_1 = class ModerationService {
             channelId: report.channelId,
             reason: note ?? report.reason,
         });
+        await this.audit('moderator_action', actor, {
+            targetUserId: report.targetUserId ?? undefined,
+            resourceType: report.targetType === 'message' ? 'message' : 'user',
+            resourceId: report.targetMessageId ?? report.targetUserId ?? undefined,
+            channelId: report.channelId,
+            previousValue: { reportId, status: report.status },
+            newValue: { reportId, status, action },
+            reason: note ?? report.reason,
+        });
         return this.serializeReport(updated, actor.username);
     }
     async listLogs(actor, params) {
@@ -619,6 +695,7 @@ exports.ModerationService = ModerationService = ModerationService_1 = __decorate
         stream_service_1.StreamService,
         users_service_1.UsersService,
         project_access_service_1.ProjectAccessService,
-        notifications_service_1.NotificationsService])
+        notifications_service_1.NotificationsService,
+        audit_service_1.AuditService])
 ], ModerationService);
 //# sourceMappingURL=moderation.service.js.map

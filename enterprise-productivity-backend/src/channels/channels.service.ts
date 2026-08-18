@@ -3,6 +3,7 @@ import {
   ForbiddenException,
   BadRequestException,
   Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import type { ChannelData } from 'stream-chat';
@@ -10,6 +11,12 @@ import { StreamService } from '../stream/stream.service';
 import { UsersService } from '../users/users.service';
 import { DepartmentsService } from '../departments/departments.service';
 import { NotificationsService } from '../notifications/notifications.service';
+import { AuditService } from '../audit/audit.service';
+import type { User } from '../database/schema/users.schema';
+import type {
+  AuditActionType,
+  AuditResourceType,
+} from '../database/schema/audit-logs.schema';
 import { hasMinRole, type UserRole } from '../rbac/roles';
 import { CreateChannelDto, UpdateChannelDto } from './dto/create-channel.dto';
 
@@ -22,7 +29,51 @@ export class ChannelsService {
     private readonly usersService: UsersService,
     private readonly departmentsService: DepartmentsService,
     private readonly notificationsService: NotificationsService,
+    private readonly auditService: AuditService,
   ) {}
+
+  private async loadActor(userId: string): Promise<User> {
+    const user = await this.usersService.findByUsername(userId);
+    if (!user) {
+      throw new NotFoundException('User profile not found.');
+    }
+    return user;
+  }
+
+  private async audit(
+    actionType: AuditActionType,
+    actor: User,
+    fields: {
+      targetUserId?: string | null;
+      targetUserName?: string | null;
+      resourceType?: AuditResourceType;
+      resourceId?: string | null;
+      resourceName?: string | null;
+      channelId?: string | null;
+      departmentId?: string;
+      previousValue?: Record<string, unknown>;
+      newValue?: Record<string, unknown>;
+      reason?: string;
+    },
+  ): Promise<void> {
+    await this.auditService.record({
+      actionType,
+      actorId: actor.username,
+      actorRole: actor.role,
+      actorName:
+        [actor.firstName, actor.lastName].filter(Boolean).join(' ') ||
+        actor.username,
+      targetUserId: fields.targetUserId ?? null,
+      targetUserName: fields.targetUserName ?? null,
+      resourceType: fields.resourceType ?? 'channel',
+      resourceId: fields.resourceId ?? null,
+      resourceName: fields.resourceName ?? null,
+      channelId: fields.channelId ?? null,
+      previousValue: fields.previousValue ?? null,
+      newValue: fields.newValue ?? null,
+      reason: fields.reason ?? null,
+    });
+  }
 
   private async requireRole(userId: string, minimum: UserRole) {
     const user = await this.usersService.findByUsername(userId);
@@ -94,6 +145,20 @@ export class ChannelsService {
       await this.departmentsService.setChannelId(departmentId, channel.id!);
     }
 
+    await this.audit('channel_create', await this.loadActor(userId), {
+      resourceType: 'channel',
+      resourceId: channel.id,
+      resourceName: dto.name,
+      channelId: channel.id,
+      departmentId,
+      newValue: {
+        kind: dto.kind,
+        name: dto.name,
+        description: dto.description ?? '',
+        memberCount: members.length,
+      },
+    });
+
     await this.notificationsService.createMany(
       members
         .filter((m) => m !== userId)
@@ -164,18 +229,46 @@ export class ChannelsService {
 
   async remove(id: string, userId: string): Promise<void> {
     const channel = await this.requireCreatorOrPrivileged(id, userId);
+    const data = (channel.data ?? {}) as Record<string, unknown>;
     await channel.delete();
+
+    await this.audit('channel_delete', await this.loadActor(userId), {
+      resourceType: 'channel',
+      resourceId: id,
+      resourceName: (data.name as string) ?? null,
+      channelId: id,
+    });
   }
 
   async join(id: string, userId: string) {
     const channel = await this.getWatchedChannel(id);
     await channel.addMembers([userId]);
+    const data = (channel.data ?? {}) as Record<string, unknown>;
+
+    await this.audit('user_join', await this.loadActor(userId), {
+      targetUserId: userId,
+      resourceType: 'channel',
+      resourceId: id,
+      resourceName: (data.name as string) ?? null,
+      channelId: id,
+    });
+
     return this.toSummary(channel);
   }
 
   async leave(id: string, userId: string) {
     const channel = await this.getWatchedChannel(id);
+    const data = (channel.data ?? {}) as Record<string, unknown>;
     await channel.removeMembers([userId]);
+
+    await this.audit('user_leave', await this.loadActor(userId), {
+      targetUserId: userId,
+      resourceType: 'channel',
+      resourceId: id,
+      resourceName: (data.name as string) ?? null,
+      channelId: id,
+    });
+
     return this.toSummary(channel);
   }
 
@@ -200,13 +293,35 @@ export class ChannelsService {
           : '/organization-channels',
     });
 
+    await this.audit('user_join', await this.loadActor(userId), {
+      targetUserId: memberId,
+      targetUserName:
+        (channel.state.members ?? {})[memberId]?.user?.name ?? null,
+      resourceType: 'channel',
+      resourceId: id,
+      resourceName: (data.name as string) ?? null,
+      channelId: id,
+    });
+
     return this.toSummary(channel);
   }
 
   async removeMember(id: string, userId: string, memberId: string) {
     await this.requireCreatorOrPrivileged(id, userId);
     const channel = await this.getWatchedChannel(id);
+    const data = (channel.data ?? {}) as Record<string, unknown>;
+    const targetMember = (channel.state.members ?? {})[memberId];
     await channel.removeMembers([memberId]);
+
+    await this.audit('member_remove', await this.loadActor(userId), {
+      targetUserId: memberId,
+      targetUserName: targetMember?.user?.name ?? null,
+      resourceType: 'channel',
+      resourceId: id,
+      resourceName: (data.name as string) ?? null,
+      channelId: id,
+    });
+
     return this.toSummary(channel);
   }
 

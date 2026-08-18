@@ -48,6 +48,7 @@ const reminders_module_1 = require("../reminders/reminders.module");
 const reminders_controller_1 = require("../reminders/reminders.controller");
 const bookmarks_module_1 = require("../bookmarks/bookmarks.module");
 const bookmarks_controller_1 = require("../bookmarks/bookmarks.controller");
+const moderation_module_1 = require("../moderation/moderation.module");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
@@ -71,6 +72,7 @@ exports.AuthModule = AuthModule = __decorate([
             notes_module_1.NotesModule,
             reminders_module_1.RemindersModule,
             bookmarks_module_1.BookmarksModule,
+            moderation_module_1.ModerationModule,
             jwt_1.JwtModule.registerAsync({
                 global: true,
                 inject: [config_1.ConfigService],

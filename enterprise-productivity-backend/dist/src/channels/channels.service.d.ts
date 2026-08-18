@@ -2,14 +2,18 @@ import { StreamService } from '../stream/stream.service';
 import { UsersService } from '../users/users.service';
 import { DepartmentsService } from '../departments/departments.service';
 import { NotificationsService } from '../notifications/notifications.service';
+import { AuditService } from '../audit/audit.service';
 import { CreateChannelDto, UpdateChannelDto } from './dto/create-channel.dto';
 export declare class ChannelsService {
     private readonly streamService;
     private readonly usersService;
     private readonly departmentsService;
     private readonly notificationsService;
+    private readonly auditService;
     private readonly logger;
-    constructor(streamService: StreamService, usersService: UsersService, departmentsService: DepartmentsService, notificationsService: NotificationsService);
+    constructor(streamService: StreamService, usersService: UsersService, departmentsService: DepartmentsService, notificationsService: NotificationsService, auditService: AuditService);
+    private loadActor;
+    private audit;
     private requireRole;
     private toSummary;
     create(userId: string, dto: CreateChannelDto): Promise<{

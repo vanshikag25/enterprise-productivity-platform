@@ -102,7 +102,7 @@ export declare const aiDetectedActions: import("drizzle-orm/pg-core").PgTableWit
             tableName: "ai_detected_actions";
             dataType: "string";
             columnType: "PgEnumColumn";
-            data: "task" | "reminder" | "meeting" | "deadline" | "decision" | "follow_up";
+            data: "reminder" | "task" | "meeting" | "deadline" | "decision" | "follow_up";
             driverParam: string;
             notNull: true;
             hasDefault: false;

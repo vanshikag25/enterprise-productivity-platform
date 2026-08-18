@@ -17,5 +17,6 @@ import { ModerationController } from './moderation.controller';
   ],
   providers: [ModerationService],
   controllers: [ModerationController],
+  exports: [ModerationService],
 })
 export class ModerationModule {}

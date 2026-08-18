@@ -43,7 +43,7 @@ export declare const entityCreationRequests: import("drizzle-orm/pg-core").PgTab
             tableName: "entity_creation_requests";
             dataType: "string";
             columnType: "PgEnumColumn";
-            data: "approved" | "pending" | "rejected";
+            data: "pending" | "approved" | "rejected";
             driverParam: string;
             notNull: true;
             hasDefault: true;

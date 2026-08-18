@@ -22,6 +22,7 @@ import {
   IconClock,
   IconClose,
   IconDepartment,
+  IconHistory,
   IconMenu,
   IconMegaphone,
   IconMessageCircle,
@@ -29,6 +30,7 @@ import {
   IconProject,
   IconSearch,
   IconShield,
+  IconSparkles,
   IconTasks,
   IconUsers,
 } from '@/components/ui/icons';
@@ -54,6 +56,8 @@ const NAV_ITEMS: {
   { href: '/projects', label: 'Projects', icon: <IconProject width={18} height={18} /> },
   { href: '/admin/roles', label: 'Admin', icon: <IconShield width={18} height={18} />, minRole: 'admin' },
   { href: '/admin/moderation', label: 'Moderation', icon: <IconAlertTriangle width={18} height={18} />, minRole: 'team_lead' },
+  { href: '/admin/analytics', label: 'Analytics', icon: <IconSparkles width={18} height={18} />, minRole: 'manager' },
+  { href: '/admin/audit', label: 'Audit Log', icon: <IconHistory width={18} height={18} />, minRole: 'admin' },
 ];
 
 function getPageTitle(pathname: string): string {

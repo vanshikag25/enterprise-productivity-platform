@@ -12,6 +12,7 @@ import { users, User } from '../database/schema/users.schema';
 import { isSupportedLanguage } from '../languages';
 import { UserSortField, SortOrder } from './dto/list-users-query.dto';
 import { ROLE_RANK, UserRole } from '../rbac/roles';
+import { AuditService } from '../audit/audit.service';
 
 export interface CreateUserInput {
   username: string;
@@ -38,7 +39,10 @@ export interface FindUsersResult {
 
 @Injectable()
 export class UsersService {
-  constructor(@Inject(DRIZZLE) private readonly db: NodePgDatabase) {}
+  constructor(
+    @Inject(DRIZZLE) private readonly db: NodePgDatabase,
+    private readonly auditService: AuditService,
+  ) {}
 
   async findByUsername(username: string): Promise<User | undefined> {
     const [user] = await this.db
@@ -49,7 +53,10 @@ export class UsersService {
   }
 
   async findByEmail(email: string): Promise<User | undefined> {
-    const [user] = await this.db.select().from(users).where(eq(users.email, email));
+    const [user] = await this.db
+      .select()
+      .from(users)
+      .where(eq(users.email, email));
     return user;
   }
 
@@ -228,13 +235,37 @@ export class UsersService {
       }
     }
 
-    const [updated] = await this.db
-      .update(users)
-      .set({ role: newRole, updatedAt: new Date() })
-      .where(eq(users.username, targetUsername))
-      .returning();
+    return this.db.transaction(async (tx) => {
+      const [updated] = await tx
+        .update(users)
+        .set({ role: newRole, updatedAt: new Date() })
+        .where(eq(users.username, targetUsername))
+        .returning();
 
-    return updated;
+      await this.auditService.record(
+        {
+          actionType: 'role_change',
+          actorId: actor.username,
+          actorRole: actor.role,
+          actorName:
+            [actor.firstName, actor.lastName].filter(Boolean).join(' ') ||
+            actor.username,
+          targetUserId: target.username,
+          targetUserName:
+            [target.firstName, target.lastName].filter(Boolean).join(' ') ||
+            target.username,
+          resourceType: 'user',
+          resourceId: target.username,
+          resourceName: target.username,
+          previousValue: { role: target.role },
+          newValue: { role: newRole },
+          reason: null,
+        },
+        { tx },
+      );
+
+      return updated;
+    });
   }
 
   async findUsersPaginated(

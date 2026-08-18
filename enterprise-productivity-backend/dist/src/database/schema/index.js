@@ -32,4 +32,5 @@ __exportStar(require("./entity-creation-requests.schema"), exports);
 __exportStar(require("./app-settings.schema"), exports);
 __exportStar(require("./message-translations.schema"), exports);
 __exportStar(require("./moderation.schema"), exports);
+__exportStar(require("./audit-logs.schema"), exports);
 //# sourceMappingURL=index.js.map

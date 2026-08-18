@@ -22,13 +22,17 @@ const chat_channels_schema_1 = require("../database/schema/chat-channels.schema"
 const stream_service_1 = require("../stream/stream.service");
 const users_service_1 = require("../users/users.service");
 const notifications_service_1 = require("../notifications/notifications.service");
+const moderation_service_1 = require("../moderation/moderation.service");
+const audit_service_1 = require("../audit/audit.service");
 const roles_1 = require("../rbac/roles");
 let ChatService = ChatService_1 = class ChatService {
-    constructor(db, streamService, usersService, notificationsService) {
+    constructor(db, streamService, usersService, notificationsService, moderationService, auditService) {
         this.db = db;
         this.streamService = streamService;
         this.usersService = usersService;
         this.notificationsService = notificationsService;
+        this.moderationService = moderationService;
+        this.auditService = auditService;
         this.logger = new common_1.Logger(ChatService_1.name);
     }
     async watchChannel(channelId) {
@@ -37,6 +41,32 @@ let ChatService = ChatService_1 = class ChatService {
             .channel('messaging', channelId);
         await channel.watch();
         return channel;
+    }
+    async loadActor(userId) {
+        const user = await this.usersService.findByUsername(userId);
+        if (!user) {
+            throw new common_1.NotFoundException('User profile not found.');
+        }
+        return user;
+    }
+    async audit(actionType, actor, fields) {
+        await this.auditService.record({
+            actionType,
+            actorId: actor.username,
+            actorRole: actor.role,
+            actorName: `${actor.firstName ?? ''} ${actor.lastName ?? ''}`.trim() ||
+                actor.username,
+            targetUserId: fields.targetUserId ?? null,
+            targetUserName: fields.targetUserName ?? null,
+            resourceType: fields.resourceType ?? 'channel',
+            resourceId: fields.resourceId ?? null,
+            resourceName: fields.resourceName ?? null,
+            channelId: fields.channelId ?? null,
+            projectId: fields.projectId ?? null,
+            previousValue: fields.previousValue ?? null,
+            newValue: fields.newValue ?? null,
+            reason: fields.reason ?? null,
+        });
     }
     memberRole(member, createdById) {
         if (member.user?.id && member.user.id === createdById)
@@ -169,6 +199,14 @@ let ChatService = ChatService_1 = class ChatService {
             description: data.name ?? 'a group',
             actionUrl: `/dashboard?channel=${channelId}`,
         });
+        await this.audit('user_join', await this.loadActor(userId), {
+            targetUserId: memberId,
+            targetUserName: (channel.state.members ?? {})[memberId]?.user?.name ?? null,
+            resourceType: 'channel',
+            resourceId: channelId,
+            resourceName: data.name ?? null,
+            channelId,
+        });
         return this.getGroupInfo(channelId, userId);
     }
     async removeMember(channelId, userId, memberId) {
@@ -199,6 +237,14 @@ let ChatService = ChatService_1 = class ChatService {
             title: 'Removed from group',
             description: data.name ?? 'a group',
         });
+        await this.audit('member_remove', await this.loadActor(userId), {
+            targetUserId: memberId,
+            targetUserName: targetMember.user?.name ?? null,
+            resourceType: 'channel',
+            resourceId: channelId,
+            resourceName: data.name ?? null,
+            channelId,
+        });
         return this.getGroupInfo(channelId, userId);
     }
     async leaveGroup(channelId, userId) {
@@ -209,6 +255,13 @@ let ChatService = ChatService_1 = class ChatService {
         }
         await channel.removeMembers([userId]);
         this.logger.log(`User ${userId} left group ${channelId}`);
+        await this.audit('user_leave', await this.loadActor(userId), {
+            targetUserId: userId,
+            resourceType: 'channel',
+            resourceId: channelId,
+            resourceName: data.name ?? null,
+            channelId,
+        });
     }
     async assignModerator(channelId, userId, memberId) {
         const channel = await this.watchChannel(channelId);
@@ -219,6 +272,16 @@ let ChatService = ChatService_1 = class ChatService {
         }
         await channel.addModerators([memberId]);
         this.logger.log(`Moderator assigned: ${memberId} in ${channelId}`);
+        const data = (channel.data ?? {});
+        await this.audit('moderator_action', await this.loadActor(userId), {
+            targetUserId: memberId,
+            targetUserName: (channel.state.members ?? {})[memberId]?.user?.name ?? null,
+            resourceType: 'channel',
+            resourceId: channelId,
+            resourceName: data.name ?? null,
+            channelId,
+            newValue: { memberRole: 'moderator', action: 'assign' },
+        });
         return this.getGroupInfo(channelId, userId);
     }
     async demoteModerator(channelId, userId, memberId) {
@@ -237,7 +300,58 @@ let ChatService = ChatService_1 = class ChatService {
         }
         await channel.demoteModerators([memberId]);
         this.logger.log(`Moderator demoted: ${memberId} in ${channelId}`);
+        await this.audit('moderator_action', await this.loadActor(userId), {
+            targetUserId: memberId,
+            targetUserName: (channel.state.members ?? {})[memberId]?.user?.name ?? null,
+            resourceType: 'channel',
+            resourceId: channelId,
+            resourceName: data.name ?? null,
+            channelId,
+            newValue: { memberRole: 'member', action: 'demote' },
+        });
         return this.getGroupInfo(channelId, userId);
+    }
+    channelIdOf(cid) {
+        if (!cid)
+            return undefined;
+        return cid.includes(':') ? cid.split(':')[1] : cid;
+    }
+    async editMessage(userId, messageId, text) {
+        const client = this.streamService.getClient();
+        const result = await client.getMessage(messageId);
+        const message = result.message;
+        if (!message.user?.id || message.user.id !== userId) {
+            throw new common_1.ForbiddenException('You can only edit your own messages.');
+        }
+        await client.updateMessage({ id: messageId, text, user_id: userId });
+        await this.audit('message_edit', await this.loadActor(userId), {
+            resourceType: 'message',
+            resourceId: messageId,
+            channelId: this.channelIdOf(message.channel?.cid),
+            previousValue: { text: message.text ?? '' },
+            newValue: { text },
+        });
+        return { id: messageId, updated: true };
+    }
+    async deleteMessage(userId, messageId) {
+        const client = this.streamService.getClient();
+        const result = await client.getMessage(messageId);
+        const message = result.message;
+        const channelId = this.channelIdOf(message.channel?.cid);
+        const actor = await this.loadActor(userId);
+        const isOwner = !!message.user?.id && message.user.id === userId;
+        if (isOwner) {
+            await client.deleteMessage(messageId, { hardDelete: false });
+            await this.audit('message_delete', actor, {
+                resourceType: 'message',
+                resourceId: messageId,
+                channelId,
+                newValue: { deleted: true },
+            });
+            return { id: messageId, deleted: true };
+        }
+        await this.moderationService.deleteMessage(actor, messageId, 'Deleted by request.');
+        return { id: messageId, deleted: true };
     }
 };
 exports.ChatService = ChatService;
@@ -247,6 +361,8 @@ exports.ChatService = ChatService = ChatService_1 = __decorate([
     __metadata("design:paramtypes", [node_postgres_1.NodePgDatabase,
         stream_service_1.StreamService,
         users_service_1.UsersService,
-        notifications_service_1.NotificationsService])
+        notifications_service_1.NotificationsService,
+        moderation_service_1.ModerationService,
+        audit_service_1.AuditService])
 ], ChatService);
 //# sourceMappingURL=chat.service.js.map

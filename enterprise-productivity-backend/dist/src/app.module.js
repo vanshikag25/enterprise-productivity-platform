@@ -38,7 +38,13 @@ const sentiment_module_1 = require("./sentiment/sentiment.module");
 const translation_module_1 = require("./translation/translation.module");
 const video_module_1 = require("./video/video.module");
 const moderation_module_1 = require("./moderation/moderation.module");
+const analytics_module_1 = require("./analytics/analytics.module");
+const audit_module_1 = require("./audit/audit.module");
+const request_context_1 = require("./audit/request-context");
 let AppModule = class AppModule {
+    configure(consumer) {
+        consumer.apply(request_context_1.RequestContextMiddleware).forRoutes('*');
+    }
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
@@ -50,6 +56,8 @@ exports.AppModule = AppModule = __decorate([
             database_module_1.DatabaseModule,
             users_module_1.UsersModule,
             stream_module_1.StreamModule,
+            analytics_module_1.AnalyticsModule,
+            audit_module_1.AuditModule,
             tasks_module_1.TasksModule,
             meetings_module_1.MeetingsModule,
             departments_module_1.DepartmentsModule,

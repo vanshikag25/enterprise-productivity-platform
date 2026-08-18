@@ -16,11 +16,16 @@ import {
   type ModerationActionType,
   type ModerationReportStatus,
 } from '../database/schema/moderation.schema';
+import type {
+  AuditActionType,
+  AuditResourceType,
+} from '../database/schema/audit-logs.schema';
 import { projects, projectMembers } from '../database/schema/projects.schema';
 import { departments } from '../database/schema/departments.schema';
 import { users, type User } from '../database/schema/users.schema';
 import { StreamService } from '../stream/stream.service';
 import { UsersService } from '../users/users.service';
+import { AuditService } from '../audit/audit.service';
 import {
   ProjectAccessService,
   hasProjectRole,
@@ -59,6 +64,7 @@ export class ModerationService implements OnModuleInit {
     private readonly usersService: UsersService,
     private readonly projectAccess: ProjectAccessService,
     private readonly notificationsService: NotificationsService,
+    private readonly auditService: AuditService,
   ) {}
 
   async onModuleInit(): Promise<void> {
@@ -263,6 +269,42 @@ export class ModerationService implements OnModuleInit {
   }
 
   /**
+   * Appends an immutable audit record alongside the moderation log so the
+   * compliance trail covers the same protected actions.
+   */
+  private async audit(
+    actionType: AuditActionType,
+    actor: User,
+    fields: {
+      targetUserId?: string;
+      targetUserName?: string;
+      resourceType?: AuditResourceType;
+      resourceId?: string;
+      resourceName?: string;
+      channelId?: string;
+      previousValue?: Record<string, unknown>;
+      newValue?: Record<string, unknown>;
+      reason?: string;
+    },
+  ): Promise<void> {
+    await this.auditService.record({
+      actionType,
+      actorId: actor.username,
+      actorRole: actor.role,
+      actorName: fullName(actor) || actor.username,
+      targetUserId: fields.targetUserId ?? null,
+      targetUserName: fields.targetUserName ?? null,
+      resourceType: fields.resourceType ?? 'channel',
+      resourceId: fields.resourceId ?? null,
+      resourceName: fields.resourceName ?? null,
+      channelId: fields.channelId ?? null,
+      previousValue: fields.previousValue ?? null,
+      newValue: fields.newValue ?? null,
+      reason: fields.reason ?? null,
+    });
+  }
+
+  /**
    * Channel ids this manager/team-lead may moderate, for scoping report and
    * log queries.
    */
@@ -341,6 +383,14 @@ export class ModerationService implements OnModuleInit {
       channelId,
       reason,
     });
+    await this.audit('message_delete', actor, {
+      targetUserId: message.user?.id,
+      resourceType: 'message',
+      resourceId: messageId,
+      channelId,
+      newValue: { deleted: true },
+      reason,
+    });
 
     return { id: messageId, deleted: true };
   }
@@ -383,6 +433,13 @@ export class ModerationService implements OnModuleInit {
       channelId: dto.channelId,
       reason: dto.reason,
     });
+    await this.audit('user_mute', actor, {
+      targetUserId: dto.targetUserId,
+      channelId: dto.channelId,
+      previousValue: { muted: false },
+      newValue: { muted: true, timeoutMinutes: dto.durationMinutes ?? null },
+      reason: dto.reason,
+    });
 
     return {
       muted: true,
@@ -407,6 +464,13 @@ export class ModerationService implements OnModuleInit {
     await this.log(actor, 'user_unmute', {
       targetUserId: dto.targetUserId,
       channelId: dto.channelId,
+      reason: dto.reason,
+    });
+    await this.audit('user_unmute', actor, {
+      targetUserId: dto.targetUserId,
+      channelId: dto.channelId,
+      previousValue: { muted: true },
+      newValue: { muted: false },
       reason: dto.reason,
     });
 
@@ -471,6 +535,12 @@ export class ModerationService implements OnModuleInit {
       channelId: dto.channelId,
       reason: dto.reason,
     });
+    await this.audit('member_remove', actor, {
+      targetUserId: dto.targetUserId,
+      targetUserName: (data.name as string) ?? null,
+      channelId: dto.channelId,
+      reason: dto.reason,
+    });
 
     return { removed: true, targetUserId: dto.targetUserId };
   }
@@ -510,6 +580,12 @@ export class ModerationService implements OnModuleInit {
       channelId: dto.channelId,
       reason: dto.reason,
     });
+    await this.audit('user_ban', actor, {
+      targetUserId: dto.targetUserId,
+      channelId: dto.channelId,
+      newValue: { banned: true, timeoutMinutes: dto.timeoutMinutes ?? null },
+      reason: dto.reason,
+    });
 
     return { banned: true, targetUserId: dto.targetUserId };
   }
@@ -533,6 +609,12 @@ export class ModerationService implements OnModuleInit {
     await this.log(actor, 'user_unban', {
       targetUserId: dto.targetUserId,
       channelId: dto.channelId,
+      reason: dto.reason,
+    });
+    await this.audit('user_unban', actor, {
+      targetUserId: dto.targetUserId,
+      channelId: dto.channelId,
+      newValue: { banned: false },
       reason: dto.reason,
     });
 
@@ -587,6 +669,14 @@ export class ModerationService implements OnModuleInit {
 
     await this.log(actor, dto.locked ? 'channel_lock' : 'channel_unlock', {
       channelId: dto.channelId,
+      reason: dto.reason,
+    });
+    await this.audit(dto.locked ? 'channel_lock' : 'channel_unlock', actor, {
+      resourceType: 'channel',
+      resourceId: dto.channelId,
+      channelId: dto.channelId,
+      previousValue: { locked: !dto.locked },
+      newValue: { locked: dto.locked },
       reason: dto.reason,
     });
 
@@ -833,6 +923,16 @@ export class ModerationService implements OnModuleInit {
       targetMessageId: report.targetMessageId ?? undefined,
       targetUserId: report.targetUserId ?? undefined,
       channelId: report.channelId,
+      reason: note ?? report.reason,
+    });
+
+    await this.audit('moderator_action', actor, {
+      targetUserId: report.targetUserId ?? undefined,
+      resourceType: report.targetType === 'message' ? 'message' : 'user',
+      resourceId: report.targetMessageId ?? report.targetUserId ?? undefined,
+      channelId: report.channelId,
+      previousValue: { reportId, status: report.status },
+      newValue: { reportId, status, action },
       reason: note ?? report.reason,
     });
 

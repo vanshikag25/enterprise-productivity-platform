@@ -105,6 +105,15 @@ let ChatController = class ChatController {
     demoteModerator(auth, channelId, memberId) {
         return this.chatService.demoteModerator(channelId, this.uid(auth), memberId);
     }
+    editMessage(auth, messageId, body) {
+        if (!body.text || typeof body.text !== 'string') {
+            throw new common_1.BadRequestException('text is required.');
+        }
+        return this.chatService.editMessage(this.uid(auth), messageId, body.text);
+    }
+    deleteMessage(auth, messageId) {
+        return this.chatService.deleteMessage(this.uid(auth), messageId);
+    }
 };
 exports.ChatController = ChatController;
 __decorate([
@@ -220,6 +229,25 @@ __decorate([
     __metadata("design:paramtypes", [Object, String, String]),
     __metadata("design:returntype", Promise)
 ], ChatController.prototype, "demoteModerator", null);
+__decorate([
+    (0, common_1.Post)('messages/:messageId/edit'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
+    __param(1, (0, common_1.Param)('messageId')),
+    __param(2, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String, Object]),
+    __metadata("design:returntype", Promise)
+], ChatController.prototype, "editMessage", null);
+__decorate([
+    (0, common_1.Post)('messages/:messageId/delete'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
+    __param(1, (0, common_1.Param)('messageId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", Promise)
+], ChatController.prototype, "deleteMessage", null);
 exports.ChatController = ChatController = __decorate([
     (0, common_1.Controller)('chat'),
     __metadata("design:paramtypes", [stream_service_1.StreamService,

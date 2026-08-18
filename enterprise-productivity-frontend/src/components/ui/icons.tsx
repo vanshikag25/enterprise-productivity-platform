@@ -531,3 +531,22 @@ export function IconSend({ ...props }: IconProps) {
     </Base>
   );
 }
+
+export function IconRefresh({ ...props }: IconProps) {
+  return (
+    <Base {...props}>
+      <path d="M21 12a9 9 0 1 1-2.64-6.36" />
+      <path d="M21 3v6h-6" />
+    </Base>
+  );
+}
+
+export function IconHistory({ ...props }: IconProps) {
+  return (
+    <Base {...props}>
+      <path d="M3 12a9 9 0 1 0 3-6.7L3 8" />
+      <path d="M3 3v5h5" />
+      <path d="M12 7v5l4 2" />
+    </Base>
+  );
+}

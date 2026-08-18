@@ -46,7 +46,7 @@ export declare const moderationReports: import("drizzle-orm/pg-core").PgTableWit
             tableName: "moderation_reports";
             dataType: "string";
             columnType: "PgEnumColumn";
-            data: "message" | "user";
+            data: "user" | "message";
             driverParam: string;
             notNull: true;
             hasDefault: false;
@@ -375,7 +375,7 @@ export declare const moderationActions: import("drizzle-orm/pg-core").PgTableWit
             tableName: "moderation_actions";
             dataType: "string";
             columnType: "PgEnumColumn";
-            data: "message_delete" | "user_mute" | "user_unmute" | "member_remove" | "user_ban" | "user_unban" | "channel_lock" | "channel_unlock" | "report_review" | "report_resolve" | "report_dismiss";
+            data: "message_delete" | "member_remove" | "user_mute" | "user_unmute" | "user_ban" | "user_unban" | "channel_lock" | "channel_unlock" | "report_review" | "report_resolve" | "report_dismiss";
             driverParam: string;
             notNull: true;
             hasDefault: false;

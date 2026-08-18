@@ -9,8 +9,8 @@ export declare class DepartmentsController {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        description: string | null;
         channelId: string | null;
+        description: string | null;
         memberIds: string[];
         createdBy: string;
     }>;
@@ -19,8 +19,8 @@ export declare class DepartmentsController {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        description: string | null;
         channelId: string | null;
+        description: string | null;
         memberIds: string[];
         createdBy: string;
     }[]>;
@@ -29,8 +29,8 @@ export declare class DepartmentsController {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        description: string | null;
         channelId: string | null;
+        description: string | null;
         memberIds: string[];
         createdBy: string;
     }>;
@@ -39,8 +39,8 @@ export declare class DepartmentsController {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        description: string | null;
         channelId: string | null;
+        description: string | null;
         memberIds: string[];
         createdBy: string;
     }>;
@@ -50,8 +50,8 @@ export declare class DepartmentsController {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        description: string | null;
         channelId: string | null;
+        description: string | null;
         memberIds: string[];
         createdBy: string;
     }>;
@@ -60,8 +60,8 @@ export declare class DepartmentsController {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        description: string | null;
         channelId: string | null;
+        description: string | null;
         memberIds: string[];
         createdBy: string;
     }>;

@@ -25,6 +25,29 @@ const StreamChatContext = createContext<StreamChatContextValue>({
   error: null,
 });
 
+// StreamChat.getInstance(apiKey) returns a process-wide singleton, so a second
+// connectUser() call (e.g. a React StrictMode effect re-run that starts before
+// the first connectUser resolves) triggers the SDK's "Consecutive calls to
+// connectUser" warning. Track the in-flight connection so concurrent connects
+// for the same user reuse the same promise instead of calling connectUser again.
+let connectInFlight: { userKey: string; promise: Promise<StreamChat> } | null = null;
+
+function connectUserIfNeeded(
+  chatClient: StreamChat,
+  userKey: string,
+  user: { id: string; name: string; image?: string },
+  streamToken: string,
+): Promise<StreamChat> {
+  if (connectInFlight?.userKey === userKey) {
+    return connectInFlight.promise;
+  }
+  const promise = chatClient.connectUser(user, streamToken).then(() => chatClient);
+  connectInFlight = { userKey, promise };
+  return promise.finally(() => {
+    if (connectInFlight?.userKey === userKey) connectInFlight = null;
+  });
+}
+
 export function useStreamChatContext(): StreamChatContextValue {
   return useContext(StreamChatContext);
 }
@@ -71,8 +94,14 @@ export function StreamChatProvider({ children }: { children: ReactNode }) {
         const { streamToken, apiKey } = await fetchChatToken(clerkToken);
         const chatClient = StreamChat.getInstance(apiKey);
 
-        await chatClient.connectUser(
-          { id: user.id, name: user.fullName ?? user.username ?? user.id, image: user.imageUrl ?? undefined },
+        await connectUserIfNeeded(
+          chatClient,
+          user.id,
+          {
+            id: user.id,
+            name: user.fullName ?? user.username ?? user.id,
+            image: user.imageUrl ?? undefined,
+          },
           streamToken,
         );
 

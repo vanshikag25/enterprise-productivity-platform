@@ -1187,3 +1187,438 @@ export async function createModerationReport(
   );
   return res.data;
 }
+
+// --- Admin analytics (Manager+) ---
+
+export type AnalyticsScope = 'platform' | 'managed';
+
+export interface AnalyticsKpi {
+  value: number;
+  previous: number | null;
+  changePct: number | null;
+  unit?: string;
+}
+
+export interface AnalyticsRangeInfo {
+  start: string;
+  end: string;
+  previousStart: string;
+  previousEnd: string;
+  days: number;
+}
+
+export interface AnalyticsDailyPoint {
+  date: string;
+  messages: number;
+  activeUsers: number;
+}
+
+export interface AnalyticsTeamActivityPoint {
+  channelId: string;
+  name: string;
+  kind: string;
+  messageCount: number;
+  activeUsers: number;
+  memberCount: number;
+}
+
+export interface AnalyticsAiUsagePoint {
+  date: string;
+  total: number;
+  summaries: number;
+  translations: number;
+  actions: number;
+}
+
+export interface AnalyticsStoragePoint {
+  date: string;
+  bytes: number;
+  documents: number;
+}
+
+export interface AnalyticsModerationPoint {
+  date: string;
+  reports: number;
+  actions: number;
+}
+
+export interface AnalyticsFilterOptions {
+  teams: { id: string; name: string; kind: string; channelId: string }[];
+  departments: { id: string; name: string; channelId: string | null }[];
+  channels: { id: string; name: string; kind: string }[];
+}
+
+export interface AnalyticsOverview {
+  scope: AnalyticsScope;
+  range: AnalyticsRangeInfo;
+  generatedAt: string;
+  truncated: boolean;
+  kpis: {
+    totalMessages: AnalyticsKpi;
+    activeUsers: AnalyticsKpi;
+    activeChannels: AnalyticsKpi;
+    averageResponseTime: AnalyticsKpi;
+    mostActiveTeams: AnalyticsTeamActivityPoint[];
+    storageUsage: AnalyticsKpi;
+    aiUsage: AnalyticsKpi;
+    pendingReports: AnalyticsKpi;
+    moderationActivity: AnalyticsKpi;
+  };
+  charts: {
+    messageActivity: AnalyticsDailyPoint[];
+    teamActivity: AnalyticsTeamActivityPoint[];
+    storageUsage: AnalyticsStoragePoint[];
+    aiUsage: AnalyticsAiUsagePoint[];
+    moderation: AnalyticsModerationPoint[];
+  };
+  filters: AnalyticsFilterOptions;
+}
+
+export interface AnalyticsTopSender {
+  userId: string;
+  name: string;
+  imageUrl: string | null;
+  messageCount: number;
+}
+
+export interface AnalyticsMessagesDetail {
+  scope: AnalyticsScope;
+  range: AnalyticsRangeInfo;
+  generatedAt: string;
+  truncated: boolean;
+  total: number;
+  daily: AnalyticsDailyPoint[];
+  topSenders: AnalyticsTopSender[];
+  byChannel: {
+    channelId: string;
+    name: string;
+    kind: string;
+    messageCount: number;
+    activeUsers: number;
+  }[];
+}
+
+export interface AnalyticsActiveUserDetail {
+  userId: string;
+  name: string;
+  imageUrl: string | null;
+  messageCount: number;
+  online: boolean;
+  lastActive: string | null;
+}
+
+export interface AnalyticsUsersDetail {
+  scope: AnalyticsScope;
+  range: AnalyticsRangeInfo;
+  generatedAt: string;
+  truncated: boolean;
+  totalActive: number;
+  totalRegistered: number;
+  daily: AnalyticsDailyPoint[];
+  active: AnalyticsActiveUserDetail[];
+}
+
+export interface AnalyticsChannelsDetailItem {
+  channelId: string;
+  name: string;
+  kind: string;
+  messageCount: number;
+  memberCount: number;
+  activeUsers: number;
+  createdBy: string;
+  lastMessageAt: string | null;
+}
+
+export interface AnalyticsChannelsDetail {
+  scope: AnalyticsScope;
+  range: AnalyticsRangeInfo;
+  generatedAt: string;
+  truncated: boolean;
+  items: AnalyticsChannelsDetailItem[];
+  total: number;
+}
+
+export interface AnalyticsTeamsDetail {
+  scope: AnalyticsScope;
+  range: AnalyticsRangeInfo;
+  generatedAt: string;
+  truncated: boolean;
+  items: AnalyticsTeamActivityPoint[];
+}
+
+export interface AnalyticsStorageDetail {
+  scope: AnalyticsScope;
+  range: AnalyticsRangeInfo;
+  generatedAt: string;
+  totalBytes: number;
+  totalDocuments: number;
+  byProject: { projectId: string; name: string; bytes: number; documents: number }[];
+  byMime: { mimeType: string; bytes: number; documents: number }[];
+  daily: AnalyticsStoragePoint[];
+}
+
+export interface AnalyticsAiDetail {
+  scope: AnalyticsScope;
+  range: AnalyticsRangeInfo;
+  generatedAt: string;
+  total: number;
+  byFeature: { feature: string; count: number; changePct: number | null }[];
+  byIntent: { intentType: string; count: number }[];
+  byProvider: { provider: string; count: number }[];
+  daily: AnalyticsAiUsagePoint[];
+}
+
+export interface AnalyticsModerationDetail {
+  scope: AnalyticsScope;
+  range: AnalyticsRangeInfo;
+  generatedAt: string;
+  pendingReports: number;
+  reportsByStatus: { status: string; count: number }[];
+  totalActions: number;
+  actionsByType: { actionType: string; count: number }[];
+  daily: AnalyticsModerationPoint[];
+  recentActions: {
+    id: string;
+    moderatorId: string;
+    moderatorName: string;
+    actionType: string;
+    targetUserId: string | null;
+    channelId: string | null;
+    createdAt: string;
+  }[];
+}
+
+export interface AnalyticsResponseTimeDetail {
+  scope: AnalyticsScope;
+  range: AnalyticsRangeInfo;
+  generatedAt: string;
+  averageSeconds: number | null;
+  samples: number;
+  byChannel: {
+    channelId: string;
+    name: string;
+    averageSeconds: number | null;
+    samples: number;
+  }[];
+}
+
+export type AnalyticsQueryParams = {
+  range?: string;
+  startDate?: string;
+  endDate?: string;
+  teamId?: string;
+  departmentId?: string;
+  channelId?: string;
+};
+
+export type AnalyticsDetailParams = AnalyticsQueryParams & {
+  limit?: number;
+  offset?: number;
+};
+
+async function analyticsGet<T>(
+  token: string,
+  path: string,
+  params: Record<string, string | number | undefined>,
+): Promise<T> {
+  const res = await apiClient.get<T>(path, {
+    headers: { Authorization: `Bearer ${token}` },
+    params,
+  });
+  return res.data;
+}
+
+export async function fetchAnalyticsOverview(
+  token: string,
+  params: AnalyticsQueryParams = {},
+): Promise<AnalyticsOverview> {
+  return analyticsGet<AnalyticsOverview>(token, '/analytics/overview', params);
+}
+
+export async function fetchAnalyticsMessages(
+  token: string,
+  params: AnalyticsDetailParams = {},
+): Promise<AnalyticsMessagesDetail> {
+  return analyticsGet<AnalyticsMessagesDetail>(token, '/analytics/messages', params);
+}
+
+export async function fetchAnalyticsUsers(
+  token: string,
+  params: AnalyticsDetailParams = {},
+): Promise<AnalyticsUsersDetail> {
+  return analyticsGet<AnalyticsUsersDetail>(token, '/analytics/users', params);
+}
+
+export async function fetchAnalyticsChannels(
+  token: string,
+  params: AnalyticsDetailParams = {},
+): Promise<AnalyticsChannelsDetail> {
+  return analyticsGet<AnalyticsChannelsDetail>(token, '/analytics/channels', params);
+}
+
+export async function fetchAnalyticsTeams(
+  token: string,
+  params: AnalyticsDetailParams = {},
+): Promise<AnalyticsTeamsDetail> {
+  return analyticsGet<AnalyticsTeamsDetail>(token, '/analytics/teams', params);
+}
+
+export async function fetchAnalyticsStorage(
+  token: string,
+  params: AnalyticsDetailParams = {},
+): Promise<AnalyticsStorageDetail> {
+  return analyticsGet<AnalyticsStorageDetail>(token, '/analytics/storage', params);
+}
+
+export async function fetchAnalyticsAi(
+  token: string,
+  params: AnalyticsDetailParams = {},
+): Promise<AnalyticsAiDetail> {
+  return analyticsGet<AnalyticsAiDetail>(token, '/analytics/ai', params);
+}
+
+export async function fetchAnalyticsModeration(
+  token: string,
+  params: AnalyticsDetailParams = {},
+): Promise<AnalyticsModerationDetail> {
+  return analyticsGet<AnalyticsModerationDetail>(token, '/analytics/moderation', params);
+}
+
+export async function fetchAnalyticsResponseTime(
+  token: string,
+  params: AnalyticsDetailParams = {},
+): Promise<AnalyticsResponseTimeDetail> {
+  return analyticsGet<AnalyticsResponseTimeDetail>(token, '/analytics/response-time', params);
+}
+
+// --- Audit & compliance (Admin+) ---
+
+export type AuditActionType =
+  | 'message_edit'
+  | 'message_delete'
+  | 'user_join'
+  | 'user_leave'
+  | 'member_remove'
+  | 'role_change'
+  | 'channel_create'
+  | 'channel_delete'
+  | 'moderator_action'
+  | 'user_mute'
+  | 'user_unmute'
+  | 'user_ban'
+  | 'user_unban'
+  | 'channel_lock'
+  | 'channel_unlock';
+
+export const AUDIT_ACTION_LABELS: Record<AuditActionType, string> = {
+  message_edit: 'Message edited',
+  message_delete: 'Message deleted',
+  user_join: 'User joined',
+  user_leave: 'User left',
+  member_remove: 'Member removed',
+  role_change: 'Role changed',
+  channel_create: 'Channel created',
+  channel_delete: 'Channel deleted',
+  moderator_action: 'Moderator action',
+  user_mute: 'User muted',
+  user_unmute: 'User unmuted',
+  user_ban: 'User banned',
+  user_unban: 'User unbanned',
+  channel_lock: 'Channel locked',
+  channel_unlock: 'Channel unlocked',
+};
+
+export type AuditResourceType =
+  | 'message'
+  | 'user'
+  | 'channel'
+  | 'project'
+  | 'department';
+
+export interface AuditEventItem {
+  id: string;
+  actionType: AuditActionType;
+  actorId: string;
+  actorRole: UserRole;
+  actorName: string | null;
+  targetUserId: string | null;
+  targetUserName: string | null;
+  resourceType: AuditResourceType;
+  resourceId: string | null;
+  resourceName: string | null;
+  channelId: string | null;
+  projectId: string | null;
+  previousValue: Record<string, unknown> | null;
+  newValue: Record<string, unknown> | null;
+  reason: string | null;
+  ipAddress: string | null;
+  userAgent: string | null;
+  createdAt: string;
+}
+
+export interface AuditEventList {
+  items: AuditEventItem[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
+export interface FetchAuditLogsParams {
+  page?: number;
+  limit?: number;
+  actionType?: AuditActionType;
+  actorId?: string;
+  channelId?: string;
+  search?: string;
+  startDate?: string;
+  endDate?: string;
+  sort?: 'newest' | 'oldest';
+}
+
+export async function fetchAuditLogs(
+  token: string,
+  params: FetchAuditLogsParams = {},
+): Promise<AuditEventList> {
+  const res = await apiClient.get<AuditEventList>('/audit/logs', {
+    headers: { Authorization: `Bearer ${token}` },
+    params,
+  });
+  return res.data;
+}
+
+export async function fetchAuditActionTypes(
+  token: string,
+): Promise<AuditActionType[]> {
+  const res = await apiClient.get<{ items: AuditActionType[] }>('/audit/actions', {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data.items;
+}
+
+// --- Chat message edit / delete (audited through the backend) ---
+
+export async function editChatMessage(
+  token: string,
+  messageId: string,
+  text: string,
+): Promise<{ id: string; updated: boolean }> {
+  const res = await apiClient.post<{ id: string; updated: boolean }>(
+    `/chat/messages/${encodeURIComponent(messageId)}/edit`,
+    { text },
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+  return res.data;
+}
+
+export async function deleteChatMessage(
+  token: string,
+  messageId: string,
+): Promise<{ id: string; deleted: boolean }> {
+  const res = await apiClient.post<{ id: string; deleted: boolean }>(
+    `/chat/messages/${encodeURIComponent(messageId)}/delete`,
+    {},
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+  return res.data;
+}

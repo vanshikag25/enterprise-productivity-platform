@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import {
   ChannelList,
@@ -34,6 +34,8 @@ import { scrollToMessage } from './scroll-to-message';
 import { AIActionDetectionProvider } from '@/components/action-detection/action-detection-context';
 import { TranslationProvider } from '@/components/chat/translation-context';
 import { MessageWithAiActions } from '@/components/action-detection/message-with-ai-actions';
+import { useAuth } from '@/lib/auth';
+import { deleteChatMessage, editChatMessage } from '@/lib/api-client';
 import { IconPin, IconSearch, IconSettings, IconSparkles, IconUsers } from '@/components/ui/icons';
 
 interface ChatBodyProps {
@@ -43,6 +45,7 @@ interface ChatBodyProps {
 
 export function ChatBody({ userId, client }: ChatBodyProps) {
   const { channel, setActiveChannel } = useChatContext();
+  const { getToken } = useAuth();
   const [channelListKey, setChannelListKey] = useState(0);
   const [showPinned, setShowPinned] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
@@ -106,6 +109,36 @@ export function ChatBody({ userId, client }: ChatBodyProps) {
   const isGroupChat = Boolean(channelData?.name);
   const groupDescription = channelData?.description ?? null;
 
+  // Route message edits/deletes through the backend so they are recorded in
+  // the immutable audit trail, then update the local Stream state via the
+  // SDK so the conversation UI stays in sync.
+  const doUpdateMessageRequest = useCallback(
+    async (cid: string, updatedMessage: Parameters<NonNullable<React.ComponentProps<typeof Channel>['doUpdateMessageRequest']>>[1]) => {
+      const id = typeof updatedMessage === 'string' ? updatedMessage : updatedMessage.id;
+      const text = typeof updatedMessage === 'object' && typeof updatedMessage.text === 'string' ? updatedMessage.text : undefined;
+      if (!id) throw new Error('Cannot edit a message - missing message ID.');
+      const token = await getToken();
+      if (!token) throw new Error('Unable to retrieve session token.');
+      await editChatMessage(token, id, text ?? '');
+      if (typeof updatedMessage === 'string') {
+        return client.updateMessage({ id, text: text ?? '' });
+      }
+      return client.updateMessage(updatedMessage);
+    },
+    [client, getToken],
+  );
+
+  const doDeleteMessageRequest = useCallback(
+    async (message: Parameters<NonNullable<React.ComponentProps<typeof Channel>['doDeleteMessageRequest']>>[0]) => {
+      if (!message?.id) throw new Error('Cannot delete a message - missing message ID.');
+      const token = await getToken();
+      if (!token) throw new Error('Unable to retrieve session token.');
+      await deleteChatMessage(token, message.id);
+      return (await client.deleteMessage(message.id, { hardDelete: false })).message;
+    },
+    [client, getToken],
+  );
+
   return (
     <div className="flex h-full w-full flex-col md:flex-row">
       <div className="flex w-full shrink-0 flex-col overflow-y-auto border-b md:h-full md:max-w-xs md:border-b-0 md:border-r">
@@ -140,7 +173,10 @@ export function ChatBody({ userId, client }: ChatBodyProps) {
               reactionOptions,
             }}
           >
-            <Channel>
+            <Channel
+              doUpdateMessageRequest={doUpdateMessageRequest}
+              doDeleteMessageRequest={doDeleteMessageRequest}
+            >
               <AIActionDetectionProvider>
                 <TranslationProvider>
                 <Window>

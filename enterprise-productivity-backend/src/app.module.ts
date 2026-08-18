@@ -1,4 +1,8 @@
-import { Module } from '@nestjs/common';
+import {
+  Module,
+  type MiddlewareConsumer,
+  type NestModule,
+} from '@nestjs/common';
 import { ConfigModule } from './config/config.module';
 import { HealthModule } from './health/health.module';
 import { AuthModule } from './auth/auth.module';
@@ -29,6 +33,9 @@ import { SentimentModule } from './sentiment/sentiment.module';
 import { TranslationModule } from './translation/translation.module';
 import { VideoModule } from './video/video.module';
 import { ModerationModule } from './moderation/moderation.module';
+import { AnalyticsModule } from './analytics/analytics.module';
+import { AuditModule } from './audit/audit.module';
+import { RequestContextMiddleware } from './audit/request-context';
 
 @Module({
   imports: [
@@ -38,6 +45,8 @@ import { ModerationModule } from './moderation/moderation.module';
     DatabaseModule,
     UsersModule,
     StreamModule,
+    AnalyticsModule,
+    AuditModule,
     TasksModule,
     MeetingsModule,
     DepartmentsModule,
@@ -64,4 +73,8 @@ import { ModerationModule } from './moderation/moderation.module';
     ModerationModule,
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): void {
+    consumer.apply(RequestContextMiddleware).forRoutes('*');
+  }
+}

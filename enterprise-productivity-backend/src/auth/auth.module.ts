@@ -39,6 +39,7 @@ import { RemindersModule } from '../reminders/reminders.module';
 import { RemindersController } from '../reminders/reminders.controller';
 import { BookmarksModule } from '../bookmarks/bookmarks.module';
 import { BookmarksController } from '../bookmarks/bookmarks.controller';
+import { ModerationModule } from '../moderation/moderation.module';
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { BookmarksController } from '../bookmarks/bookmarks.controller';
     NotesModule,
     RemindersModule,
     BookmarksModule,
+    ModerationModule,
     JwtModule.registerAsync({
       global: true,
       inject: [ConfigService],

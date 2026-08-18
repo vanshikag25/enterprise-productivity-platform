@@ -29,6 +29,7 @@ exports.ModerationModule = ModerationModule = __decorate([
         ],
         providers: [moderation_service_1.ModerationService],
         controllers: [moderation_controller_1.ModerationController],
+        exports: [moderation_service_1.ModerationService],
     })
 ], ModerationModule);
 //# sourceMappingURL=moderation.module.js.map

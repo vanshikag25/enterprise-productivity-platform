@@ -2,6 +2,8 @@ import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { StreamService } from '../stream/stream.service';
 import { UsersService } from '../users/users.service';
 import { NotificationsService } from '../notifications/notifications.service';
+import { ModerationService } from '../moderation/moderation.service';
+import { AuditService } from '../audit/audit.service';
 export type GroupRole = 'owner' | 'moderator' | 'member' | 'admin';
 export type MemberRole = Exclude<GroupRole, 'admin'>;
 export interface GroupMemberInfo {
@@ -31,9 +33,13 @@ export declare class ChatService {
     private readonly streamService;
     private readonly usersService;
     private readonly notificationsService;
+    private readonly moderationService;
+    private readonly auditService;
     private readonly logger;
-    constructor(db: NodePgDatabase, streamService: StreamService, usersService: UsersService, notificationsService: NotificationsService);
+    constructor(db: NodePgDatabase, streamService: StreamService, usersService: UsersService, notificationsService: NotificationsService, moderationService: ModerationService, auditService: AuditService);
     private watchChannel;
+    private loadActor;
+    private audit;
     private memberRole;
     private resolveRole;
     private assertCanManage;
@@ -48,5 +54,14 @@ export declare class ChatService {
     leaveGroup(channelId: string, userId: string): Promise<void>;
     assignModerator(channelId: string, userId: string, memberId: string): Promise<GroupInfo>;
     demoteModerator(channelId: string, userId: string, memberId: string): Promise<GroupInfo>;
+    private channelIdOf;
+    editMessage(userId: string, messageId: string, text: string): Promise<{
+        id: string;
+        updated: boolean;
+    }>;
+    deleteMessage(userId: string, messageId: string): Promise<{
+        id: string;
+        deleted: boolean;
+    }>;
 }
 export {};

@@ -13,9 +13,9 @@ export declare class TasksController {
         description: string | null;
         title: string;
         status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
+        createdBy: string;
         priority: "Low" | "Medium" | "High" | "Critical";
         dueDate: Date | null;
-        createdBy: string;
         assignee: string | null;
         streamChannelId: string | null;
         sourceChannelId: string | null;
@@ -30,9 +30,9 @@ export declare class TasksController {
         description: string | null;
         title: string;
         status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
+        createdBy: string;
         priority: "Low" | "Medium" | "High" | "Critical";
         dueDate: Date | null;
-        createdBy: string;
         assignee: string | null;
         streamChannelId: string | null;
         sourceChannelId: string | null;
@@ -47,9 +47,9 @@ export declare class TasksController {
         description: string | null;
         title: string;
         status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
+        createdBy: string;
         priority: "Low" | "Medium" | "High" | "Critical";
         dueDate: Date | null;
-        createdBy: string;
         assignee: string | null;
         streamChannelId: string | null;
         sourceChannelId: string | null;
@@ -64,9 +64,9 @@ export declare class TasksController {
         description: string | null;
         title: string;
         status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
+        createdBy: string;
         priority: "Low" | "Medium" | "High" | "Critical";
         dueDate: Date | null;
-        createdBy: string;
         assignee: string | null;
         streamChannelId: string | null;
         sourceChannelId: string | null;
@@ -84,9 +84,9 @@ export declare class TasksController {
         description: string | null;
         title: string;
         status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
+        createdBy: string;
         priority: "Low" | "Medium" | "High" | "Critical";
         dueDate: Date | null;
-        createdBy: string;
         assignee: string | null;
         streamChannelId: string | null;
         sourceChannelId: string | null;
@@ -101,9 +101,9 @@ export declare class TasksController {
         description: string | null;
         title: string;
         status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
+        createdBy: string;
         priority: "Low" | "Medium" | "High" | "Critical";
         dueDate: Date | null;
-        createdBy: string;
         assignee: string | null;
         streamChannelId: string | null;
         sourceChannelId: string | null;

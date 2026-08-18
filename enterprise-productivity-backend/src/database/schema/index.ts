@@ -16,3 +16,4 @@ export * from './entity-creation-requests.schema';
 export * from './app-settings.schema';
 export * from './message-translations.schema';
 export * from './moderation.schema';
+export * from './audit-logs.schema';

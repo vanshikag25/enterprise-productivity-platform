@@ -4,6 +4,7 @@ import { type ModerationReportStatus } from '../database/schema/moderation.schem
 import { type User } from '../database/schema/users.schema';
 import { StreamService } from '../stream/stream.service';
 import { UsersService } from '../users/users.service';
+import { AuditService } from '../audit/audit.service';
 import { ProjectAccessService } from '../projects/project-access.service';
 import { NotificationsService } from '../notifications/notifications.service';
 import type { Channel as StreamChannel } from 'stream-chat';
@@ -24,8 +25,9 @@ export declare class ModerationService implements OnModuleInit {
     private readonly usersService;
     private readonly projectAccess;
     private readonly notificationsService;
+    private readonly auditService;
     private readonly logger;
-    constructor(db: NodePgDatabase, streamService: StreamService, usersService: UsersService, projectAccess: ProjectAccessService, notificationsService: NotificationsService);
+    constructor(db: NodePgDatabase, streamService: StreamService, usersService: UsersService, projectAccess: ProjectAccessService, notificationsService: NotificationsService, auditService: AuditService);
     onModuleInit(): Promise<void>;
     private ensureChannelModeratorsCanUseFrozenChannels;
     private platformRole;
@@ -39,6 +41,7 @@ export declare class ModerationService implements OnModuleInit {
     private assertTargetRankBelow;
     private assertCanBan;
     private log;
+    private audit;
     private managedChannelIds;
     deleteMessage(actor: User, messageId: string, reason?: string): Promise<{
         id: string;
@@ -174,7 +177,7 @@ export declare class ModerationService implements OnModuleInit {
             moderatorId: string;
             moderatorName: string;
             moderatorRole: "super_admin" | "organization_owner" | "admin" | "manager" | "team_lead" | "employee" | "guest";
-            actionType: "message_delete" | "user_mute" | "user_unmute" | "member_remove" | "user_ban" | "user_unban" | "channel_lock" | "channel_unlock" | "report_review" | "report_resolve" | "report_dismiss";
+            actionType: "message_delete" | "member_remove" | "user_mute" | "user_unmute" | "user_ban" | "user_unban" | "channel_lock" | "channel_unlock" | "report_review" | "report_resolve" | "report_dismiss";
             targetUserId: string | null;
             targetMessageId: string | null;
             channelId: string | null;

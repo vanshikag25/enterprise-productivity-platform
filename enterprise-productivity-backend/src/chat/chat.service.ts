@@ -4,15 +4,23 @@ import {
   Inject,
   Injectable,
   Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import type { Channel as StreamChannel } from 'stream-chat';
 import { eq } from 'drizzle-orm';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { DRIZZLE } from '../database/drizzle.provider';
 import { chatChannelAvatars } from '../database/schema/chat-channels.schema';
+import type { User } from '../database/schema/users.schema';
+import type {
+  AuditActionType,
+  AuditResourceType,
+} from '../database/schema/audit-logs.schema';
 import { StreamService } from '../stream/stream.service';
 import { UsersService } from '../users/users.service';
 import { NotificationsService } from '../notifications/notifications.service';
+import { ModerationService } from '../moderation/moderation.service';
+import { AuditService } from '../audit/audit.service';
 import { hasMinRole } from '../rbac/roles';
 
 export type GroupRole = 'owner' | 'moderator' | 'member' | 'admin';
@@ -52,6 +60,8 @@ export class ChatService {
     private readonly streamService: StreamService,
     private readonly usersService: UsersService,
     private readonly notificationsService: NotificationsService,
+    private readonly moderationService: ModerationService,
+    private readonly auditService: AuditService,
   ) {}
 
   private async watchChannel(channelId: string): Promise<StreamChannel> {
@@ -60,6 +70,50 @@ export class ChatService {
       .channel('messaging', channelId);
     await channel.watch();
     return channel;
+  }
+
+  private async loadActor(userId: string): Promise<User> {
+    const user = await this.usersService.findByUsername(userId);
+    if (!user) {
+      throw new NotFoundException('User profile not found.');
+    }
+    return user;
+  }
+
+  private async audit(
+    actionType: AuditActionType,
+    actor: User,
+    fields: {
+      targetUserId?: string | null;
+      targetUserName?: string | null;
+      resourceType?: AuditResourceType;
+      resourceId?: string | null;
+      resourceName?: string | null;
+      channelId?: string | null;
+      projectId?: string | null;
+      previousValue?: Record<string, unknown>;
+      newValue?: Record<string, unknown>;
+      reason?: string;
+    },
+  ): Promise<void> {
+    await this.auditService.record({
+      actionType,
+      actorId: actor.username,
+      actorRole: actor.role,
+      actorName:
+        `${actor.firstName ?? ''} ${actor.lastName ?? ''}`.trim() ||
+        actor.username,
+      targetUserId: fields.targetUserId ?? null,
+      targetUserName: fields.targetUserName ?? null,
+      resourceType: fields.resourceType ?? 'channel',
+      resourceId: fields.resourceId ?? null,
+      resourceName: fields.resourceName ?? null,
+      channelId: fields.channelId ?? null,
+      projectId: fields.projectId ?? null,
+      previousValue: fields.previousValue ?? null,
+      newValue: fields.newValue ?? null,
+      reason: fields.reason ?? null,
+    });
   }
 
   private memberRole(
@@ -261,6 +315,16 @@ export class ChatService {
       actionUrl: `/dashboard?channel=${channelId}`,
     });
 
+    await this.audit('user_join', await this.loadActor(userId), {
+      targetUserId: memberId,
+      targetUserName:
+        (channel.state.members ?? {})[memberId]?.user?.name ?? null,
+      resourceType: 'channel',
+      resourceId: channelId,
+      resourceName: (data.name as string) ?? null,
+      channelId,
+    });
+
     return this.getGroupInfo(channelId, userId);
   }
 
@@ -306,6 +370,15 @@ export class ChatService {
       description: (data.name as string) ?? 'a group',
     });
 
+    await this.audit('member_remove', await this.loadActor(userId), {
+      targetUserId: memberId,
+      targetUserName: targetMember.user?.name ?? null,
+      resourceType: 'channel',
+      resourceId: channelId,
+      resourceName: (data.name as string) ?? null,
+      channelId,
+    });
+
     return this.getGroupInfo(channelId, userId);
   }
 
@@ -321,6 +394,14 @@ export class ChatService {
 
     await channel.removeMembers([userId]);
     this.logger.log(`User ${userId} left group ${channelId}`);
+
+    await this.audit('user_leave', await this.loadActor(userId), {
+      targetUserId: userId,
+      resourceType: 'channel',
+      resourceId: channelId,
+      resourceName: (data.name as string) ?? null,
+      channelId,
+    });
   }
 
   async assignModerator(
@@ -338,6 +419,18 @@ export class ChatService {
 
     await channel.addModerators([memberId]);
     this.logger.log(`Moderator assigned: ${memberId} in ${channelId}`);
+
+    const data = (channel.data ?? {}) as Record<string, unknown>;
+    await this.audit('moderator_action', await this.loadActor(userId), {
+      targetUserId: memberId,
+      targetUserName:
+        (channel.state.members ?? {})[memberId]?.user?.name ?? null,
+      resourceType: 'channel',
+      resourceId: channelId,
+      resourceName: (data.name as string) ?? null,
+      channelId,
+      newValue: { memberRole: 'moderator', action: 'assign' },
+    });
 
     return this.getGroupInfo(channelId, userId);
   }
@@ -367,6 +460,96 @@ export class ChatService {
     await channel.demoteModerators([memberId]);
     this.logger.log(`Moderator demoted: ${memberId} in ${channelId}`);
 
+    await this.audit('moderator_action', await this.loadActor(userId), {
+      targetUserId: memberId,
+      targetUserName:
+        (channel.state.members ?? {})[memberId]?.user?.name ?? null,
+      resourceType: 'channel',
+      resourceId: channelId,
+      resourceName: (data.name as string) ?? null,
+      channelId,
+      newValue: { memberRole: 'member', action: 'demote' },
+    });
+
     return this.getGroupInfo(channelId, userId);
+  }
+
+  private channelIdOf(cid?: string): string | undefined {
+    if (!cid) return undefined;
+    return cid.includes(':') ? cid.split(':')[1] : cid;
+  }
+
+  /**
+   * Edits a message through the backend so the change is captured in the audit
+   * trail. Only the message author may edit their own message.
+   */
+  async editMessage(
+    userId: string,
+    messageId: string,
+    text: string,
+  ): Promise<{ id: string; updated: boolean }> {
+    const client = this.streamService.getClient();
+    const result = await client.getMessage(messageId);
+    const message = result.message as {
+      id: string;
+      text?: string;
+      user?: { id?: string };
+      channel?: { cid?: string };
+    };
+
+    if (!message.user?.id || message.user.id !== userId) {
+      throw new ForbiddenException('You can only edit your own messages.');
+    }
+
+    await client.updateMessage({ id: messageId, text, user_id: userId });
+
+    await this.audit('message_edit', await this.loadActor(userId), {
+      resourceType: 'message',
+      resourceId: messageId,
+      channelId: this.channelIdOf(message.channel?.cid),
+      previousValue: { text: message.text ?? '' },
+      newValue: { text },
+    });
+
+    return { id: messageId, updated: true };
+  }
+
+  /**
+   * Deletes a message. The author may delete their own message; other users
+   * must have moderation permission, which ModerationService enforces (and
+   * audits) itself, so the audit record is never duplicated.
+   */
+  async deleteMessage(
+    userId: string,
+    messageId: string,
+  ): Promise<{ id: string; deleted: boolean }> {
+    const client = this.streamService.getClient();
+    const result = await client.getMessage(messageId);
+    const message = result.message as {
+      id: string;
+      user?: { id?: string };
+      channel?: { cid?: string };
+    };
+    const channelId = this.channelIdOf(message.channel?.cid);
+    const actor = await this.loadActor(userId);
+    const isOwner = !!message.user?.id && message.user.id === userId;
+
+    if (isOwner) {
+      await client.deleteMessage(messageId, { hardDelete: false });
+      await this.audit('message_delete', actor, {
+        resourceType: 'message',
+        resourceId: messageId,
+        channelId,
+        newValue: { deleted: true },
+      });
+      return { id: messageId, deleted: true };
+    }
+
+    await this.moderationService.deleteMessage(
+      actor,
+      messageId,
+      'Deleted by request.',
+    );
+    return { id: messageId, deleted: true };
   }
 }

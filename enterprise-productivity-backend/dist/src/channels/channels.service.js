@@ -17,14 +17,41 @@ const stream_service_1 = require("../stream/stream.service");
 const users_service_1 = require("../users/users.service");
 const departments_service_1 = require("../departments/departments.service");
 const notifications_service_1 = require("../notifications/notifications.service");
+const audit_service_1 = require("../audit/audit.service");
 const roles_1 = require("../rbac/roles");
 let ChannelsService = ChannelsService_1 = class ChannelsService {
-    constructor(streamService, usersService, departmentsService, notificationsService) {
+    constructor(streamService, usersService, departmentsService, notificationsService, auditService) {
         this.streamService = streamService;
         this.usersService = usersService;
         this.departmentsService = departmentsService;
         this.notificationsService = notificationsService;
+        this.auditService = auditService;
         this.logger = new common_1.Logger(ChannelsService_1.name);
+    }
+    async loadActor(userId) {
+        const user = await this.usersService.findByUsername(userId);
+        if (!user) {
+            throw new common_1.NotFoundException('User profile not found.');
+        }
+        return user;
+    }
+    async audit(actionType, actor, fields) {
+        await this.auditService.record({
+            actionType,
+            actorId: actor.username,
+            actorRole: actor.role,
+            actorName: [actor.firstName, actor.lastName].filter(Boolean).join(' ') ||
+                actor.username,
+            targetUserId: fields.targetUserId ?? null,
+            targetUserName: fields.targetUserName ?? null,
+            resourceType: fields.resourceType ?? 'channel',
+            resourceId: fields.resourceId ?? null,
+            resourceName: fields.resourceName ?? null,
+            channelId: fields.channelId ?? null,
+            previousValue: fields.previousValue ?? null,
+            newValue: fields.newValue ?? null,
+            reason: fields.reason ?? null,
+        });
     }
     async requireRole(userId, minimum) {
         const user = await this.usersService.findByUsername(userId);
@@ -85,6 +112,19 @@ let ChannelsService = ChannelsService_1 = class ChannelsService {
         if (dto.kind === 'department' && departmentId) {
             await this.departmentsService.setChannelId(departmentId, channel.id);
         }
+        await this.audit('channel_create', await this.loadActor(userId), {
+            resourceType: 'channel',
+            resourceId: channel.id,
+            resourceName: dto.name,
+            channelId: channel.id,
+            departmentId,
+            newValue: {
+                kind: dto.kind,
+                name: dto.name,
+                description: dto.description ?? '',
+                memberCount: members.length,
+            },
+        });
         await this.notificationsService.createMany(members
             .filter((m) => m !== userId)
             .map((m) => ({
@@ -136,16 +176,39 @@ let ChannelsService = ChannelsService_1 = class ChannelsService {
     }
     async remove(id, userId) {
         const channel = await this.requireCreatorOrPrivileged(id, userId);
+        const data = (channel.data ?? {});
         await channel.delete();
+        await this.audit('channel_delete', await this.loadActor(userId), {
+            resourceType: 'channel',
+            resourceId: id,
+            resourceName: data.name ?? null,
+            channelId: id,
+        });
     }
     async join(id, userId) {
         const channel = await this.getWatchedChannel(id);
         await channel.addMembers([userId]);
+        const data = (channel.data ?? {});
+        await this.audit('user_join', await this.loadActor(userId), {
+            targetUserId: userId,
+            resourceType: 'channel',
+            resourceId: id,
+            resourceName: data.name ?? null,
+            channelId: id,
+        });
         return this.toSummary(channel);
     }
     async leave(id, userId) {
         const channel = await this.getWatchedChannel(id);
+        const data = (channel.data ?? {});
         await channel.removeMembers([userId]);
+        await this.audit('user_leave', await this.loadActor(userId), {
+            targetUserId: userId,
+            resourceType: 'channel',
+            resourceId: id,
+            resourceName: data.name ?? null,
+            channelId: id,
+        });
         return this.toSummary(channel);
     }
     async addMember(id, userId, memberId) {
@@ -165,12 +228,30 @@ let ChannelsService = ChannelsService_1 = class ChannelsService {
                 ? '/department-channels'
                 : '/organization-channels',
         });
+        await this.audit('user_join', await this.loadActor(userId), {
+            targetUserId: memberId,
+            targetUserName: (channel.state.members ?? {})[memberId]?.user?.name ?? null,
+            resourceType: 'channel',
+            resourceId: id,
+            resourceName: data.name ?? null,
+            channelId: id,
+        });
         return this.toSummary(channel);
     }
     async removeMember(id, userId, memberId) {
         await this.requireCreatorOrPrivileged(id, userId);
         const channel = await this.getWatchedChannel(id);
+        const data = (channel.data ?? {});
+        const targetMember = (channel.state.members ?? {})[memberId];
         await channel.removeMembers([memberId]);
+        await this.audit('member_remove', await this.loadActor(userId), {
+            targetUserId: memberId,
+            targetUserName: targetMember?.user?.name ?? null,
+            resourceType: 'channel',
+            resourceId: id,
+            resourceName: data.name ?? null,
+            channelId: id,
+        });
         return this.toSummary(channel);
     }
     async listMembers(id) {
@@ -191,6 +272,7 @@ exports.ChannelsService = ChannelsService = ChannelsService_1 = __decorate([
     __metadata("design:paramtypes", [stream_service_1.StreamService,
         users_service_1.UsersService,
         departments_service_1.DepartmentsService,
-        notifications_service_1.NotificationsService])
+        notifications_service_1.NotificationsService,
+        audit_service_1.AuditService])
 ], ChannelsService);
 //# sourceMappingURL=channels.service.js.map

@@ -36,6 +36,10 @@ interface UpdateGroupAvatarBody {
   avatarUrl: string;
 }
 
+interface EditMessageBody {
+  text: string;
+}
+
 @Controller('chat')
 export class ChatController {
   constructor(
@@ -252,5 +256,27 @@ export class ChatController {
       this.uid(auth),
       memberId,
     );
+  }
+
+  @Post('messages/:messageId/edit')
+  @UseGuards(JwtAuthGuard)
+  editMessage(
+    @CurrentUser() auth: AuthObject,
+    @Param('messageId') messageId: string,
+    @Body() body: EditMessageBody,
+  ): Promise<{ id: string; updated: boolean }> {
+    if (!body.text || typeof body.text !== 'string') {
+      throw new BadRequestException('text is required.');
+    }
+    return this.chatService.editMessage(this.uid(auth), messageId, body.text);
+  }
+
+  @Post('messages/:messageId/delete')
+  @UseGuards(JwtAuthGuard)
+  deleteMessage(
+    @CurrentUser() auth: AuthObject,
+    @Param('messageId') messageId: string,
+  ): Promise<{ id: string; deleted: boolean }> {
+    return this.chatService.deleteMessage(this.uid(auth), messageId);
   }
 }
