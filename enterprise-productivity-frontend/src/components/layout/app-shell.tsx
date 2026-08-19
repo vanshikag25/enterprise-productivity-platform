@@ -33,6 +33,7 @@ import {
   IconSparkles,
   IconTasks,
   IconUsers,
+  IconWorkflow,
 } from '@/components/ui/icons';
 
 const NAV_ITEMS: {
@@ -58,6 +59,7 @@ const NAV_ITEMS: {
   { href: '/admin/moderation', label: 'Moderation', icon: <IconAlertTriangle width={18} height={18} />, minRole: 'team_lead' },
   { href: '/admin/analytics', label: 'Analytics', icon: <IconSparkles width={18} height={18} />, minRole: 'manager' },
   { href: '/admin/audit', label: 'Audit Log', icon: <IconHistory width={18} height={18} />, minRole: 'admin' },
+  { href: '/admin/workflows', label: 'Workflows', icon: <IconWorkflow width={18} height={18} />, minRole: 'admin' },
 ];
 
 function getPageTitle(pathname: string): string {

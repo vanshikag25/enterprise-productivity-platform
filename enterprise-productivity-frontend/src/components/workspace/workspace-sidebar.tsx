@@ -1,0 +1,380 @@
+'use client';
+
+import { useCallback, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
+import { ChannelList, WithComponents, useChatContext } from 'stream-chat-react';
+import type { Channel as StreamChannel } from 'stream-chat';
+import { createCustomChannelListItem } from '@/components/chat/custom-channel-list-item';
+import { partitionChannels } from './channel-sections';
+import { useWorkspace } from './workspace-context';
+import { useWorkspaceListData } from '@/hooks/use-workspace-list-data';
+import { Avatar } from '@/components/ui/avatar';
+import { Spinner } from '@/components/ui/spinner';
+import {
+  IconBookmark,
+  IconCalendar,
+  IconChevronsLeft,
+  IconChevronsRight,
+  IconMegaphone,
+  IconMessageCircle,
+  IconProject,
+  IconTasks,
+  IconUsers,
+} from '@/components/ui/icons';
+
+const SECTION_ICONS = {
+  dms: IconMessageCircle,
+  teams: IconUsers,
+  projects: IconProject,
+  tasks: IconTasks,
+  meetings: IconCalendar,
+  announcements: IconMegaphone,
+  starred: IconBookmark,
+  archived: IconMessageCircle,
+};
+
+export function WorkspaceSidebar() {
+  const { client, channel } = useChatContext();
+  const userId = client?.userID ?? channel?.getClient()?.userID ?? '';  const {
+    mode,
+    selectedChannelId,
+    selectChannel,
+    openProject,
+    openTask,
+    openMeeting,
+    openStarred,
+    sidebarCollapsed,
+    setSidebarOpen,
+    toggleSidebarCollapsed,
+  } = useWorkspace();
+  const { projects, tasks, meetings, bookmarks, isLoading } = useWorkspaceListData();
+  const router = useRouter();
+
+  const CustomChannelListItem = useMemo(
+    () => createCustomChannelListItem(userId),
+    [userId],
+  );
+
+  const handleChannelClick = useCallback(
+    (channel: StreamChannel) => {
+      if (channel.id) selectChannel(channel.id);
+    },
+    [selectChannel],
+  );
+
+  const renderChannels = useCallback(
+    (channels: StreamChannel[], channelPreview: (channel: StreamChannel) => React.ReactNode) => {
+      const groups = partitionChannels(channels);
+      return (
+        <div className="flex flex-col">
+          <ChannelSection
+            icon={<IconMessageCircle width={13} height={13} />}
+            label="Direct Messages"
+            channels={groups.dms}
+            channelPreview={channelPreview}
+            onChannelClick={handleChannelClick}
+            activeChannelId={selectedChannelId}
+          />
+          <ChannelSection
+            icon={<IconUsers width={13} height={13} />}
+            label="Teams"
+            channels={groups.teams}
+            channelPreview={channelPreview}
+            onChannelClick={handleChannelClick}
+            activeChannelId={selectedChannelId}
+          />
+          <ApiSection
+            icon={<IconProject width={13} height={13} />}
+            label="Projects"
+            items={projects.map((p) => ({
+              id: p.id,
+              title: p.name,
+              subtitle: `${p.memberCount} members`,
+              onOpen: () => openProject(p.id),
+            }))}
+            active={mode?.type === 'project'}
+          />
+          <ApiSection
+            icon={<IconTasks width={13} height={13} />}
+            label="Tasks"
+            items={tasks.map((t) => ({
+              id: t.id,
+              title: t.title,
+              subtitle: t.status,
+              onOpen: () => openTask(t.id),
+            }))}
+            active={mode?.type === 'task'}
+          />
+          <ApiSection
+            icon={<IconCalendar width={13} height={13} />}
+            label="Meetings"
+            items={meetings.map((m) => ({
+              id: m.id,
+              title: m.title,
+              subtitle: `${m.scheduledDate} ${m.startTime}`,
+              onOpen: () => openMeeting(m.id),
+            }))}
+            active={mode?.type === 'meeting'}
+          />
+          <ChannelSection
+            icon={<IconMegaphone width={13} height={13} />}
+            label="Announcements"
+            channels={groups.announcements}
+            channelPreview={channelPreview}
+            onChannelClick={handleChannelClick}
+            activeChannelId={selectedChannelId}
+          />
+          <ApiSection
+            icon={<IconBookmark width={13} height={13} />}
+            label="Starred"
+            items={bookmarks.map((b) => ({
+              id: b.id,
+              title: b.sourceMessageText ?? 'Starred message',
+              subtitle: b.sourceChannelName ?? 'Saved',
+              onOpen: () => {
+                if (b.sourceChannelId) {
+                  router.push(
+                    `/dashboard?channel=${encodeURIComponent(b.sourceChannelId)}&message=${encodeURIComponent(b.sourceMessageId)}`,
+                  );
+                } else {
+                  openStarred();
+                }
+              },
+            }))}
+            active={mode?.type === 'starred'}
+            onViewAll={openStarred}
+          />
+          <ChannelSection
+            icon={<IconMessageCircle width={13} height={13} />}
+            label="Archived"
+            channels={groups.archived}
+            channelPreview={channelPreview}
+            onChannelClick={handleChannelClick}
+            activeChannelId={selectedChannelId}
+            archived
+          />
+        </div>
+      );
+    },
+    [
+      projects,
+      tasks,
+      meetings,
+      bookmarks,
+      mode,
+      selectedChannelId,
+      handleChannelClick,
+      openProject,
+      openTask,
+      openMeeting,
+      openStarred,
+      router,
+    ],
+  );
+
+  return (
+    <div className="flex h-full w-full flex-col">
+      <div className="flex h-14 shrink-0 items-center justify-between border-b border-slate-100 px-3">
+        <button
+          onClick={() => setSidebarOpen(false)}
+          aria-label="Close sidebar"
+          className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 md:hidden"
+        >
+          <IconChevronsRight width={16} height={16} />
+        </button>
+        {!sidebarCollapsed && (
+          <span className="text-sm font-semibold text-slate-800">Workspace</span>
+        )}
+        <button
+          onClick={toggleSidebarCollapsed}
+          aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          title={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
+        >
+          {sidebarCollapsed ? (
+            <IconChevronsRight width={16} height={16} />
+          ) : (
+            <IconChevronsLeft width={16} height={16} />
+          )}
+        </button>
+      </div>
+
+      <div className="min-h-0 flex-1">
+        {sidebarCollapsed ? (
+          <CollapsedRail
+            onExpand={toggleSidebarCollapsed}
+            onClick={toggleSidebarCollapsed}
+            userId={userId}
+          />
+        ) : (
+          <WithComponents overrides={{ ChannelListItemUI: CustomChannelListItem }}>
+            <ChannelList
+              filters={{ members: { $in: [userId] } }}
+              sort={{ last_message_at: -1 }}
+              setActiveChannelOnMount={false}
+              channelRenderFilterFn={filterChannelForSections}
+              renderChannels={renderChannels}
+            />
+          </WithComponents>
+        )}
+      </div>
+
+      {isLoading && (
+        <div className="absolute bottom-0 right-0 flex items-center gap-1.5 px-3 py-2 text-[11px] text-slate-400">
+          <Spinner size={12} />
+          Loading…
+        </div>
+      )}
+    </div>
+  );
+}
+
+function filterChannelForSections(channels: StreamChannel[]): StreamChannel[] {
+  const excluded = new Set(['task', 'project', 'milestone']);
+  return channels.filter((channel) => {
+    const kind = (channel.data as { channel_kind?: string } | undefined)?.channel_kind;
+    if (kind && excluded.has(kind)) return false;
+    const name = (channel.data as { name?: string } | undefined)?.name;
+    if (name?.startsWith('Meeting: ')) return false;
+    return true;
+  });
+}
+
+function ChannelSection({
+  label,
+  icon,
+  channels,
+  channelPreview,
+  onChannelClick,
+  activeChannelId,
+  archived,
+}: {
+  label: string;
+  icon: React.ReactNode;
+  channels: StreamChannel[];
+  channelPreview: (channel: StreamChannel) => React.ReactNode;
+  onChannelClick: (channel: StreamChannel) => void;
+  activeChannelId: string | null;
+  archived?: boolean;
+}) {
+  if (channels.length === 0) return null;
+  return (
+    <div className="border-b border-slate-100">
+      <div className="flex items-center gap-1.5 px-3 pb-1 pt-2.5">
+        <span className="text-slate-400">{icon}</span>
+        <span className="truncate text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+          {label}
+        </span>
+      </div>
+      <div className={archived ? 'opacity-70' : undefined}>
+        {channels.map((channel) => (
+          <div
+            key={channel.id}
+            onClick={() => onChannelClick(channel)}
+            className="cursor-pointer"
+          >
+            {channelPreview(channel)}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ApiSection({
+  label,
+  icon,
+  items,
+  active,
+  onViewAll,
+}: {
+  label: string;
+  icon: React.ReactNode;
+  items: { id: string; title: string; subtitle: string; onOpen: () => void }[];
+  active?: boolean;
+  onViewAll?: () => void;
+}) {
+  if (items.length === 0) return null;
+  return (
+    <div className="border-b border-slate-100">
+      <div
+        className="flex cursor-pointer items-center justify-between gap-1.5 px-3 pb-1 pt-2.5"
+        onClick={onViewAll}
+      >
+        <div className="flex items-center gap-1.5">
+          <span className={active ? 'text-blue-600' : 'text-slate-400'}>{icon}</span>
+          <span className="truncate text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+            {label}
+          </span>
+        </div>
+        <span className="rounded-full bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-500">
+          {items.length}
+        </span>
+      </div>
+      <div className="pb-1">
+        {items.slice(0, 8).map((item) => (
+          <button
+            key={item.id}
+            onClick={item.onOpen}
+            className={`flex w-full items-center gap-2 px-3 py-1.5 text-left transition-colors hover:bg-slate-50 ${
+              active ? 'bg-blue-50/70' : ''
+            }`}
+          >
+            <span className={`truncate text-sm ${active ? 'font-semibold text-slate-900' : 'font-medium text-slate-800'}`}>
+              {item.title}
+            </span>
+            <span className="ml-auto shrink-0 truncate text-[11px] text-slate-400">
+              {item.subtitle}
+            </span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function CollapsedRail({
+  onExpand,
+  onClick,
+  userId,
+}: {
+  onExpand: () => void;
+  onClick: () => void;
+  userId: string;
+}) {
+  const sections = [
+    { key: 'dms', icon: SECTION_ICONS.dms, label: 'Direct Messages' },
+    { key: 'teams', icon: SECTION_ICONS.teams, label: 'Teams' },
+    { key: 'projects', icon: SECTION_ICONS.projects, label: 'Projects' },
+    { key: 'tasks', icon: SECTION_ICONS.tasks, label: 'Tasks' },
+    { key: 'meetings', icon: SECTION_ICONS.meetings, label: 'Meetings' },
+    { key: 'announcements', icon: SECTION_ICONS.announcements, label: 'Announcements' },
+    { key: 'starred', icon: SECTION_ICONS.starred, label: 'Starred' },
+    { key: 'archived', icon: SECTION_ICONS.archived, label: 'Archived' },
+  ];
+
+  return (
+    <div className="flex h-full flex-col items-center gap-1 py-2">
+      <Avatar name={userId} size="md" />
+      {sections.map((s) => (
+        <button
+          key={s.key}
+          onClick={onExpand}
+          title={s.label}
+          aria-label={s.label}
+          className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700"
+        >
+          <s.icon width={18} height={18} />
+        </button>
+      ))}
+      <button
+        onClick={onClick}
+        title="Expand sidebar"
+        aria-label="Expand sidebar"
+        className="mt-auto flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700"
+      >
+        <IconChevronsRight width={18} height={18} />
+      </button>
+    </div>
+  );
+}

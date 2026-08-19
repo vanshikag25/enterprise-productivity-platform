@@ -15,7 +15,7 @@ import { canModerateChannel } from '@/lib/moderation-scope';
 import { usePresence } from '@/hooks/use-live-presence';
 import { useStreamChatContext } from '@/context/stream-chat-context';
 import { PresenceIndicator } from '@/components/presence/presence-indicator';
-import { IconLock } from '@/components/ui/icons';
+import { IconLock, IconSearch } from '@/components/ui/icons';
 
 const LazyCallButtons = dynamic(
   () =>
@@ -27,9 +27,11 @@ const LazyCallButtons = dynamic(
 
 interface ChatHeaderProps {
   currentUserId: string;
+  showSearch?: boolean;
+  onToggleSearch?: () => void;
 }
 
-export function ChatHeader({ currentUserId }: ChatHeaderProps) {
+export function ChatHeader({ currentUserId, showSearch, onToggleSearch }: ChatHeaderProps) {
   const { channel } = useChannelStateContext();
   const { client } = useStreamChatContext();
   const { displayTitle, displayImage, groupChannelDisplayInfo } =
@@ -131,6 +133,21 @@ export function ChatHeader({ currentUserId }: ChatHeaderProps) {
           }`}
         >
           <IconLock width={17} height={17} />
+        </button>
+      )}
+      {onToggleSearch && (
+        <button
+          type="button"
+          onClick={onToggleSearch}
+          title={showSearch ? 'Close search' : 'Search messages'}
+          aria-label={showSearch ? 'Close search' : 'Search messages'}
+          className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors ${
+            showSearch
+              ? 'bg-blue-50 text-blue-700'
+              : 'text-slate-500 hover:bg-slate-100 hover:text-slate-700'
+          }`}
+        >
+          <IconSearch width={17} height={17} />
         </button>
       )}
       <LazyCallButtons channelId={channel?.id ?? ''} kind={kind} />

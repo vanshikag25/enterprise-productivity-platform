@@ -550,3 +550,11 @@ export function IconHistory({ ...props }: IconProps) {
     </Base>
   );
 }
+
+export function IconWorkflow({ ...props }: IconProps) {
+  return (
+    <Base {...props}>
+      <path d="M13 2 4.5 12.5H11L9.5 22 19 10.5h-6.5L13 2z" />
+    </Base>
+  );
+}

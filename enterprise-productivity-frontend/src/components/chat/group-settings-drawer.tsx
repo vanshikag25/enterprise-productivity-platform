@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth';
-import { useChannelStateContext, useChatContext } from 'stream-chat-react';
+import { useChatContext } from 'stream-chat-react';
 import {
   fetchGroupInfo,
   updateGroupInfo,
@@ -36,8 +36,29 @@ interface GroupSettingsDrawerProps {
 }
 
 export function GroupSettingsDrawer({ onClose }: GroupSettingsDrawerProps) {
-  const { channel } = useChannelStateContext();
-  const { setActiveChannel } = useChatContext();
+  return (
+    <div className="fixed inset-0 z-50 flex justify-end bg-black/30" onClick={onClose}>
+      <div
+        className="flex h-full w-full max-w-sm flex-col overflow-y-auto bg-white p-4 shadow-xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="mb-3 flex items-center justify-between">
+          <h2 className="text-sm font-semibold">Group Settings</h2>
+          <button
+            onClick={onClose}
+            className="text-xs text-gray-400 hover:text-gray-600"
+          >
+            Close ×
+          </button>
+        </div>
+        <GroupSettingsContent onClose={onClose} />
+      </div>
+    </div>
+  );
+}
+
+export function GroupSettingsContent({ onClose }: { onClose: () => void }) {
+  const { channel, setActiveChannel } = useChatContext();
   const { getToken } = useAuth();
   const { showToast } = useToast();
   const { users, searchTerm, setSearchTerm, isLoading, error: searchError } =
@@ -246,28 +267,14 @@ export function GroupSettingsDrawer({ onClose }: GroupSettingsDrawerProps) {
   const currentUserId = channel?.state?.membership?.user_id ?? null;
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end bg-black/30" onClick={onClose}>
-      <div
-        className="flex h-full w-full max-w-sm flex-col overflow-y-auto bg-white p-4 shadow-xl"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="mb-3 flex items-center justify-between">
-          <h2 className="text-sm font-semibold">Group Settings</h2>
-          <button
-            onClick={onClose}
-            className="text-xs text-gray-400 hover:text-gray-600"
-          >
-            Close ×
-          </button>
-        </div>
+    <>
+      {isLoadingInfo && (
+        <p className="py-4 text-sm text-gray-400">Loading…</p>
+      )}
 
-        {isLoadingInfo && (
-          <p className="py-4 text-sm text-gray-400">Loading…</p>
-        )}
-
-        {!isLoadingInfo && loadError && (
-          <p className="py-4 text-sm text-red-500">{loadError}</p>
-        )}
+      {!isLoadingInfo && loadError && (
+        <p className="py-4 text-sm text-red-500">{loadError}</p>
+      )}
 
         {!isLoadingInfo && !loadError && groupInfo && (
           <>
@@ -543,7 +550,6 @@ export function GroupSettingsDrawer({ onClose }: GroupSettingsDrawerProps) {
             )}
           </>
         )}
-      </div>
-    </div>
+    </>
   );
 }

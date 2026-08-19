@@ -1,5 +1,5 @@
-import { ChatLayout } from '@/components/chat/chat-layout';
+import { Workspace } from '@/components/workspace/workspace';
 
 export default function DashboardPage() {
-  return <ChatLayout />;
+  return <Workspace />;
 }
