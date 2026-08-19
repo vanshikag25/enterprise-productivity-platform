@@ -38,6 +38,7 @@ const sentiment_module_1 = require("./sentiment/sentiment.module");
 const translation_module_1 = require("./translation/translation.module");
 const video_module_1 = require("./video/video.module");
 const moderation_module_1 = require("./moderation/moderation.module");
+const automation_module_1 = require("./automation/automation.module");
 const analytics_module_1 = require("./analytics/analytics.module");
 const audit_module_1 = require("./audit/audit.module");
 const request_context_1 = require("./audit/request-context");
@@ -82,6 +83,7 @@ exports.AppModule = AppModule = __decorate([
             translation_module_1.TranslationModule,
             video_module_1.VideoModule,
             moderation_module_1.ModerationModule,
+            automation_module_1.AutomationModule,
         ],
     })
 ], AppModule);

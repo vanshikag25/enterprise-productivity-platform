@@ -1,5 +1,5 @@
-export declare const auditActionTypeEnum: import("drizzle-orm/pg-core").PgEnum<["message_edit", "message_delete", "user_join", "user_leave", "member_remove", "role_change", "channel_create", "channel_delete", "moderator_action", "user_mute", "user_unmute", "user_ban", "user_unban", "channel_lock", "channel_unlock"]>;
-export declare const auditResourceTypeEnum: import("drizzle-orm/pg-core").PgEnum<["message", "user", "channel", "project", "department"]>;
+export declare const auditActionTypeEnum: import("drizzle-orm/pg-core").PgEnum<["message_edit", "message_delete", "user_join", "user_leave", "member_remove", "role_change", "channel_create", "channel_delete", "moderator_action", "user_mute", "user_unmute", "user_ban", "user_unban", "channel_lock", "channel_unlock", "workflow_create", "workflow_update", "workflow_delete", "workflow_toggle", "workflow_execution"]>;
+export declare const auditResourceTypeEnum: import("drizzle-orm/pg-core").PgEnum<["message", "user", "channel", "project", "department", "workflow"]>;
 export declare const auditEvents: import("drizzle-orm/pg-core").PgTableWithColumns<{
     name: "audit_events";
     schema: undefined;
@@ -26,14 +26,14 @@ export declare const auditEvents: import("drizzle-orm/pg-core").PgTableWithColum
             tableName: "audit_events";
             dataType: "string";
             columnType: "PgEnumColumn";
-            data: "message_edit" | "message_delete" | "user_join" | "user_leave" | "member_remove" | "role_change" | "channel_create" | "channel_delete" | "moderator_action" | "user_mute" | "user_unmute" | "user_ban" | "user_unban" | "channel_lock" | "channel_unlock";
+            data: "message_edit" | "message_delete" | "user_join" | "user_leave" | "member_remove" | "role_change" | "channel_create" | "channel_delete" | "moderator_action" | "user_mute" | "user_unmute" | "user_ban" | "user_unban" | "channel_lock" | "channel_unlock" | "workflow_create" | "workflow_update" | "workflow_delete" | "workflow_toggle" | "workflow_execution";
             driverParam: string;
             notNull: true;
             hasDefault: false;
             isPrimaryKey: false;
             isAutoincrement: false;
             hasRuntimeDefault: false;
-            enumValues: ["message_edit", "message_delete", "user_join", "user_leave", "member_remove", "role_change", "channel_create", "channel_delete", "moderator_action", "user_mute", "user_unmute", "user_ban", "user_unban", "channel_lock", "channel_unlock"];
+            enumValues: ["message_edit", "message_delete", "user_join", "user_leave", "member_remove", "role_change", "channel_create", "channel_delete", "moderator_action", "user_mute", "user_unmute", "user_ban", "user_unban", "channel_lock", "channel_unlock", "workflow_create", "workflow_update", "workflow_delete", "workflow_toggle", "workflow_execution"];
             baseColumn: never;
             identity: undefined;
             generated: undefined;
@@ -136,14 +136,14 @@ export declare const auditEvents: import("drizzle-orm/pg-core").PgTableWithColum
             tableName: "audit_events";
             dataType: "string";
             columnType: "PgEnumColumn";
-            data: "user" | "message" | "channel" | "project" | "department";
+            data: "user" | "message" | "channel" | "project" | "department" | "workflow";
             driverParam: string;
             notNull: true;
             hasDefault: false;
             isPrimaryKey: false;
             isAutoincrement: false;
             hasRuntimeDefault: false;
-            enumValues: ["message", "user", "channel", "project", "department"];
+            enumValues: ["message", "user", "channel", "project", "department", "workflow"];
             baseColumn: never;
             identity: undefined;
             generated: undefined;

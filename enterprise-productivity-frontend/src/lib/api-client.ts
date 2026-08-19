@@ -1508,7 +1508,12 @@ export type AuditActionType =
   | 'user_ban'
   | 'user_unban'
   | 'channel_lock'
-  | 'channel_unlock';
+  | 'channel_unlock'
+  | 'workflow_create'
+  | 'workflow_update'
+  | 'workflow_delete'
+  | 'workflow_toggle'
+  | 'workflow_execution';
 
 export const AUDIT_ACTION_LABELS: Record<AuditActionType, string> = {
   message_edit: 'Message edited',
@@ -1526,6 +1531,11 @@ export const AUDIT_ACTION_LABELS: Record<AuditActionType, string> = {
   user_unban: 'User unbanned',
   channel_lock: 'Channel locked',
   channel_unlock: 'Channel unlocked',
+  workflow_create: 'Workflow created',
+  workflow_update: 'Workflow updated',
+  workflow_delete: 'Workflow deleted',
+  workflow_toggle: 'Workflow toggled',
+  workflow_execution: 'Workflow execution',
 };
 
 export type AuditResourceType =
@@ -1533,7 +1543,8 @@ export type AuditResourceType =
   | 'user'
   | 'channel'
   | 'project'
-  | 'department';
+  | 'department'
+  | 'workflow';
 
 export interface AuditEventItem {
   id: string;

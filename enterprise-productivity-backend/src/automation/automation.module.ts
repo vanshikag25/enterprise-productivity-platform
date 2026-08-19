@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { EventBusModule } from './event-bus/event-bus.module';
 import { DatabaseModule } from '../database/database.module';
 import { UsersModule } from '../users/users.module';
 import { StreamModule } from '../stream/stream.module';
@@ -26,6 +27,7 @@ import { WorkflowsController } from './workflows.controller';
  */
 @Module({
   imports: [
+    EventBusModule,
     DatabaseModule,
     UsersModule,
     StreamModule,

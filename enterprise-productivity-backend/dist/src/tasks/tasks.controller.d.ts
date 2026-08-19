@@ -8,12 +8,12 @@ export declare class TasksController {
     constructor(tasksService: TasksService);
     create(auth: AuthObject, dto: CreateTaskDto): Promise<{
         id: string;
-        description: string | null;
-        createdBy: string;
         createdAt: Date;
         updatedAt: Date;
-        status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
+        description: string | null;
         title: string;
+        status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
+        createdBy: string;
         priority: "Low" | "Medium" | "High" | "Critical";
         dueDate: Date | null;
         assignee: string | null;
@@ -25,12 +25,12 @@ export declare class TasksController {
     }>;
     findAll(): Promise<{
         id: string;
-        description: string | null;
-        createdBy: string;
         createdAt: Date;
         updatedAt: Date;
-        status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
+        description: string | null;
         title: string;
+        status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
+        createdBy: string;
         priority: "Low" | "Medium" | "High" | "Critical";
         dueDate: Date | null;
         assignee: string | null;
@@ -42,12 +42,12 @@ export declare class TasksController {
     }[]>;
     findBySourceMessage(messageId: string): Promise<{
         id: string;
-        description: string | null;
-        createdBy: string;
         createdAt: Date;
         updatedAt: Date;
-        status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
+        description: string | null;
         title: string;
+        status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
+        createdBy: string;
         priority: "Low" | "Medium" | "High" | "Critical";
         dueDate: Date | null;
         assignee: string | null;
@@ -59,12 +59,12 @@ export declare class TasksController {
     } | null>;
     findOne(id: string): Promise<{
         id: string;
-        description: string | null;
-        createdBy: string;
         createdAt: Date;
         updatedAt: Date;
-        status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
+        description: string | null;
         title: string;
+        status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
+        createdBy: string;
         priority: "Low" | "Medium" | "High" | "Critical";
         dueDate: Date | null;
         assignee: string | null;
@@ -79,12 +79,12 @@ export declare class TasksController {
     }>;
     update(auth: AuthObject, id: string, dto: UpdateTaskDto): Promise<{
         id: string;
-        description: string | null;
-        createdBy: string;
         createdAt: Date;
         updatedAt: Date;
-        status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
+        description: string | null;
         title: string;
+        status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
+        createdBy: string;
         priority: "Low" | "Medium" | "High" | "Critical";
         dueDate: Date | null;
         assignee: string | null;
@@ -96,12 +96,12 @@ export declare class TasksController {
     }>;
     updateStatus(auth: AuthObject, id: string, dto: UpdateTaskStatusDto): Promise<{
         id: string;
-        description: string | null;
-        createdBy: string;
         createdAt: Date;
         updatedAt: Date;
-        status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
+        description: string | null;
         title: string;
+        status: "Todo" | "In Progress" | "In Review" | "Completed" | "Closed";
+        createdBy: string;
         priority: "Low" | "Medium" | "High" | "Critical";
         dueDate: Date | null;
         assignee: string | null;

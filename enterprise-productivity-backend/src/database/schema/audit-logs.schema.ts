@@ -26,6 +26,11 @@ export const auditActionTypeEnum = pgEnum('audit_action_type', [
   'user_unban',
   'channel_lock',
   'channel_unlock',
+  'workflow_create',
+  'workflow_update',
+  'workflow_delete',
+  'workflow_toggle',
+  'workflow_execution',
 ]);
 
 export const auditResourceTypeEnum = pgEnum('audit_resource_type', [
@@ -34,6 +39,7 @@ export const auditResourceTypeEnum = pgEnum('audit_resource_type', [
   'channel',
   'project',
   'department',
+  'workflow',
 ]);
 
 /**

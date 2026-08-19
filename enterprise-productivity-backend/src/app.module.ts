@@ -33,6 +33,7 @@ import { SentimentModule } from './sentiment/sentiment.module';
 import { TranslationModule } from './translation/translation.module';
 import { VideoModule } from './video/video.module';
 import { ModerationModule } from './moderation/moderation.module';
+import { AutomationModule } from './automation/automation.module';
 import { AnalyticsModule } from './analytics/analytics.module';
 import { AuditModule } from './audit/audit.module';
 import { RequestContextMiddleware } from './audit/request-context';
@@ -71,6 +72,7 @@ import { RequestContextMiddleware } from './audit/request-context';
     TranslationModule,
     VideoModule,
     ModerationModule,
+    AutomationModule,
   ],
 })
 export class AppModule implements NestModule {

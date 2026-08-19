@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AutomationModule = void 0;
 const common_1 = require("@nestjs/common");
+const event_bus_module_1 = require("./event-bus/event-bus.module");
 const database_module_1 = require("../database/database.module");
 const users_module_1 = require("../users/users.module");
 const stream_module_1 = require("../stream/stream.module");
@@ -32,6 +33,7 @@ exports.AutomationModule = AutomationModule;
 exports.AutomationModule = AutomationModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            event_bus_module_1.EventBusModule,
             database_module_1.DatabaseModule,
             users_module_1.UsersModule,
             stream_module_1.StreamModule,

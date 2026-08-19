@@ -19,6 +19,11 @@ exports.auditActionTypeEnum = (0, pg_core_1.pgEnum)('audit_action_type', [
     'user_unban',
     'channel_lock',
     'channel_unlock',
+    'workflow_create',
+    'workflow_update',
+    'workflow_delete',
+    'workflow_toggle',
+    'workflow_execution',
 ]);
 exports.auditResourceTypeEnum = (0, pg_core_1.pgEnum)('audit_resource_type', [
     'message',
@@ -26,6 +31,7 @@ exports.auditResourceTypeEnum = (0, pg_core_1.pgEnum)('audit_resource_type', [
     'channel',
     'project',
     'department',
+    'workflow',
 ]);
 exports.auditEvents = (0, pg_core_1.pgTable)('audit_events', {
     id: (0, pg_core_1.uuid)('id').defaultRandom().primaryKey(),

@@ -37,6 +37,11 @@ const ACTION_VARIANT: Record<AuditActionType, BadgeVariant> = {
   user_unban: 'green',
   channel_lock: 'gray',
   channel_unlock: 'blue',
+  workflow_create: 'green',
+  workflow_update: 'blue',
+  workflow_delete: 'red',
+  workflow_toggle: 'amber',
+  workflow_execution: 'violet',
 };
 
 function formatDateTime(iso: string): string {
