@@ -15,6 +15,7 @@ var MeetingsService_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MeetingsService = void 0;
 const common_1 = require("@nestjs/common");
+const crypto_1 = require("crypto");
 const drizzle_orm_1 = require("drizzle-orm");
 const node_postgres_1 = require("drizzle-orm/node-postgres");
 const drizzle_provider_1 = require("../database/drizzle.provider");
@@ -46,7 +47,7 @@ let MeetingsService = MeetingsService_1 = class MeetingsService {
             };
             const channel = this.streamService
                 .getClient()
-                .channel('messaging', channelData);
+                .channel('messaging', (0, crypto_1.randomUUID)(), channelData);
             await channel.create();
             meetingChatChannelId = channel.id ?? null;
         }

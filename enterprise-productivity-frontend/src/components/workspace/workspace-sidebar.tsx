@@ -1,10 +1,11 @@
 'use client';
 
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ChannelList, WithComponents, useChatContext } from 'stream-chat-react';
 import type { Channel as StreamChannel } from 'stream-chat';
 import { createCustomChannelListItem } from '@/components/chat/custom-channel-list-item';
+import { NewGroupModal } from '@/components/chat/new-group-modal';
 import { partitionChannels } from './channel-sections';
 import { useWorkspace } from './workspace-context';
 import { useWorkspaceListData } from '@/hooks/use-workspace-list-data';
@@ -17,6 +18,7 @@ import {
   IconChevronsRight,
   IconMegaphone,
   IconMessageCircle,
+  IconPlus,
   IconProject,
   IconTasks,
   IconUsers,
@@ -34,8 +36,9 @@ const SECTION_ICONS = {
 };
 
 export function WorkspaceSidebar() {
-  const { client, channel } = useChatContext();
-  const userId = client?.userID ?? channel?.getClient()?.userID ?? '';  const {
+  const { client, channel, setActiveChannel } = useChatContext();
+  const userId = client?.userID ?? channel?.getClient()?.userID ?? '';
+  const {
     mode,
     selectedChannelId,
     selectChannel,
@@ -49,6 +52,7 @@ export function WorkspaceSidebar() {
   } = useWorkspace();
   const { projects, tasks, meetings, bookmarks, isLoading } = useWorkspaceListData();
   const router = useRouter();
+  const [showNewGroup, setShowNewGroup] = useState(false);
 
   const CustomChannelListItem = useMemo(
     () => createCustomChannelListItem(userId),
@@ -185,25 +189,51 @@ export function WorkspaceSidebar() {
         {!sidebarCollapsed && (
           <span className="text-sm font-semibold text-slate-800">Workspace</span>
         )}
-        <button
-          onClick={toggleSidebarCollapsed}
-          aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          title={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
-        >
-          {sidebarCollapsed ? (
-            <IconChevronsRight width={16} height={16} />
-          ) : (
-            <IconChevronsLeft width={16} height={16} />
-          )}
-        </button>
+        <div className="flex items-center gap-1">
+          <button
+            onClick={() => setShowNewGroup(true)}
+            aria-label="New group"
+            title="New group"
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700"
+          >
+            <IconPlus width={16} height={16} />
+          </button>
+          <button
+            onClick={toggleSidebarCollapsed}
+            aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            title={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
+          >
+            {sidebarCollapsed ? (
+              <IconChevronsRight width={16} height={16} />
+            ) : (
+              <IconChevronsLeft width={16} height={16} />
+            )}
+          </button>
+        </div>
       </div>
+
+      {showNewGroup && (
+        <NewGroupModal
+          isOpen={showNewGroup}
+          onClose={() => setShowNewGroup(false)}
+          onChannelReady={(newChannel) => {
+            setActiveChannel(newChannel);
+            if (newChannel.id) selectChannel(newChannel.id);
+            setShowNewGroup(false);
+          }}
+        />
+      )}
 
       <div className="min-h-0 flex-1">
         {sidebarCollapsed ? (
           <CollapsedRail
             onExpand={toggleSidebarCollapsed}
             onClick={toggleSidebarCollapsed}
+            onNewGroup={() => {
+              toggleSidebarCollapsed();
+              setShowNewGroup(true);
+            }}
             userId={userId}
           />
         ) : (
@@ -336,10 +366,12 @@ function ApiSection({
 function CollapsedRail({
   onExpand,
   onClick,
+  onNewGroup,
   userId,
 }: {
   onExpand: () => void;
   onClick: () => void;
+  onNewGroup: () => void;
   userId: string;
 }) {
   const sections = [
@@ -356,6 +388,14 @@ function CollapsedRail({
   return (
     <div className="flex h-full flex-col items-center gap-1 py-2">
       <Avatar name={userId} size="md" />
+      <button
+        onClick={onNewGroup}
+        title="New group"
+        aria-label="New group"
+        className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700"
+      >
+        <IconPlus width={18} height={18} />
+      </button>
       {sections.map((s) => (
         <button
           key={s.key}

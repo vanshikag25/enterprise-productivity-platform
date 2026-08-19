@@ -236,3 +236,32 @@ body {
     background-image: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
   }
 }
+
+/* ---------- Stream Chat overlay/dialog layers ---------- */
+/*
+ * Stream Chat renders anchored dialogs (the message "..." menu, reaction
+ * selector, reminders, etc.) inside a `.str-chat__dialog-overlay` that is
+ * absolutely positioned with no z-index. As a result those menus:
+ *   - sit below the app's z-50 sidebars/drawers and the composer (which is
+ *     later in DOM order and paints over the menu), and
+ *   - can be visually clipped by scroll/overflow parents.
+ *
+ * Promote the whole dialog layer to a fixed, full-viewport foreground layer.
+ */
+.str-chat__dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+}
+
+/*
+ * The message actions menu can hold many items and easily outgrow the
+ * viewport. Cap its height to the available screen space and let it scroll
+ * internally so every action stays reachable on all screen sizes.
+ */
+.str-chat__message-actions-box.str-chat__context-menu {
+  max-height: 26rem;
+  max-height: min(26rem, calc(100dvh - 2rem));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}

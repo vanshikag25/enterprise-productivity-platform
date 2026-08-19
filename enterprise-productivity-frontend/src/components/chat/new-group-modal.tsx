@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useAuth } from '@/lib/auth';
 import type { Channel as StreamChannel } from 'stream-chat';
 import { createGroupChannel, type UserDirectoryItem } from '@/lib/api-client';
@@ -8,40 +8,31 @@ import { useStreamChatContext } from '@/context/stream-chat-context';
 import { GroupMemberPicker } from './group-member-picker';
 
 interface NewGroupModalProps {
+  isOpen: boolean;
+  onClose: () => void;
   onChannelReady: (channel: StreamChannel) => void;
-  autoOpen?: boolean;
-  onAutoOpenHandled?: () => void;
 }
 
 export function NewGroupModal({
+  isOpen,
+  onClose,
   onChannelReady,
-  autoOpen,
-  onAutoOpenHandled,
 }: NewGroupModalProps) {
   const { getToken } = useAuth();
   const { client } = useStreamChatContext();
 
-  const [isOpen, setIsOpen] = useState(false);
   const [selectedUsers, setSelectedUsers] = useState<UserDirectoryItem[]>([]);
   const [groupName, setGroupName] = useState('');
   const [groupDescription, setGroupDescription] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (autoOpen) {
-      setIsOpen(true);
-      onAutoOpenHandled?.();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [autoOpen]);
-
   function resetAndClose() {
-    setIsOpen(false);
     setSelectedUsers([]);
     setGroupName('');
     setGroupDescription('');
     setError(null);
+    onClose();
   }
 
   async function handleCreate() {
@@ -92,26 +83,15 @@ export function NewGroupModal({
     }
   }
 
-  if (!isOpen) {
-    return (
-      <div className="border-b p-3">
-        <button
-          onClick={() => setIsOpen(true)}
-          className="w-full rounded bg-gray-900 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-700"
-        >
-          New Group
-        </button>
-      </div>
-    );
-  }
+  if (!isOpen) return null;
 
   return (
-    <div className="border-b p-3">
+    <div className="border-b border-slate-100 p-3">
       <div className="mb-2 flex items-center justify-between">
-        <h2 className="text-sm font-semibold">New Group</h2>
+        <h2 className="text-sm font-semibold text-slate-800">New Group</h2>
         <button
           onClick={resetAndClose}
-          className="text-xs text-gray-400 hover:text-gray-600"
+          className="text-xs text-slate-400 transition-colors hover:text-slate-600"
         >
           Cancel
         </button>
@@ -122,7 +102,7 @@ export function NewGroupModal({
         placeholder="Group name"
         value={groupName}
         onChange={(e) => setGroupName(e.target.value)}
-        className="mb-2 w-full rounded border px-2 py-1 text-sm"
+        className="mb-2 w-full rounded-lg border border-slate-200 px-2.5 py-1.5 text-sm focus:border-blue-400 focus:outline-none"
       />
 
       <textarea
@@ -130,7 +110,7 @@ export function NewGroupModal({
         value={groupDescription}
         onChange={(e) => setGroupDescription(e.target.value)}
         rows={2}
-        className="mb-2 w-full rounded border px-2 py-1 text-sm"
+        className="mb-2 w-full rounded-lg border border-slate-200 px-2.5 py-1.5 text-sm focus:border-blue-400 focus:outline-none"
       />
 
       <GroupMemberPicker
@@ -143,7 +123,7 @@ export function NewGroupModal({
       <button
         onClick={handleCreate}
         disabled={isSubmitting}
-        className="mt-2 w-full rounded bg-blue-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-500 disabled:opacity-50"
+        className="mt-2 w-full rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-500 disabled:opacity-50"
       >
         {isSubmitting
           ? 'Creating…'

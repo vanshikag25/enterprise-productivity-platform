@@ -27,10 +27,11 @@ import { AIActionDetectionProvider } from '@/components/action-detection/action-
 import { TranslationProvider } from '@/components/chat/translation-context';
 import { MessageWithAiActions } from '@/components/action-detection/message-with-ai-actions';
 import { useAuth } from '@/lib/auth';
-import { deleteChatMessage, editChatMessage } from '@/lib/api-client';
-import {
-  IconSearch,
-} from '@/components/ui/icons';
+import { deleteChatMessage, editChatMessage, setChannelLock } from '@/lib/api-client';
+import { useRole } from '@/hooks/use-role';
+import { useToast } from '@/hooks/use-toast';
+import { canModerateChannel } from '@/lib/moderation-scope';
+import { IconRefresh, IconSearch } from '@/components/ui/icons';
 
 export function ChannelWorkspace() {
   const { channel } = useChatContext();
@@ -164,14 +165,66 @@ function JumpToMessage({
 
 function MessageComposerOrArchiveNotice() {
   const { channel } = useChannelStateContext();
+  const { getToken } = useAuth();
+  const { role } = useRole();
+  const { showToast } = useToast();
+  const [isUnarchiving, setIsUnarchiving] = useState(false);
+
   const isArchived = Boolean(
     (channel.data as { frozen?: boolean } | undefined)?.frozen,
   );
+
+  const actorId = channel.getClient().userID ?? '';
+  const myMember = (channel.state?.members ?? {})[actorId] as
+    | { is_moderator?: boolean; channel_role?: string }
+    | undefined;
+  const canModerate = canModerateChannel(
+    role,
+    (channel.data as { created_by_id?: string } | undefined)?.created_by_id,
+    myMember,
+    actorId,
+  );
+
+  async function handleUnarchive() {
+    if (!channel?.id) return;
+    setIsUnarchiving(true);
+    try {
+      const token = await getToken();
+      if (!token) throw new Error('Unable to retrieve session token.');
+      await setChannelLock(token, {
+        channelId: channel.id,
+        locked: false,
+      });
+      showToast('Conversation unarchived.');
+      await channel.watch().catch(() => undefined);
+    } catch (err) {
+      showToast(
+        err instanceof Error ? err.message : 'Failed to unarchive conversation.',
+        'error',
+      );
+    } finally {
+      setIsUnarchiving(false);
+    }
+  }
+
   if (isArchived) {
     return (
-      <div className="border-t border-slate-100 bg-slate-50 px-4 py-3 text-center text-xs font-medium text-slate-500">
-        This conversation is archived and read-only. History and attachments
-        are still available.
+      <div className="flex items-center justify-between gap-3 border-t border-slate-100 bg-slate-50 px-4 py-3">
+        <p className="text-xs font-medium text-slate-500">
+          This conversation is archived and read-only. History and attachments
+          are still available.
+        </p>
+        {canModerate && (
+          <button
+            type="button"
+            onClick={() => void handleUnarchive()}
+            disabled={isUnarchiving}
+            className="inline-flex shrink-0 items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-medium text-blue-700 transition-colors hover:bg-blue-50 disabled:opacity-50"
+          >
+            <IconRefresh width={13} height={13} />
+            {isUnarchiving ? 'Unarchiving…' : 'Unarchive'}
+          </button>
+        )}
       </div>
     );
   }

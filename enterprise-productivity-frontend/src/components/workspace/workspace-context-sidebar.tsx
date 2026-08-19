@@ -9,6 +9,7 @@ import { useWorkspaceListData } from '@/hooks/use-workspace-list-data';
 import {
   fetchConversationSummaries,
   generateConversationSummary,
+  setChannelLock,
   type ConversationSummaryItem,
   type SummaryPeriodType,
 } from '@/lib/api-client';
@@ -27,7 +28,10 @@ import { Avatar } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { GroupSettingsContent } from '@/components/chat/group-settings-drawer';
-import { IconBookmark, IconClock, IconMessageCircle, IconNote, IconPin, IconSettings, IconSparkles, IconUsers } from '@/components/ui/icons';
+import { IconArchive, IconBookmark, IconClock, IconMessageCircle, IconNote, IconPin, IconRefresh, IconSettings, IconSparkles, IconUsers } from '@/components/ui/icons';
+import { useRole } from '@/hooks/use-role';
+import { useToast } from '@/hooks/use-toast';
+import { canModerateChannel } from '@/lib/moderation-scope';
 import { useWorkspace } from './workspace-context';
 
 export function WorkspaceContextSidebar() {
@@ -134,6 +138,41 @@ function ChannelDetails() {
   const isArchived = Boolean((channel?.data as { frozen?: boolean } | undefined)?.frozen);
   const isDm = Boolean(!channelData?.name && !channelData?.channel_kind && members.length <= 2);
 
+  const { role } = useRole();
+  const { showToast } = useToast();
+  const [isArchiving, setIsArchiving] = useState(false);
+
+  const actorId = client?.userID ?? '';
+  const myMember = (channel?.state?.members ?? {})[actorId] as
+    | { is_moderator?: boolean; channel_role?: string }
+    | undefined;
+  const canModerate = canModerateChannel(
+    role,
+    (channelData as { created_by_id?: string } | undefined)?.created_by_id,
+    myMember,
+    actorId,
+  );
+
+  async function handleToggleArchive() {
+    if (!channel?.id || isArchiving) return;
+    if (!isArchived && !window.confirm('Archive this conversation? It will become read-only for everyone.')) return;
+    setIsArchiving(true);
+    try {
+      const token = await getToken();
+      if (!token) throw new Error('Unable to retrieve session token.');
+      await setChannelLock(token, {
+        channelId: channel.id,
+        locked: !isArchived,
+      });
+      showToast(isArchived ? 'Conversation unarchived.' : 'Conversation archived.');
+      await channel.watch().catch(() => undefined);
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : 'Failed to update conversation.', 'error');
+    } finally {
+      setIsArchiving(false);
+    }
+  }
+
   return (
     <div className="space-y-6">
       {channelData?.description && (
@@ -175,6 +214,42 @@ function ChannelDetails() {
           <SectionTitle icon={<IconSettings width={13} height={13} />} label="Group settings" />
           <div className="mt-2 rounded-lg border border-slate-100 bg-slate-50/40 p-3">
             <GroupSettingsContent onClose={() => setContextOpen(false)} />
+          </div>
+        </div>
+      )}
+
+      {canModerate && (
+        <div>
+          <SectionTitle icon={<IconArchive width={13} height={13} />} label="Conversation" />
+          <div className="mt-2 rounded-lg border border-slate-100 p-3">
+            <p className="mb-2 text-xs text-slate-500">
+              {isArchived
+                ? 'This conversation is archived and read-only. Unarchive it to reopen it for everyone.'
+                : 'Archive this conversation to make it read-only for everyone.'}
+            </p>
+            <button
+              type="button"
+              onClick={() => void handleToggleArchive()}
+              disabled={isArchiving}
+              className={`inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors disabled:opacity-50 ${
+                isArchived
+                  ? 'bg-blue-50 text-blue-700 hover:bg-blue-100'
+                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+              }`}
+            >
+              {isArchiving ? (
+                <Skeleton className="h-4 w-4 rounded-full" />
+              ) : isArchived ? (
+                <IconRefresh width={15} height={15} />
+              ) : (
+                <IconArchive width={15} height={15} />
+              )}
+              {isArchiving
+                ? 'Working…'
+                : isArchived
+                  ? 'Unarchive chat'
+                  : 'Archive chat'}
+            </button>
           </div>
         </div>
       )}

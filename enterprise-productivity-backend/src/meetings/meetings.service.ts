@@ -6,6 +6,7 @@ import {
   BadRequestException,
   Logger,
 } from '@nestjs/common';
+import { randomUUID } from 'crypto';
 import { eq } from 'drizzle-orm';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import type { ChannelData } from 'stream-chat';
@@ -49,7 +50,11 @@ export class MeetingsService {
       };
       const channel = this.streamService
         .getClient()
-        .channel('messaging', channelData as unknown as ChannelData);
+        .channel(
+          'messaging',
+          randomUUID(),
+          channelData as unknown as ChannelData,
+        );
       await channel.create();
       meetingChatChannelId = channel.id ?? null;
     } catch (err) {
