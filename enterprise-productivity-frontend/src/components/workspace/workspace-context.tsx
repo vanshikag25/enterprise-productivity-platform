@@ -29,9 +29,6 @@ interface WorkspaceContextValue {
   toggleSidebarCollapsed: () => void;
   sidebarOpen: boolean;
   setSidebarOpen: (open: boolean) => void;
-  contextOpen: boolean;
-  setContextOpen: (open: boolean) => void;
-  closePanels: () => void;
 }
 
 const WorkspaceContext = createContext<WorkspaceContextValue | undefined>(
@@ -53,7 +50,6 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   );
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [contextOpen, setContextOpen] = useState(false);
 
   const selectChannel = useCallback((channelId: string) => {
     setSelectedChannelId(channelId);
@@ -64,34 +60,25 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const openProject = useCallback((projectId: string) => {
     setMode({ type: 'project', projectId });
     setSidebarOpen(false);
-    setContextOpen(true);
   }, []);
 
   const openTask = useCallback((taskId: string) => {
     setMode({ type: 'task', taskId });
     setSidebarOpen(false);
-    setContextOpen(true);
   }, []);
 
   const openMeeting = useCallback((meetingId: string) => {
     setMode({ type: 'meeting', meetingId });
     setSidebarOpen(false);
-    setContextOpen(true);
   }, []);
 
   const openStarred = useCallback(() => {
     setMode({ type: 'starred' });
     setSidebarOpen(false);
-    setContextOpen(true);
   }, []);
 
   const toggleSidebarCollapsed = useCallback(() => {
     setSidebarCollapsed((v) => !v);
-  }, []);
-
-  const closePanels = useCallback(() => {
-    setContextOpen(false);
-    setSidebarOpen(false);
   }, []);
 
   const value = useMemo<WorkspaceContextValue>(
@@ -108,9 +95,6 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       toggleSidebarCollapsed,
       sidebarOpen,
       setSidebarOpen,
-      contextOpen,
-      setContextOpen,
-      closePanels,
     }),
     [
       mode,
@@ -125,9 +109,6 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       toggleSidebarCollapsed,
       sidebarOpen,
       setSidebarOpen,
-      contextOpen,
-      setContextOpen,
-      closePanels,
     ],
   );
 

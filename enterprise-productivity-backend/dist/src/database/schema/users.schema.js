@@ -23,6 +23,7 @@ exports.users = (0, pg_core_1.pgTable)('users', {
     preferredLanguage: (0, pg_core_1.varchar)('preferred_language', { length: 64 })
         .notNull()
         .default('en'),
+    status: (0, pg_core_1.varchar)('status', { length: 32 }),
     createdAt: (0, pg_core_1.timestamp)('created_at', { withTimezone: true })
         .defaultNow()
         .notNull(),

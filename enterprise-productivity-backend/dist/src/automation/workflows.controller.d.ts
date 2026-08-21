@@ -90,8 +90,8 @@ export declare class WorkflowsController {
     }>;
     retryExecution(auth: AuthObject, executionId: string): Promise<{
         id: string;
-        createdAt: Date;
         status: "pending" | "failed" | "running" | "success" | "retried";
+        createdAt: Date;
         error: string | null;
         triggerType: "task_assigned" | "task_created" | "task_completed" | "task_overdue" | "task_status_changed" | "project_created" | "milestone_completed" | "milestone_delayed" | "meeting_ended" | "user_joined" | "message_received" | "mention_received";
         workflowId: string;

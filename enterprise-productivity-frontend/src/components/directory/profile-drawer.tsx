@@ -54,8 +54,9 @@ export function ProfileDrawer({
             <p className="text-sm text-slate-500">{user.email}</p>
           </div>
           <PresenceIndicator
-            online={presence?.online}
-            lastSeen={presence?.lastActive}
+            online={presence?.online ?? user.online}
+            manualStatus={presence?.status ?? user.status}
+            lastSeen={presence?.lastActive ?? user.lastSeen}
             isLoading={isPresenceLoading && !presence}
             error={presenceError}
           />

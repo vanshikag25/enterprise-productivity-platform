@@ -5,7 +5,6 @@ import {
   Chat,
   Channel,
   Window,
-  ChannelHeader,
   MessageList,
   MessageComposer,
   Thread,
@@ -16,8 +15,10 @@ import {
 import { useStreamChatContext } from '@/context/stream-chat-context';
 import { SingleChoiceReactionSelector } from '@/components/chat/single-choice-reaction-selector';
 import { MessageActionsWithProductivity } from '@/components/message-actions/message-actions-with-productivity';
+import { MessageActionsContextMenu } from '@/components/message-actions/message-actions-context-menu';
 import { PollContentWithManage } from '@/components/message-actions/poll-manage-actions';
 import { TypingIndicatorText } from '@/components/chat/typing-indicator-text';
+import { ProjectChannelHeader } from '@/components/chat/project-channel-header';
 
 function ProjectChannelViewer({ channelId }: { channelId: string }) {
   const { client, channel, setActiveChannel } = useChatContext();
@@ -70,12 +71,13 @@ function ProjectChannelViewer({ channelId }: { channelId: string }) {
       overrides={{
         ReactionSelector: SingleChoiceReactionSelector,
         MessageActions: MessageActionsWithProductivity,
+        ContextMenu: MessageActionsContextMenu,
         PollContent: PollContentWithManage,
       }}
     >
       <Channel>
         <Window>
-          <ChannelHeader />
+          <ProjectChannelHeader />
           <MessageList />
           <TypingIndicatorText />
           <MessageComposer audioRecordingEnabled />

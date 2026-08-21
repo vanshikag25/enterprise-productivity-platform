@@ -3,6 +3,8 @@
 import type { UserDirectoryItem } from '@/lib/api-client';
 import type { LivePresence } from '@/hooks/use-live-presence';
 import { PresenceIndicator } from '@/components/presence/presence-indicator';
+import { StatusDot } from '@/components/presence/status-dot';
+import { resolveUserStatus } from '@/lib/user-status';
 import { Avatar } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { IconMessageCircle, IconPlus, IconUser } from '@/components/ui/icons';
@@ -33,10 +35,13 @@ export function UserCard({
       <div className="flex items-center gap-3">
         <div className="relative shrink-0">
           <Avatar name={user.name} imageUrl={user.imageUrl} size="lg" />
-          <span
-            className={`absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full border-2 border-white ${
-              presence?.online ? 'bg-green-500' : 'bg-slate-200'
-            }`}
+          <StatusDot
+            status={resolveUserStatus(
+              presence?.online ?? user.online,
+              presence?.status ?? user.status,
+            )}
+            size="md"
+            className="absolute bottom-0 right-0"
           />
         </div>
 
@@ -44,8 +49,9 @@ export function UserCard({
           <p className="truncate text-sm font-semibold text-slate-800">{user.name}</p>
           <p className="truncate text-xs text-slate-400">{user.email}</p>
           <PresenceIndicator
-            online={presence?.online}
-            lastSeen={presence?.lastActive}
+            online={presence?.online ?? user.online}
+            manualStatus={presence?.status ?? user.status}
+            lastSeen={presence?.lastActive ?? user.lastSeen}
             isLoading={isPresenceLoading && !presence}
             error={presenceError}
           />

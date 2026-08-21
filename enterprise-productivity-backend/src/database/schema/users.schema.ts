@@ -22,6 +22,7 @@ export const users = pgTable('users', {
   preferredLanguage: varchar('preferred_language', { length: 64 })
     .notNull()
     .default('en'),
+  status: varchar('status', { length: 32 }),
   createdAt: timestamp('created_at', { withTimezone: true })
     .defaultNow()
     .notNull(),

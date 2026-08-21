@@ -5,6 +5,7 @@ import { User } from '../database/schema/users.schema';
 export interface UserPresence {
     online: boolean;
     lastActive: string | null;
+    status: string | null;
 }
 export declare class StreamService implements OnModuleInit {
     private readonly configService;
@@ -19,6 +20,7 @@ export declare class StreamService implements OnModuleInit {
     getClient(): StreamChat;
     getApiKey(): string;
     syncUser(user: User): Promise<void>;
+    setUserStatus(username: string, status: string | null): Promise<void>;
     createUserToken(username: string): string;
     getOrCreateDirectChannel(userId: string, targetUserId: string): Promise<string>;
     createGroupChannel(userId: string, groupName: string, description: string | undefined, memberIds: string[]): Promise<StreamChannelType>;

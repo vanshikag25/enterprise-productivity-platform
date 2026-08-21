@@ -3,29 +3,55 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
-import { useClerk, useUser } from '@/lib/auth';
+import { useAuth, useClerk, useUser } from '@/lib/auth';
 import { Avatar } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Spinner } from '@/components/ui/spinner';
 import {
+  IconCheck,
   IconChevronDown,
   IconLogout,
   IconSettings,
   IconUser,
 } from '@/components/ui/icons';
 import { useRole } from '@/hooks/use-role';
-import { USER_ROLE_LABELS } from '@/lib/api-client';
+import { USER_ROLE_LABELS, updateMyStatus } from '@/lib/api-client';
+import { useStreamChatContext } from '@/context/stream-chat-context';
+import { StatusDot } from '@/components/presence/status-dot';
+import {
+  resolveUserStatus,
+  STATUS_META,
+  type ManualStatus,
+  type UserStatus,
+} from '@/lib/user-status';
 
 const MENU_MARGIN = 8;
 const MENU_MIN_EDGE = 12;
 
+interface StatusOption {
+  value: ManualStatus | null;
+  label: string;
+  status: UserStatus;
+}
+
+const STATUS_OPTIONS: StatusOption[] = [
+  { value: null, label: 'Online', status: 'online' },
+  { value: 'away', label: 'Away', status: 'away' },
+  { value: 'busy', label: 'Busy', status: 'busy' },
+  { value: 'in_meeting', label: 'In a Meeting', status: 'in_meeting' },
+  { value: 'dnd', label: 'Do Not Disturb', status: 'dnd' },
+];
+
 export function ProfileMenu() {
   const { user, isLoaded } = useUser();
-  const { role, me, isLoading } = useRole();
+  const { role, me, isLoading, refresh } = useRole();
+  const { getToken } = useAuth();
+  const { client } = useStreamChatContext();
   const { signOut } = useClerk();
 
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
   const [position, setPosition] = useState<{ top: number; right: number } | null>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -79,6 +105,26 @@ export function ProfileMenu() {
   const imageUrl = user?.imageUrl ?? me?.imageUrl ?? null;
   const roleLabel = role ? USER_ROLE_LABELS[role] : null;
 
+  const myStatus = resolveUserStatus(
+    client?.user?.online ?? true,
+    me?.status ?? null,
+  );
+
+  async function handleSetStatus(value: ManualStatus | null) {
+    if (isUpdatingStatus) return;
+    setIsUpdatingStatus(true);
+    try {
+      const token = await getToken();
+      if (!token) throw new Error('Unable to retrieve session token.');
+      await updateMyStatus(token, value);
+      await refresh();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsUpdatingStatus(false);
+    }
+  }
+
   async function handleLogout() {
     if (isLoggingOut) return;
     setIsLoggingOut(true);
@@ -105,11 +151,18 @@ export function ProfileMenu() {
             role="menu"
             aria-label="Account"
             style={{ top: position.top, right: position.right }}
-            className="fixed z-[80] max-h-[min(32rem,calc(100dvh-2rem))] w-[min(18rem,calc(100vw-1.5rem))] overflow-y-auto rounded-xl border border-slate-100 bg-white shadow-popover animate-scale-in"
+            className="fixed z-[80] max-h-[min(36rem,calc(100dvh-2rem))] w-[min(18rem,calc(100vw-1.5rem))] overflow-y-auto rounded-xl border border-slate-100 bg-white shadow-popover animate-scale-in"
           >
             <div className="border-b border-slate-100 bg-slate-50/70 px-4 py-3">
               <div className="flex items-center gap-3">
-                <Avatar name={name} imageUrl={imageUrl} size="lg" />
+                <div className="relative shrink-0">
+                  <Avatar name={name} imageUrl={imageUrl} size="lg" />
+                  <StatusDot
+                    status={myStatus}
+                    size="md"
+                    className="absolute -bottom-0.5 -right-0.5"
+                  />
+                </div>
                 <div className="min-w-0">
                   <p className="truncate text-sm font-semibold text-slate-900">{name}</p>
                   <p className="truncate text-xs text-slate-500">{email}</p>
@@ -120,6 +173,44 @@ export function ProfileMenu() {
                       <Badge variant="blue">{roleLabel}</Badge>
                     )}
                   </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="border-b border-slate-100 px-4 py-3">
+              <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+                Status
+              </p>
+              <div role="group" aria-label="Set status" className="mt-2 grid gap-0.5">
+                {STATUS_OPTIONS.map((option) => {
+                  const isSelected = myStatus === option.status;
+                  return (
+                    <button
+                      key={option.value ?? 'auto'}
+                      role="menuitemradio"
+                      aria-checked={isSelected}
+                      disabled={isUpdatingStatus}
+                      onClick={() => void handleSetStatus(option.value)}
+                      className={`flex w-full cursor-pointer items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-left text-sm transition-colors disabled:opacity-60 ${
+                        isSelected
+                          ? 'bg-blue-50 text-blue-700'
+                          : 'text-slate-700 hover:bg-slate-100'
+                      }`}
+                    >
+                      <StatusDot status={option.status} size="sm" ring={false} />
+                      <span className="flex-1 truncate">
+                        {STATUS_META[option.status].label}
+                      </span>
+                      {isSelected && <IconCheck width={15} height={15} />}
+                    </button>
+                  );
+                })}
+                <div className="mt-1 flex items-center gap-2.5 px-2.5 py-1 opacity-60">
+                  <StatusDot status="offline" size="sm" ring={false} />
+                  <span className="flex-1 truncate text-sm text-slate-700">
+                    Offline
+                  </span>
+                  <span className="text-[10px] text-slate-400">auto</span>
                 </div>
               </div>
             </div>
@@ -172,7 +263,14 @@ export function ProfileMenu() {
         aria-label="Account menu"
         className="flex cursor-pointer items-center gap-2 rounded-full border border-slate-200 bg-white p-1 pl-1 pr-2 shadow-sm transition-all duration-150 hover:border-slate-300 hover:shadow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 sm:pl-1.5"
       >
-        <Avatar name={name} imageUrl={imageUrl} size="sm" />
+        <div className="relative shrink-0">
+          <Avatar name={name} imageUrl={imageUrl} size="sm" />
+          <StatusDot
+            status={myStatus}
+            size="sm"
+            className="absolute -bottom-0.5 -right-0.5"
+          />
+        </div>
         <span className="hidden max-w-[120px] truncate text-sm font-medium text-slate-700 md:block">
           {name}
         </span>

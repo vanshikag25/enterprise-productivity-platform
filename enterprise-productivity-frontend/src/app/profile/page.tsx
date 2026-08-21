@@ -19,6 +19,9 @@ import {
   updateProfileRequest,
 } from '@/lib/api-client';
 import { formatJoinedDate } from '@/lib/format-date';
+import { useStreamChatContext } from '@/context/stream-chat-context';
+import { StatusDot } from '@/components/presence/status-dot';
+import { resolveUserStatus } from '@/lib/user-status';
 
 const USERNAME_PATTERN = /^[a-zA-Z0-9_.-]{3,50}$/;
 
@@ -26,6 +29,7 @@ export default function ProfilePage() {
   const { user, isLoaded } = useUser();
   const { getToken, setSession } = useAuth();
   const { me, role, isLoading, refresh } = useRole();
+  const { client } = useStreamChatContext();
 
   const [isEditingUsername, setIsEditingUsername] = useState(false);
   const [newUsername, setNewUsername] = useState('');
@@ -59,6 +63,10 @@ export default function ProfilePage() {
   const imageUrl = user?.imageUrl ?? me?.imageUrl ?? null;
   const roleLabel = role ? USER_ROLE_LABELS[role] : null;
   const username = user?.username ?? me?.username ?? '';
+  const myStatus = resolveUserStatus(
+    client?.user?.online ?? true,
+    me?.status ?? null,
+  );
 
   const fields: { label: string; value: string; icon: React.ReactNode }[] = [
     { label: 'Email address', value: email, icon: <IconMail width={16} height={16} /> },
@@ -200,8 +208,13 @@ export default function ProfilePage() {
         <div className="brand-gradient h-24" />
         <div className="px-6 pb-6">
           <div className="-mt-12 flex items-end justify-between">
-            <div className="rounded-full ring-4 ring-white">
+            <div className="relative rounded-full ring-4 ring-white">
               <Avatar name={name} imageUrl={imageUrl} size="xl" />
+              <StatusDot
+                status={myStatus}
+                size="lg"
+                className="absolute bottom-1 right-1"
+              />
             </div>
             {roleLabel && <Badge variant="blue">{roleLabel}</Badge>}
           </div>

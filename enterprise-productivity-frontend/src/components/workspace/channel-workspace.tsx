@@ -20,6 +20,7 @@ import { reactionOptions } from '@/components/chat/reaction-options';
 import { SingleChoiceReactionSelector } from '@/components/chat/single-choice-reaction-selector';
 import { MessageActionsWithConfirm } from '@/components/chat/message-actions-with-confirm';
 import { MessageActionsWithProductivity } from '@/components/message-actions/message-actions-with-productivity';
+import { MessageActionsContextMenu } from '@/components/message-actions/message-actions-context-menu';
 import { PollContentWithManage } from '@/components/message-actions/poll-manage-actions';
 import { MessageSearchPanel } from '@/components/chat/message-search-panel';
 import { scrollToMessage } from '@/components/chat/scroll-to-message';
@@ -91,6 +92,7 @@ export function ChannelWorkspace() {
         MessageStatus: MessageReadStatus,
         PollContent: PollContentWithManage,
         MessageUI: MessageWithAiActions,
+        ContextMenu: MessageActionsContextMenu,
         reactionOptions,
       }}
     >

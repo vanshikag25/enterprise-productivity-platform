@@ -25,6 +25,7 @@ const stream_service_1 = require("../stream/stream.service");
 const list_users_query_dto_1 = require("./dto/list-users-query.dto");
 const update_user_role_dto_1 = require("./dto/update-user-role.dto");
 const update_profile_dto_1 = require("./dto/update-profile.dto");
+const update_status_dto_1 = require("./dto/update-status.dto");
 const change_password_dto_1 = require("./dto/change-password.dto");
 const change_username_dto_1 = require("./dto/change-username.dto");
 function requireUserId(auth) {
@@ -59,8 +60,14 @@ let UsersController = class UsersController {
             imageUrl: user.imageUrl,
             role: user.role,
             preferredLanguage: user.preferredLanguage,
+            status: user.status,
             createdAt: user.createdAt.toISOString(),
         };
+    }
+    async updateMyStatus(auth, dto) {
+        const user = await this.usersService.updateStatus(requireUserId(auth), dto.status);
+        await this.streamService.setUserStatus(user.username, user.status);
+        return this.serializeMe(user);
     }
     async changePassword(auth, dto) {
         const username = requireUserId(auth);
@@ -93,6 +100,7 @@ let UsersController = class UsersController {
                 imageUrl: u.imageUrl,
                 online: presence?.online ?? false,
                 lastSeen: presence?.lastActive ?? null,
+                status: u.status,
                 joinedAt: u.createdAt.toISOString(),
                 role: u.role,
             };
@@ -143,6 +151,14 @@ __decorate([
     __metadata("design:paramtypes", [Object, update_profile_dto_1.UpdateProfileDto]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "updateMe", null);
+__decorate([
+    (0, common_1.Patch)('me/status'),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, update_status_dto_1.UpdateStatusDto]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "updateMyStatus", null);
 __decorate([
     (0, common_1.Post)('me/password'),
     __param(0, (0, current_user_decorator_1.CurrentUser)()),

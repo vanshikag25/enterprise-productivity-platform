@@ -1,4 +1,5 @@
 import axios from 'axios';
+import type { ManualStatus } from './user-status';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 if (!API_BASE_URL) throw new Error('NEXT_PUBLIC_API_URL is not set. Check your .env.local file.');
@@ -84,7 +85,7 @@ export async function fetchVideoToken(
 
 export interface UserDirectoryItem {
   id: string; name: string; email: string; imageUrl: string | null;
-  online: boolean; lastSeen: string | null; department?: string; organization?: string; joinedAt: string; role: UserRole;
+  online: boolean; lastSeen: string | null; department?: string; organization?: string; joinedAt: string; role: UserRole; status?: string | null;
 }
 export interface UserDirectoryResponse { users: UserDirectoryItem[]; total: number; page: number; limit: number; totalPages: number; }
 export interface FetchUsersDirectoryParams {
@@ -106,6 +107,7 @@ export interface MeResponse {
   imageUrl: string | null;
   role: UserRole;
   preferredLanguage: string;
+  status?: string | null;
   createdAt: string;
 }
 export async function fetchMe(token: string): Promise<MeResponse> {
@@ -158,6 +160,18 @@ export async function updateProfileRequest(
   const res = await apiClient.patch<MeResponse>('/users/me', payload, {
     headers: { Authorization: `Bearer ${token}` },
   });
+  return res.data;
+}
+
+export async function updateMyStatus(
+  token: string,
+  status: ManualStatus | null,
+): Promise<MeResponse> {
+  const res = await apiClient.patch<MeResponse>(
+    '/users/me/status',
+    { status },
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
   return res.data;
 }
 

@@ -256,12 +256,18 @@ body {
 
 /*
  * The message actions menu can hold many items and easily outgrow the
- * viewport. Cap its height to the available screen space and let it scroll
- * internally so every action stays reachable on all screen sizes.
+ * viewport. Cap its height to the space actually available in the direction
+ * it opens (computed by MessageActionsContextMenu and exposed through
+ * --str-chat-message-actions-max-height) and let it scroll internally so
+ * every action stays reachable on all screen sizes.
  */
 .str-chat__message-actions-box.str-chat__context-menu {
-  max-height: 26rem;
   max-height: min(26rem, calc(100dvh - 2rem));
+  max-height: var(
+    --str-chat-message-actions-max-height,
+    min(26rem, calc(100dvh - 2rem))
+  );
   overflow-y: auto;
+  overflow-x: hidden;
   overscroll-behavior: contain;
 }

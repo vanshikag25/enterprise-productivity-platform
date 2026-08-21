@@ -150,6 +150,16 @@ let UsersService = class UsersService {
             throw new common_1.ForbiddenException('User profile not found');
         return updated;
     }
+    async updateStatus(username, status) {
+        const [updated] = await this.db
+            .update(users_schema_1.users)
+            .set({ status, updatedAt: new Date() })
+            .where((0, drizzle_orm_1.eq)(users_schema_1.users.username, username))
+            .returning();
+        if (!updated)
+            throw new common_1.ForbiddenException('User profile not found');
+        return updated;
+    }
     async updateRole(actor, targetUsername, newRole) {
         const target = await this.findByUsername(targetUsername);
         if (!target)

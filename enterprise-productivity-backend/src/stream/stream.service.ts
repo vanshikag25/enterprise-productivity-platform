@@ -5,8 +5,11 @@ import {
   StreamChat,
   Channel as StreamChannelType,
   ChannelData,
+  type UserResponse,
 } from 'stream-chat';
 import { User } from '../database/schema/users.schema';
+
+type StreamUserWithStatus = UserResponse & { status?: string | null };
 
 interface GroupChannelData {
   name: string;
@@ -18,6 +21,7 @@ interface GroupChannelData {
 export interface UserPresence {
   online: boolean;
   lastActive: string | null;
+  status: string | null;
 }
 
 @Injectable()
@@ -124,14 +128,36 @@ export class StreamService implements OnModuleInit {
       .filter((part): part is string => Boolean(part))
       .join(' ');
 
-    await this.client.upsertUser({
+    const streamUser: StreamUserWithStatus = {
       id: user.username,
       name: name || undefined,
       image: user.imageUrl ?? undefined,
       role: user.role === 'admin' ? 'admin' : 'user',
-    });
+      status: user.status ?? undefined,
+    };
+
+    await this.client.upsertUser(streamUser);
 
     this.logger.log(`Stream user synced: ${user.username}`);
+  }
+
+  async setUserStatus(username: string, status: string | null): Promise<void> {
+    const setFields = status
+      ? ({ status } as unknown as Partial<UserResponse>)
+      : {};
+    const unsetFields = (status ? [] : ['status']) as unknown as Array<
+      keyof UserResponse
+    >;
+
+    await this.client.partialUpdateUser({
+      id: username,
+      set: setFields,
+      unset: unsetFields,
+    });
+
+    this.logger.log(
+      `Stream user status updated: ${username} -> ${status ?? 'auto'}`,
+    );
   }
 
   createUserToken(username: string): string {
@@ -211,9 +237,11 @@ export class StreamService implements OnModuleInit {
     const response = await this.client.queryUsers({ id: { $in: usernames } });
 
     for (const streamUser of response.users) {
+      const statusField = (streamUser as StreamUserWithStatus).status;
       presenceMap.set(streamUser.id, {
         online: Boolean(streamUser.online),
         lastActive: streamUser.last_active ?? null,
+        status: typeof statusField === 'string' ? statusField : null,
       });
     }
 

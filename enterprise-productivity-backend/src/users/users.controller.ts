@@ -22,6 +22,7 @@ import { StreamService } from '../stream/stream.service';
 import { ListUsersQueryDto } from './dto/list-users-query.dto';
 import { UpdateUserRoleDto } from './dto/update-user-role.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
+import { UpdateStatusDto } from './dto/update-status.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { ChangeUsernameDto } from './dto/change-username.dto';
 import { UserDirectoryResponse } from './dto/user-directory-response.dto';
@@ -68,6 +69,7 @@ export class UsersController {
     imageUrl: string | null;
     role: string;
     preferredLanguage: string;
+    status: string | null;
     createdAt: Date;
   }) {
     return {
@@ -80,8 +82,22 @@ export class UsersController {
       imageUrl: user.imageUrl,
       role: user.role,
       preferredLanguage: user.preferredLanguage,
+      status: user.status,
       createdAt: user.createdAt.toISOString(),
     };
+  }
+
+  @Patch('me/status')
+  async updateMyStatus(
+    @CurrentUser() auth: AuthObject,
+    @Body() dto: UpdateStatusDto,
+  ) {
+    const user = await this.usersService.updateStatus(
+      requireUserId(auth),
+      dto.status,
+    );
+    await this.streamService.setUserStatus(user.username, user.status);
+    return this.serializeMe(user);
   }
 
   @Post('me/password')
@@ -146,6 +162,7 @@ export class UsersController {
         imageUrl: u.imageUrl,
         online: presence?.online ?? false,
         lastSeen: presence?.lastActive ?? null,
+        status: u.status,
         joinedAt: u.createdAt.toISOString(),
         role: u.role,
       };
@@ -169,7 +186,11 @@ export class UsersController {
   ) {
     const actor = await this.usersService.findByUsername(requireUserId(auth));
     if (!actor) throw new UnauthorizedException('User profile not found');
-    const updated = await this.usersService.updateRole(actor, username, dto.role);
+    const updated = await this.usersService.updateRole(
+      actor,
+      username,
+      dto.role,
+    );
     return {
       id: updated.username,
       name:

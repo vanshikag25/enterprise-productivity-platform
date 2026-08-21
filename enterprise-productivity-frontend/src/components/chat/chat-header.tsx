@@ -1,11 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import {
-  ChannelAvatar,
-  useChannelPreviewInfo,
-  useChannelStateContext,
-} from 'stream-chat-react';
+import { useChannelPreviewInfo, useChannelStateContext } from 'stream-chat-react';
 import dynamic from 'next/dynamic';
 import { useAuth } from '@/lib/auth';
 import { setChannelLock } from '@/lib/api-client';
@@ -15,6 +11,7 @@ import { canModerateChannel } from '@/lib/moderation-scope';
 import { usePresence } from '@/hooks/use-live-presence';
 import { useStreamChatContext } from '@/context/stream-chat-context';
 import { PresenceIndicator } from '@/components/presence/presence-indicator';
+import { ConversationDetailsButton } from '@/components/chat/conversation-details-button';
 import { IconLock, IconSearch } from '@/components/ui/icons';
 
 const LazyCallButtons = dynamic(
@@ -109,6 +106,7 @@ export function ChatHeader({ currentUserId, showSearch, onToggleSearch }: ChatHe
         {isOneOnOne ? (
           <PresenceIndicator
             online={otherPresence?.online}
+            manualStatus={otherPresence?.status}
             lastSeen={otherPresence?.lastActive}
             isLoading={isLoading && !otherPresence}
             error={error}
@@ -151,7 +149,7 @@ export function ChatHeader({ currentUserId, showSearch, onToggleSearch }: ChatHe
         </button>
       )}
       <LazyCallButtons channelId={channel?.id ?? ''} kind={kind} />
-      <ChannelAvatar
+      <ConversationDetailsButton
         className="str-chat__avatar--channel-header"
         displayMembers={groupChannelDisplayInfo?.members}
         imageUrl={displayImage}

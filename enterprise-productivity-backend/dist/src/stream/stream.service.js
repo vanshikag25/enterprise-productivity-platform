@@ -100,13 +100,27 @@ let StreamService = StreamService_1 = class StreamService {
         const name = [user.firstName, user.lastName]
             .filter((part) => Boolean(part))
             .join(' ');
-        await this.client.upsertUser({
+        const streamUser = {
             id: user.username,
             name: name || undefined,
             image: user.imageUrl ?? undefined,
             role: user.role === 'admin' ? 'admin' : 'user',
-        });
+            status: user.status ?? undefined,
+        };
+        await this.client.upsertUser(streamUser);
         this.logger.log(`Stream user synced: ${user.username}`);
+    }
+    async setUserStatus(username, status) {
+        const setFields = status
+            ? { status }
+            : {};
+        const unsetFields = (status ? [] : ['status']);
+        await this.client.partialUpdateUser({
+            id: username,
+            set: setFields,
+            unset: unsetFields,
+        });
+        this.logger.log(`Stream user status updated: ${username} -> ${status ?? 'auto'}`);
     }
     createUserToken(username) {
         return this.client.createToken(username);
@@ -147,9 +161,11 @@ let StreamService = StreamService_1 = class StreamService {
         }
         const response = await this.client.queryUsers({ id: { $in: usernames } });
         for (const streamUser of response.users) {
+            const statusField = streamUser.status;
             presenceMap.set(streamUser.id, {
                 online: Boolean(streamUser.online),
                 lastActive: streamUser.last_active ?? null,
+                status: typeof statusField === 'string' ? statusField : null,
             });
         }
         return presenceMap;

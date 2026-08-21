@@ -6,26 +6,18 @@ import { useChatContext } from 'stream-chat-react';
 import { useWorkspace } from './workspace-context';
 import { WorkspaceSidebar } from './workspace-sidebar';
 import { WorkspaceCenter } from './workspace-center';
-import { WorkspaceContextSidebar } from './workspace-context-sidebar';
 import { IconMenu } from '@/components/ui/icons';
 
 export function WorkspaceLayout() {
-  const {
-    sidebarOpen,
-    setSidebarOpen,
-    contextOpen,
-    setContextOpen,
-    closePanels,
-    sidebarCollapsed,
-  } = useWorkspace();
+  const { sidebarOpen, setSidebarOpen, sidebarCollapsed } = useWorkspace();
 
   return (
     <div className="flex h-full w-full overflow-hidden">
-      {/* Drawer backdrops */}
-      {(sidebarOpen || contextOpen) && (
+      {/* Drawer backdrop for the mobile navigation */}
+      {sidebarOpen && (
         <div
           className="fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-sm"
-          onClick={closePanels}
+          onClick={() => setSidebarOpen(false)}
           aria-hidden="true"
         />
       )}
@@ -50,32 +42,11 @@ export function WorkspaceLayout() {
           >
             <IconMenu width={18} height={18} />
           </button>
-          <button
-            onClick={() => setContextOpen(!contextOpen)}
-            aria-label="Toggle details panel"
-            className={`ml-auto rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors ${
-              contextOpen
-                ? 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                : 'text-slate-500 hover:bg-slate-100 hover:text-slate-700'
-            }`}
-          >
-            Details
-          </button>
         </div>
         <div className="min-h-0 flex-1">
           <WorkspaceCenter />
         </div>
       </main>
-
-      {/* Right context sidebar */}
-      <aside
-        aria-label="Context details"
-        className={`fixed inset-y-0 right-0 z-50 flex h-full w-80 flex-col border-l border-slate-200 bg-white shadow-2xl transition-transform duration-300 ${
-          contextOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
-      >
-        <WorkspaceContextSidebar />
-      </aside>
 
       <ChannelLinkHandler />
     </div>

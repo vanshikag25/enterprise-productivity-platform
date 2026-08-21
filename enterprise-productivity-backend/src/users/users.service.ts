@@ -202,6 +202,16 @@ export class UsersService {
     return updated;
   }
 
+  async updateStatus(username: string, status: string | null): Promise<User> {
+    const [updated] = await this.db
+      .update(users)
+      .set({ status, updatedAt: new Date() })
+      .where(eq(users.username, username))
+      .returning();
+    if (!updated) throw new ForbiddenException('User profile not found');
+    return updated;
+  }
+
   async updateRole(
     actor: User,
     targetUsername: string,

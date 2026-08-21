@@ -1,7 +1,13 @@
 'use client';
 
+import type { UserStatus } from '@/lib/user-status';
+import { resolveUserStatus, STATUS_META } from '@/lib/user-status';
+import { StatusDot } from './status-dot';
+
 interface PresenceIndicatorProps {
+  status?: UserStatus;
   online?: boolean;
+  manualStatus?: string | null;
   lastSeen?: string | null;
   isLoading?: boolean;
   error?: string | null;
@@ -9,7 +15,9 @@ interface PresenceIndicatorProps {
 }
 
 export function PresenceIndicator({
+  status,
   online,
+  manualStatus,
   lastSeen,
   isLoading,
   error,
@@ -30,20 +38,19 @@ export function PresenceIndicator({
     );
   }
 
-  if (online) {
-    return (
-      <span className="inline-flex items-center gap-1 text-xs text-green-600">
-        <span aria-hidden>🟢</span>
-        {variant === 'full' && 'Online'}
-      </span>
-    );
-  }
+  const resolved: UserStatus =
+    status ??
+    (online !== undefined ? resolveUserStatus(Boolean(online), manualStatus) : 'offline');
+
+  const meta = STATUS_META[resolved];
 
   return (
-    <span className="inline-flex items-center gap-1 text-xs text-gray-400">
-      <span aria-hidden>⚪</span>
+    <span className={`inline-flex items-center gap-1.5 text-xs ${meta.textClass}`}>
+      <StatusDot status={resolved} size="sm" ring={false} />
       {variant === 'full' &&
-        (lastSeen ? 'Last seen recently' : 'Offline')}
+        (resolved === 'offline' && lastSeen
+          ? 'Last seen recently'
+          : meta.label)}
     </span>
   );
 }

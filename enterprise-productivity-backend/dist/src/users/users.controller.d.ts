@@ -5,6 +5,7 @@ import { StreamService } from '../stream/stream.service';
 import { ListUsersQueryDto } from './dto/list-users-query.dto';
 import { UpdateUserRoleDto } from './dto/update-user-role.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
+import { UpdateStatusDto } from './dto/update-status.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { ChangeUsernameDto } from './dto/change-username.dto';
 import { UserDirectoryResponse } from './dto/user-directory-response.dto';
@@ -23,6 +24,7 @@ export declare class UsersController {
         imageUrl: string | null;
         role: string;
         preferredLanguage: string;
+        status: string | null;
         createdAt: string;
     }>;
     updateMe(auth: AuthObject, dto: UpdateProfileDto): Promise<{
@@ -35,9 +37,23 @@ export declare class UsersController {
         imageUrl: string | null;
         role: string;
         preferredLanguage: string;
+        status: string | null;
         createdAt: string;
     }>;
     private serializeMe;
+    updateMyStatus(auth: AuthObject, dto: UpdateStatusDto): Promise<{
+        id: string;
+        username: string;
+        firstName: string | null;
+        lastName: string | null;
+        fullName: string;
+        email: string;
+        imageUrl: string | null;
+        role: string;
+        preferredLanguage: string;
+        status: string | null;
+        createdAt: string;
+    }>;
     changePassword(auth: AuthObject, dto: ChangePasswordDto): Promise<{
         id: string;
         updated: boolean;

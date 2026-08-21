@@ -7,6 +7,9 @@ import { Spinner } from '@/components/ui/spinner';
 import { IconLogout } from '@/components/ui/icons';
 import { useRole } from '@/hooks/use-role';
 import { USER_ROLE_LABELS } from '@/lib/api-client';
+import { useStreamChatContext } from '@/context/stream-chat-context';
+import { StatusDot } from '@/components/presence/status-dot';
+import { resolveUserStatus } from '@/lib/user-status';
 
 interface SidebarAccountProps {
   collapsed: boolean;
@@ -15,6 +18,7 @@ interface SidebarAccountProps {
 export function SidebarAccount({ collapsed }: SidebarAccountProps) {
   const { user, isLoaded } = useUser();
   const { role, me } = useRole();
+  const { client } = useStreamChatContext();
   const { signOut } = useClerk();
 
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -24,6 +28,10 @@ export function SidebarAccount({ collapsed }: SidebarAccountProps) {
     user?.primaryEmailAddress?.emailAddress ?? me?.email ?? '';
   const imageUrl = user?.imageUrl ?? me?.imageUrl ?? null;
   const roleLabel = role ? USER_ROLE_LABELS[role] : null;
+  const myStatus = resolveUserStatus(
+    client?.user?.online ?? true,
+    me?.status ?? null,
+  );
 
   async function handleLogout() {
     if (isLoggingOut) return;
@@ -55,12 +63,26 @@ export function SidebarAccount({ collapsed }: SidebarAccountProps) {
     <div className="border-t border-white/10 p-3">
       {collapsed ? (
         <div className="flex flex-col items-center gap-1.5">
-          <Avatar name={name} imageUrl={imageUrl} size="sm" />
+          <div className="relative">
+            <Avatar name={name} imageUrl={imageUrl} size="sm" />
+            <StatusDot
+              status={myStatus}
+              size="sm"
+              className="absolute -bottom-0.5 -right-0.5"
+            />
+          </div>
           {logoutButton}
         </div>
       ) : (
         <div className="flex items-center gap-2.5">
-          <Avatar name={name} imageUrl={imageUrl} size="md" />
+          <div className="relative shrink-0">
+            <Avatar name={name} imageUrl={imageUrl} size="md" />
+            <StatusDot
+              status={myStatus}
+              size="md"
+              className="absolute -bottom-0.5 -right-0.5"
+            />
+          </div>
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-medium text-white">{name}</p>
             <p className="truncate text-xs text-slate-400">

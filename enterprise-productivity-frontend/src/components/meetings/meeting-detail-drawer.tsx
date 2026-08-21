@@ -9,6 +9,8 @@ import { useTaskDirectory } from '@/hooks/use-task-directory';
 import { useRole } from '@/hooks/use-role';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { StatusDot } from '@/components/presence/status-dot';
+import { resolveUserStatus } from '@/lib/user-status';
 import { IconClose, IconEdit, IconMessageCircle, IconTrash } from '@/components/ui/icons';
 import { MeetingForm } from './meeting-form';
 
@@ -110,6 +112,7 @@ export function MeetingDetailDrawer({ meeting, currentUserId, onClose, onUpdated
   }
 
   const participantUsers = users.filter((u) => meeting.participants.includes(u.id));
+  const organizerUser = users.find((u) => u.id === meeting.organizerId);
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end bg-slate-900/40 backdrop-blur-sm" onClick={onClose}>
@@ -146,7 +149,19 @@ export function MeetingDetailDrawer({ meeting, currentUserId, onClose, onUpdated
               <dl className="mt-5 space-y-3 rounded-xl border border-slate-100 bg-slate-50/60 p-4 text-sm">
                 <div className="flex items-center justify-between gap-3">
                   <dt className="text-xs font-medium uppercase tracking-wide text-slate-400">Organizer</dt>
-                  <dd className="text-slate-800">{nameById(meeting.organizerId)}</dd>
+                  <dd className="inline-flex items-center gap-1.5 text-slate-800">
+                    {organizerUser && (
+                      <StatusDot
+                        status={resolveUserStatus(
+                          organizerUser.online,
+                          organizerUser.status,
+                        )}
+                        size="sm"
+                        ring={false}
+                      />
+                    )}
+                    {nameById(meeting.organizerId)}
+                  </dd>
                 </div>
                 <div className="flex items-center justify-between gap-3">
                   <dt className="text-xs font-medium uppercase tracking-wide text-slate-400">Date</dt>
@@ -156,10 +171,28 @@ export function MeetingDetailDrawer({ meeting, currentUserId, onClose, onUpdated
                   <dt className="text-xs font-medium uppercase tracking-wide text-slate-400">Time</dt>
                   <dd className="text-slate-800">{meeting.startTime} – {meeting.endTime}</dd>
                 </div>
-                <div className="flex items-start justify-between gap-3">
+<div className="flex items-start justify-between gap-3">
                   <dt className="text-xs font-medium uppercase tracking-wide text-slate-400">Participants</dt>
-                  <dd className="max-w-[60%] text-right text-slate-800">
-                    {participantUsers.map((p) => p.name).join(', ') || `${meeting.participants.length} participant(s)`}
+                  <dd className="max-w-[60%] text-right">
+                    {participantUsers.length > 0 ? (
+                      <ul className="flex flex-wrap justify-end gap-x-2.5 gap-y-1">
+                        {participantUsers.map((p) => (
+                          <li
+                            key={p.id}
+                            className="inline-flex items-center gap-1 text-slate-800"
+                          >
+                            <StatusDot
+                              status={resolveUserStatus(p.online, p.status)}
+                              size="sm"
+                              ring={false}
+                            />
+                            {p.name}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      `${meeting.participants.length} participant(s)`
+                    )}
                   </dd>
                 </div>
               </dl>

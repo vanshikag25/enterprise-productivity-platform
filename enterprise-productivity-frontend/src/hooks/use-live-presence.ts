@@ -4,6 +4,7 @@ import type { StreamChat } from 'stream-chat';
 export interface LivePresence {
   online: boolean;
   lastActive: string | null;
+  status: string | null;
 }
 
 export interface UsePresenceResult {
@@ -14,11 +15,26 @@ export interface UsePresenceResult {
 
 const POLL_INTERVAL_MS = 15000;
 
-interface PresenceChangedEvent {
-  user?: {
-    id?: string;
-    online?: boolean;
-    last_active?: string;
+interface PresenceUserShape {
+  id?: string;
+  online?: boolean;
+  last_active?: string;
+  status?: unknown;
+}
+
+interface PresenceEvent {
+  user?: PresenceUserShape;
+}
+
+interface UserUpdatedEvent {
+  user?: PresenceUserShape;
+}
+
+function toLivePresence(user: PresenceUserShape): LivePresence {
+  return {
+    online: Boolean(user.online),
+    lastActive: user.last_active ?? null,
+    status: typeof user.status === 'string' ? user.status : null,
   };
 }
 
@@ -57,10 +73,7 @@ export function usePresence(
         setPresence((prev) => {
           const next = new Map(prev);
           for (const streamUser of response.users) {
-            next.set(streamUser.id, {
-              online: Boolean(streamUser.online),
-              lastActive: streamUser.last_active ?? null,
-            });
+            next.set(streamUser.id, toLivePresence(streamUser));
           }
           return next;
         });
@@ -81,26 +94,33 @@ export function usePresence(
 
     const interval = setInterval(fetchPresence, POLL_INTERVAL_MS);
 
-    function handlePresenceChanged(event: PresenceChangedEvent) {
+    function applyPresenceEvent(event: { user?: PresenceUserShape }) {
       const userId = event.user?.id;
       if (!userId || !userIds.includes(userId)) return;
 
       setPresence((prev) => {
         const next = new Map(prev);
-        next.set(userId, {
-          online: Boolean(event.user?.online),
-          lastActive: event.user?.last_active ?? null,
-        });
+        next.set(userId, toLivePresence(event.user!));
         return next;
       });
     }
 
+    function handlePresenceChanged(event: PresenceEvent) {
+      applyPresenceEvent(event);
+    }
+
+    function handleUserUpdated(event: UserUpdatedEvent) {
+      applyPresenceEvent(event);
+    }
+
     client.on('user.presence.changed', handlePresenceChanged);
+    client.on('user.updated', handleUserUpdated);
 
     return () => {
       isCancelled = true;
       clearInterval(interval);
       client.off('user.presence.changed', handlePresenceChanged);
+      client.off('user.updated', handleUserUpdated);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [client, key]);
