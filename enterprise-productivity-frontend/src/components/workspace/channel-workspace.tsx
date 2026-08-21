@@ -168,13 +168,16 @@ function JumpToMessage({
 function MessageComposerOrArchiveNotice() {
   const { channel } = useChannelStateContext();
   const { getToken } = useAuth();
-  const { role } = useRole();
+  const { role, hasRole } = useRole();
   const { showToast } = useToast();
   const [isUnarchiving, setIsUnarchiving] = useState(false);
 
+  const isAnnouncementChannel =
+    (channel.data as { channel_kind?: string } | undefined)?.channel_kind === 'announcement';
   const isArchived = Boolean(
     (channel.data as { frozen?: boolean } | undefined)?.frozen,
   );
+  const canPostAnnouncement = !isAnnouncementChannel || hasRole('manager');
 
   const actorId = channel.getClient().userID ?? '';
   const myMember = (channel.state?.members ?? {})[actorId] as
@@ -230,5 +233,14 @@ function MessageComposerOrArchiveNotice() {
       </div>
     );
   }
+
+  if (!canPostAnnouncement) {
+    return (
+      <div className="border-t border-slate-100 bg-slate-50 px-4 py-3 text-center text-xs font-medium text-slate-500">
+        This is an announcement channel. Only managers and above can post updates; everyone can read and react.
+      </div>
+    );
+  }
+
   return <MessageComposerWithDrafts />;
 }

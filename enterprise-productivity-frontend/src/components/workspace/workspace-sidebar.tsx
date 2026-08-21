@@ -14,6 +14,7 @@ import { Spinner } from '@/components/ui/spinner';
 import {
   IconBookmark,
   IconCalendar,
+  IconChevronDown,
   IconChevronsLeft,
   IconChevronsRight,
   IconMegaphone,
@@ -35,6 +36,18 @@ const SECTION_ICONS = {
   archived: IconMessageCircle,
 };
 
+const WORKSPACE_FILTERS = [
+  'All',
+  'Direct Messages',
+  'Teams',
+  'Projects',
+  'Starred Messages',
+  'Tasks',
+  'Announcements',
+] as const;
+
+type WorkspaceFilter = (typeof WORKSPACE_FILTERS)[number];
+
 export function WorkspaceSidebar() {
   const { client, channel, setActiveChannel } = useChatContext();
   const userId = client?.userID ?? channel?.getClient()?.userID ?? '';
@@ -53,6 +66,7 @@ export function WorkspaceSidebar() {
   const { projects, tasks, meetings, bookmarks, isLoading } = useWorkspaceListData();
   const router = useRouter();
   const [showNewGroup, setShowNewGroup] = useState(false);
+  const [filter, setFilter] = useState<WorkspaceFilter>('All');
 
   const CustomChannelListItem = useMemo(
     () => createCustomChannelListItem(userId),
@@ -69,94 +83,111 @@ export function WorkspaceSidebar() {
   const renderChannels = useCallback(
     (channels: StreamChannel[], channelPreview: (channel: StreamChannel) => React.ReactNode) => {
       const groups = partitionChannels(channels);
+      const shows = (section: WorkspaceFilter) => filter === 'All' || filter === section;
       return (
         <div className="flex flex-col">
-          <ChannelSection
-            icon={<IconMessageCircle width={13} height={13} />}
-            label="Direct Messages"
-            channels={groups.dms}
-            channelPreview={channelPreview}
-            onChannelClick={handleChannelClick}
-            activeChannelId={selectedChannelId}
-          />
-          <ChannelSection
-            icon={<IconUsers width={13} height={13} />}
-            label="Teams"
-            channels={groups.teams}
-            channelPreview={channelPreview}
-            onChannelClick={handleChannelClick}
-            activeChannelId={selectedChannelId}
-          />
-          <ApiSection
-            icon={<IconProject width={13} height={13} />}
-            label="Projects"
-            items={projects.map((p) => ({
-              id: p.id,
-              title: p.name,
-              subtitle: `${p.memberCount} members`,
-              onOpen: () => openProject(p.id),
-            }))}
-            active={mode?.type === 'project'}
-          />
-          <ApiSection
-            icon={<IconTasks width={13} height={13} />}
-            label="Tasks"
-            items={tasks.map((t) => ({
-              id: t.id,
-              title: t.title,
-              subtitle: t.status,
-              onOpen: () => openTask(t.id),
-            }))}
-            active={mode?.type === 'task'}
-          />
-          <ApiSection
-            icon={<IconCalendar width={13} height={13} />}
-            label="Meetings"
-            items={meetings.map((m) => ({
-              id: m.id,
-              title: m.title,
-              subtitle: `${m.scheduledDate} ${m.startTime}`,
-              onOpen: () => openMeeting(m.id),
-            }))}
-            active={mode?.type === 'meeting'}
-          />
-          <ChannelSection
-            icon={<IconMegaphone width={13} height={13} />}
-            label="Announcements"
-            channels={groups.announcements}
-            channelPreview={channelPreview}
-            onChannelClick={handleChannelClick}
-            activeChannelId={selectedChannelId}
-          />
-          <ApiSection
-            icon={<IconBookmark width={13} height={13} />}
-            label="Starred"
-            items={bookmarks.map((b) => ({
-              id: b.id,
-              title: b.sourceMessageText ?? 'Starred message',
-              subtitle: b.sourceChannelName ?? 'Saved',
-              onOpen: () => {
-                if (b.sourceChannelId) {
-                  router.push(
-                    `/dashboard?channel=${encodeURIComponent(b.sourceChannelId)}&message=${encodeURIComponent(b.sourceMessageId)}`,
-                  );
-                } else {
-                  openStarred();
-                }
-              },
-            }))}
-            active={mode?.type === 'starred'}
-            onViewAll={openStarred}
-          />
-          <ChannelSection
-            icon={<IconMessageCircle width={13} height={13} />}
-            label="Archived"
-            channels={groups.archived}
-            channelPreview={channelPreview}
-            onChannelClick={handleChannelClick}
-            activeChannelId={selectedChannelId}
-            archived
-          />
+          {shows('Direct Messages') && (
+            <ChannelSection
+              icon={<IconMessageCircle width={13} height={13} />}
+              label="Direct Messages"
+              channels={groups.dms}
+              channelPreview={channelPreview}
+              onChannelClick={handleChannelClick}
+              activeChannelId={selectedChannelId}
+            />
+          )}
+          {shows('Teams') && (
+            <ChannelSection
+              icon={<IconUsers width={13} height={13} />}
+              label="Teams"
+              channels={groups.teams}
+              channelPreview={channelPreview}
+              onChannelClick={handleChannelClick}
+              activeChannelId={selectedChannelId}
+            />
+          )}
+          {shows('Projects') && (
+            <ApiSection
+              icon={<IconProject width={13} height={13} />}
+              label="Projects"
+              items={projects.map((p) => ({
+                id: p.id,
+                title: p.name,
+                subtitle: `${p.memberCount} members`,
+                onOpen: () => openProject(p.id),
+              }))}
+              active={mode?.type === 'project'}
+            />
+          )}
+          {shows('Tasks') && (
+            <ApiSection
+              icon={<IconTasks width={13} height={13} />}
+              label="Tasks"
+              items={tasks.map((t) => ({
+                id: t.id,
+                title: t.title,
+                subtitle: t.status,
+                onOpen: () => openTask(t.id),
+              }))}
+              active={mode?.type === 'task'}
+            />
+          )}
+          {filter === 'All' && (
+            <ApiSection
+              icon={<IconCalendar width={13} height={13} />}
+              label="Meetings"
+              items={meetings.map((m) => ({
+                id: m.id,
+                title: m.title,
+                subtitle: `${m.scheduledDate} ${m.startTime}`,
+                onOpen: () => openMeeting(m.id),
+              }))}
+              active={mode?.type === 'meeting'}
+            />
+          )}
+          {shows('Announcements') && (
+            <ChannelSection
+              icon={<IconMegaphone width={13} height={13} />}
+              label="Announcements"
+              channels={groups.announcements}
+              channelPreview={channelPreview}
+              onChannelClick={handleChannelClick}
+              activeChannelId={selectedChannelId}
+            />
+          )}
+          {shows('Starred Messages') && (
+            <ApiSection
+              icon={<IconBookmark width={13} height={13} />}
+              label="Starred"
+              items={bookmarks.map((b) => ({
+                id: b.id,
+                title: b.sourceMessageText ?? 'Starred message',
+                subtitle: b.sourceChannelName ?? 'Saved',
+                onOpen: () => {
+                  if (b.sourceChannelId) {
+                    router.push(
+                      `/dashboard?channel=${encodeURIComponent(b.sourceChannelId)}&message=${encodeURIComponent(b.sourceMessageId)}`,
+                    );
+                  } else {
+                    openStarred();
+                  }
+                },
+              }))}
+              active={mode?.type === 'starred'}
+              onViewAll={openStarred}
+            />
+          )}
+          {filter === 'All' && (
+            <ChannelSection
+              icon={<IconMessageCircle width={13} height={13} />}
+              label="Archived"
+              channels={groups.archived}
+              channelPreview={channelPreview}
+              onChannelClick={handleChannelClick}
+              activeChannelId={selectedChannelId}
+              archived
+            />
+          )}
         </div>
       );
     },
@@ -173,12 +204,13 @@ export function WorkspaceSidebar() {
       openMeeting,
       openStarred,
       router,
+      filter,
     ],
   );
 
   return (
     <div className="flex h-full w-full flex-col">
-      <div className="flex h-14 shrink-0 items-center justify-between border-b border-slate-100 px-3">
+      <div className="flex h-14 shrink-0 items-center justify-between gap-2 border-b border-slate-100 px-3">
         <button
           onClick={() => setSidebarOpen(false)}
           aria-label="Close sidebar"
@@ -187,7 +219,10 @@ export function WorkspaceSidebar() {
           <IconChevronsRight width={16} height={16} />
         </button>
         {!sidebarCollapsed && (
-          <span className="text-sm font-semibold text-slate-800">Workspace</span>
+          <div className="flex min-w-0 flex-1 items-center gap-2">
+            <span className="shrink-0 text-sm font-semibold text-slate-800">Workspace</span>
+            <WorkspaceFilterDropdown value={filter} onChange={setFilter} />
+          </div>
         )}
         <div className="flex items-center gap-1">
           <button
@@ -416,5 +451,35 @@ function CollapsedRail({
         <IconChevronsRight width={18} height={18} />
       </button>
     </div>
+  );
+}
+
+function WorkspaceFilterDropdown({
+  value,
+  onChange,
+}: {
+  value: WorkspaceFilter;
+  onChange: (filter: WorkspaceFilter) => void;
+}) {
+  return (
+    <label className="relative inline-flex min-w-0 flex-1 items-center">
+      <span className="sr-only">Filter workspace</span>
+      <select
+        value={value}
+        onChange={(event) => onChange(event.target.value as WorkspaceFilter)}
+        className="w-full min-w-0 cursor-pointer appearance-none truncate rounded-lg border border-slate-200 bg-white py-1 pl-2 pr-6 text-xs font-medium text-slate-600 transition-colors hover:border-slate-300 focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-400"
+      >
+        {WORKSPACE_FILTERS.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+      <IconChevronDown
+        width={12}
+        height={12}
+        className="pointer-events-none absolute right-1.5 text-slate-400"
+      />
+    </label>
   );
 }

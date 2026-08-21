@@ -97,7 +97,13 @@ export default function AnnouncementsPage() {
         </div>
       )}
 
-      {selected && <ChannelInfoDrawer channel={selected} onClose={() => setSelected(null)} />}
+      {selected && (
+        <ChannelInfoDrawer
+          channel={selected}
+          onClose={() => setSelected(null)}
+          onDeleted={(channelId) => setChannels((prev) => prev.filter((channel) => channel.id !== channelId))}
+        />
+      )}
     </div>
   );
 }

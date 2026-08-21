@@ -95,7 +95,6 @@ let ChannelsService = ChannelsService_1 = class ChannelsService {
             created_by_id: userId,
             members,
             ...(departmentId ? { department_id: departmentId } : {}),
-            ...(dto.kind === 'announcement' ? { frozen: true } : {}),
         };
         const channel = this.streamService
             .getClient()

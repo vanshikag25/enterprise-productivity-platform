@@ -16,7 +16,7 @@ export declare class StreamService implements OnModuleInit {
     onModuleInit(): Promise<void>;
     private ensurePollsEnabled;
     private ensureEveryoneMentionEnabled;
-    private ensureAdminCanUseFrozenChannels;
+    private ensureFrozenChannelPermissions;
     getClient(): StreamChat;
     getApiKey(): string;
     syncUser(user: User): Promise<void>;

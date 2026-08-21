@@ -29,9 +29,9 @@ let StreamService = StreamService_1 = class StreamService {
         this.apiKey = apiKey;
         this.client = stream_chat_1.StreamChat.getInstance(apiKey, apiSecret);
         this.logger.log('Stream Chat server client initialized.');
-        await this.ensureAdminCanUseFrozenChannels();
         await this.ensureEveryoneMentionEnabled();
         await this.ensurePollsEnabled();
+        await this.ensureFrozenChannelPermissions();
     }
     async ensurePollsEnabled() {
         try {
@@ -75,7 +75,7 @@ let StreamService = StreamService_1 = class StreamService {
             this.logger.warn(`Failed to enable chat capabilities for messaging channels: ${err}`);
         }
     }
-    async ensureAdminCanUseFrozenChannels() {
+    async ensureFrozenChannelPermissions() {
         try {
             const { grants } = await this.client.getChannelType('messaging');
             const adminGrants = grants?.admin ?? [];
@@ -84,6 +84,13 @@ let StreamService = StreamService_1 = class StreamService {
                     grants: { ...grants, admin: [...adminGrants, 'use-frozen-channel'] },
                 });
                 this.logger.log('Granted admin role use-frozen-channel permission.');
+            }
+            const managerGrants = grants?.manager ?? [];
+            if (!managerGrants.includes('use-frozen-channel')) {
+                await this.client.updateChannelType('messaging', {
+                    grants: { ...grants, manager: [...managerGrants, 'use-frozen-channel'] },
+                });
+                this.logger.log('Granted manager role use-frozen-channel permission.');
             }
         }
         catch (err) {

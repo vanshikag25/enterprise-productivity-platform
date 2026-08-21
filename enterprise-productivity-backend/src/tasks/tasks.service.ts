@@ -27,18 +27,6 @@ export class TasksService {
   ) {}
 
   async create(userId: string, dto: CreateTaskDto): Promise<Task> {
-    let streamChannelId: string | null = null;
-
-    try {
-      streamChannelId = await this.createTaskChannel(
-        userId,
-        dto.title,
-        dto.assignee,
-      );
-    } catch (err) {
-      this.logger.warn(`Failed to create Stream channel for task: ${err}`);
-    }
-
     const [task] = await this.db
       .insert(tasks)
       .values({
@@ -49,13 +37,29 @@ export class TasksService {
         dueDate: dto.dueDate ? new Date(dto.dueDate) : null,
         createdBy: userId,
         assignee: dto.assignee ?? null,
-        streamChannelId,
         sourceChannelId: dto.sourceChannelId ?? null,
         sourceMessageId: dto.sourceMessageId ?? null,
         sourceSenderId: dto.sourceSenderId ?? null,
         sourceChannelName: dto.sourceChannelName ?? null,
       })
       .returning();
+
+    let streamChannelId: string | null = null;
+
+    try {
+      streamChannelId = await this.createTaskChannel(
+        task.id,
+        userId,
+        dto.title,
+        dto.assignee,
+      );
+      await this.db
+        .update(tasks)
+        .set({ streamChannelId, updatedAt: new Date() })
+        .where(eq(tasks.id, task.id));
+    } catch (err) {
+      this.logger.warn(`Failed to create Stream channel for task: ${err}`);
+    }
 
     if (dto.sourceChannelId && dto.sourceMessageId) {
       await this.linkSourceMessage(task, dto);
@@ -155,6 +159,7 @@ export class TasksService {
     }
 
     const channelId = await this.createTaskChannel(
+      task.id,
       task.createdBy,
       task.title,
       task.assignee ?? undefined,
@@ -168,6 +173,7 @@ export class TasksService {
   }
 
   private async createTaskChannel(
+    taskId: string,
     createdBy: string,
     title: string,
     assignee?: string,
@@ -175,17 +181,19 @@ export class TasksService {
     const members = Array.from(
       new Set([createdBy, ...(assignee ? [assignee] : [])]),
     );
+    const uniqueChannelId = `task-${taskId}`;
     const channelData = {
       name: `Task: ${title}`,
       members,
       created_by_id: createdBy,
       channel_kind: 'task',
+      task_id: taskId,
     };
     const channel = this.streamService
       .getClient()
       .channel(
         'messaging',
-        randomUUID(),
+        uniqueChannelId,
         channelData as unknown as ChannelData,
       );
     await channel.create();

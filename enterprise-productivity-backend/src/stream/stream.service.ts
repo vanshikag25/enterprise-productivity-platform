@@ -47,9 +47,9 @@ export class StreamService implements OnModuleInit {
 
     this.logger.log('Stream Chat server client initialized.');
 
-    await this.ensureAdminCanUseFrozenChannels();
     await this.ensureEveryoneMentionEnabled();
     await this.ensurePollsEnabled();
+    await this.ensureFrozenChannelPermissions();
   }
 
   private async ensurePollsEnabled() {
@@ -99,16 +99,24 @@ export class StreamService implements OnModuleInit {
     }
   }
 
-  private async ensureAdminCanUseFrozenChannels() {
+  private async ensureFrozenChannelPermissions() {
     try {
       const { grants } = await this.client.getChannelType('messaging');
-      const adminGrants = grants?.admin ?? [];
 
+      const adminGrants = grants?.admin ?? [];
       if (!adminGrants.includes('use-frozen-channel')) {
         await this.client.updateChannelType('messaging', {
           grants: { ...grants, admin: [...adminGrants, 'use-frozen-channel'] },
         });
         this.logger.log('Granted admin role use-frozen-channel permission.');
+      }
+
+      const managerGrants = grants?.manager ?? [];
+      if (!managerGrants.includes('use-frozen-channel')) {
+        await this.client.updateChannelType('messaging', {
+          grants: { ...grants, manager: [...managerGrants, 'use-frozen-channel'] },
+        });
+        this.logger.log('Granted manager role use-frozen-channel permission.');
       }
     } catch (err) {
       this.logger.warn(`Failed to configure frozen-channel permission: ${err}`);

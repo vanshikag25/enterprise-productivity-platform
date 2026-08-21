@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth';
-import { fetchChannelMembers, addChannelMember, removeChannelMember, type ChannelSummary, type ChannelMember } from '@/lib/api-client';
+import { deleteChannel, fetchChannelMembers, addChannelMember, removeChannelMember, type ChannelSummary, type ChannelMember } from '@/lib/api-client';
 import { useUserSearch } from '@/hooks/use-user-search';
 import { useToast } from '@/hooks/use-toast';
 import { useRole } from '@/hooks/use-role';
@@ -16,9 +16,10 @@ import { IconClose, IconMessageCircle, IconPlus, IconTrash } from '@/components/
 interface ChannelInfoDrawerProps {
   channel: ChannelSummary;
   onClose: () => void;
+  onDeleted?: (channelId: string) => void;
 }
 
-export function ChannelInfoDrawer({ channel, onClose }: ChannelInfoDrawerProps) {
+export function ChannelInfoDrawer({ channel, onClose, onDeleted }: ChannelInfoDrawerProps) {
   const { getToken, userId } = useAuth();
   const { showToast } = useToast();
   const { can } = useRole();
@@ -28,6 +29,7 @@ export function ChannelInfoDrawer({ channel, onClose }: ChannelInfoDrawerProps) 
   const { users, searchTerm, setSearchTerm } = useUserSearch();
 
   const canManage = channel.createdBy === userId || can('create_channel');
+  const canDeleteAnnouncement = channel.kind === 'announcement' && canManage;
 
   useEffect(() => {
     (async () => {
@@ -36,6 +38,24 @@ export function ChannelInfoDrawer({ channel, onClose }: ChannelInfoDrawerProps) 
       setMembers(await fetchChannelMembers(token, channel.id));
     })();
   }, [channel.id, getToken]);
+
+  async function handleDeleteAnnouncement() {
+    const confirmed = window.confirm(`Delete the announcement channel "${channel.name}"? This cannot be undone.`);
+    if (!confirmed) return;
+
+    const token = await getToken();
+    if (!token) return;
+
+    try {
+      await deleteChannel(token, channel.id);
+      showToast('Announcement channel deleted.');
+      onDeleted?.(channel.id);
+      onClose();
+      router.push('/announcements');
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : 'Failed to delete announcement channel.', 'error');
+    }
+  }
 
   async function handleAdd(userId: string) {
     const token = await getToken();
@@ -98,6 +118,13 @@ export function ChannelInfoDrawer({ channel, onClose }: ChannelInfoDrawerProps) 
             <IconMessageCircle width={16} height={16} />
             Open Channel
           </Button>
+
+          {canDeleteAnnouncement && (
+            <Button variant="danger" className="mt-2 w-full" onClick={handleDeleteAnnouncement}>
+              <IconTrash width={16} height={16} />
+              Delete announcement
+            </Button>
+          )}
 
           <div className="mt-6">
             <div className="mb-2 flex items-center justify-between">
