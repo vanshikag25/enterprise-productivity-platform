@@ -3,8 +3,17 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth';
-import { updateMeeting, deleteMeeting, joinMeeting, leaveMeeting, type MeetingItem, type MeetingPayload } from '@/lib/api-client';
+import {
+  updateMeeting,
+  deleteMeeting,
+  joinMeeting,
+  leaveMeeting,
+  updateMeetingStatus,
+  type MeetingItem,
+  type MeetingPayload,
+} from '@/lib/api-client';
 import { useToast } from '@/hooks/use-toast';
+import { useCallManager } from '@/components/calls/call-manager-provider';
 import { useTaskDirectory } from '@/hooks/use-task-directory';
 import { useRole } from '@/hooks/use-role';
 import { Button } from '@/components/ui/button';
@@ -33,6 +42,7 @@ export function MeetingDetailDrawer({ meeting, currentUserId, onClose, onUpdated
   const { getToken } = useAuth();
   const { showToast } = useToast();
   const router = useRouter();
+  const { endCall, joinMeetingCall, isStarting: isJoiningCall } = useCallManager();
   const { nameById, users } = useTaskDirectory();
   const { can } = useRole();
 
@@ -84,9 +94,34 @@ export function MeetingDetailDrawer({ meeting, currentUserId, onClose, onUpdated
       if (!token) throw new Error('Unable to retrieve Clerk session token.');
       const updated = await joinMeeting(token, meeting.id);
       onUpdated(updated);
-      showToast('Joined meeting.');
+      if (meeting.meetingChatChannelId) {
+        await joinMeetingCall({
+          channelId: meeting.meetingChatChannelId,
+          meetingId: meeting.id,
+          mode: 'video',
+        });
+        showToast('Joined meeting and video call started.');
+      } else {
+        showToast('Joined meeting.');
+      }
     } catch (err) {
       showToast(err instanceof Error ? err.message : 'Failed to join meeting.', 'error');
+    } finally {
+      setIsBusy(false);
+    }
+  }
+
+  async function handleEndMeeting() {
+    setIsBusy(true);
+    try {
+      const token = await getToken();
+      if (!token) throw new Error('Unable to retrieve Clerk session token.');
+      const updated = await updateMeetingStatus(token, meeting.id, 'Completed');
+      onUpdated(updated);
+      await endCall();
+      showToast('Meeting ended.');
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : 'Failed to end meeting.', 'error');
     } finally {
       setIsBusy(false);
     }
@@ -111,8 +146,15 @@ export function MeetingDetailDrawer({ meeting, currentUserId, onClose, onUpdated
     if (meeting.meetingChatChannelId) router.push(`/dashboard?channel=${meeting.meetingChatChannelId}`);
   }
 
+  function handleCopyLink() {
+    const url = `${window.location.origin}${meeting.meetingUrl ?? `/meet/${meeting.meetingCode ?? meeting.id}`}`;
+    void navigator.clipboard.writeText(url);
+    showToast('Meeting link copied.');
+  }
+
   const participantUsers = users.filter((u) => meeting.participants.includes(u.id));
   const organizerUser = users.find((u) => u.id === meeting.organizerId);
+  const canJoinMeeting = ['Scheduled', 'Ongoing'].includes(meeting.meetingStatus);
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end bg-slate-900/40 backdrop-blur-sm" onClick={onClose}>
@@ -145,6 +187,13 @@ export function MeetingDetailDrawer({ meeting, currentUserId, onClose, onUpdated
                 <Badge variant={STATUS_VARIANT[meeting.meetingStatus] ?? 'gray'}>{meeting.meetingStatus}</Badge>
               </div>
               <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-600">{meeting.description || 'No description.'}</p>
+
+              {meeting.agenda && (
+                <div className="mt-4 rounded-xl border border-blue-100 bg-blue-50/40 p-3">
+                  <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-700">Agenda</p>
+                  <p className="whitespace-pre-wrap text-sm text-slate-700">{meeting.agenda}</p>
+                </div>
+              )}
 
               <dl className="mt-5 space-y-3 rounded-xl border border-slate-100 bg-slate-50/60 p-4 text-sm">
                 <div className="flex items-center justify-between gap-3">
@@ -198,8 +247,13 @@ export function MeetingDetailDrawer({ meeting, currentUserId, onClose, onUpdated
               </dl>
 
               <div className="mt-6 flex flex-wrap gap-2">
-                {!isParticipant && !isOrganizer && (
-                  <Button variant="success" onClick={handleJoin} disabled={isBusy}>Join</Button>
+                {meeting.meetingUrl && (
+                  <Button variant="outline" onClick={handleCopyLink}>Copy Link</Button>
+                )}
+                {canJoinMeeting && (
+                  <Button variant="success" onClick={handleJoin} disabled={isBusy || isJoiningCall}>
+                    {isJoiningCall ? 'Joining…' : 'Join Now'}
+                  </Button>
                 )}
                 {isParticipant && !isOrganizer && (
                   <Button variant="outline" onClick={handleLeave} disabled={isBusy}>Leave</Button>
@@ -214,6 +268,11 @@ export function MeetingDetailDrawer({ meeting, currentUserId, onClose, onUpdated
                   <Button variant="outline" onClick={() => setIsEditing(true)}>
                     <IconEdit width={15} height={15} />
                     Edit
+                  </Button>
+                )}
+                {isOrganizer && (
+                  <Button variant="danger" onClick={handleEndMeeting} disabled={isBusy}>
+                    End Meeting
                   </Button>
                 )}
                 {isOrganizer && can('create_meeting') && (

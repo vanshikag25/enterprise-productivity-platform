@@ -6,6 +6,7 @@ exports.departments = (0, pg_core_1.pgTable)('departments', {
     id: (0, pg_core_1.uuid)('id').defaultRandom().primaryKey(),
     name: (0, pg_core_1.varchar)('name', { length: 255 }).notNull(),
     description: (0, pg_core_1.text)('description'),
+    managerId: (0, pg_core_1.varchar)('manager_id', { length: 255 }),
     memberIds: (0, pg_core_1.jsonb)('member_ids').$type().notNull().default([]),
     channelId: (0, pg_core_1.varchar)('channel_id', { length: 255 }),
     createdBy: (0, pg_core_1.varchar)('created_by', { length: 255 }).notNull(),

@@ -306,19 +306,25 @@ export async function deleteTask(token: string, id: string): Promise<void> {
 // --- Meetings ---
 export interface MeetingItem {
   id: string; title: string; description: string | null;
-  scheduledDate: string; startTime: string; endTime: string;
+  agenda: string | null; notes: string | null; attachments: string[];
+  recordingLink: string | null; meetingCode: string | null; meetingUrl: string | null; scheduledDate: string; startTime: string; endTime: string;
   organizerId: string; participants: string[]; meetingStatus: string;
   meetingChatChannelId: string | null; createdAt: string; updatedAt: string;
 }
 export interface MeetingPayload {
-  title: string; description?: string; scheduledDate: string;
-  startTime: string; endTime: string; participants: string[];
+  title: string; description?: string; agenda?: string; notes?: string;
+  attachments?: string[]; recordingLink?: string; meetingCode?: string; meetingUrl?: string; meetingStatus?: string;
+  scheduledDate: string; startTime: string; endTime: string; participants: string[];
   sourceChannelId?: string; sourceMessageId?: string;
   sourceSenderId?: string; sourceChannelName?: string;
 }
 
 export async function fetchMeetings(token: string): Promise<MeetingItem[]> {
   const res = await apiClient.get<MeetingItem[]>('/meetings', { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function fetchMeetingByCode(token: string, code: string): Promise<MeetingItem> {
+  const res = await apiClient.get<MeetingItem>(`/meetings/code/${encodeURIComponent(code)}`, { headers: { Authorization: `Bearer ${token}` } });
   return res.data;
 }
 export async function createMeeting(token: string, payload: MeetingPayload): Promise<MeetingItem> {
@@ -340,13 +346,17 @@ export async function leaveMeeting(token: string, id: string): Promise<MeetingIt
   const res = await apiClient.post<MeetingItem>(`/meetings/${id}/leave`, {}, { headers: { Authorization: `Bearer ${token}` } });
   return res.data;
 }
+export async function updateMeetingStatus(token: string, id: string, status: string): Promise<MeetingItem> {
+  const res = await apiClient.patch<MeetingItem>(`/meetings/${id}/status`, { status }, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
 // --- Channels / Departments ---
 export interface ChannelSummary {
   id: string; name: string; description: string; kind: string;
   departmentId: string | null; createdBy: string; createdAt: string; memberCount: number; frozen: boolean;
 }
 export interface DepartmentItem {
-  id: string; name: string; description: string | null; memberIds: string[]; channelId: string | null; createdBy: string; createdAt: string;
+  id: string; name: string; description: string | null; managerId: string | null; memberIds: string[]; channelId: string | null; createdBy: string; createdAt: string;
 }
 export interface ChannelMember { id: string; name: string; imageUrl: string | null; }
 
@@ -390,8 +400,23 @@ export async function fetchMyDepartments(token: string): Promise<DepartmentItem[
   const res = await apiClient.get<DepartmentItem[]>('/departments/mine', { headers: { Authorization: `Bearer ${token}` } });
   return res.data;
 }
-export async function createDepartment(token: string, payload: { name: string; description?: string; memberIds?: string[] }): Promise<DepartmentItem> {
+export async function createDepartment(token: string, payload: { name: string; description?: string; managerId?: string; memberIds?: string[] }): Promise<DepartmentItem> {
   const res = await apiClient.post<DepartmentItem>('/departments', payload, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function updateDepartment(token: string, id: string, payload: { name?: string; description?: string; managerId?: string; memberIds?: string[] }): Promise<DepartmentItem> {
+  const res = await apiClient.patch<DepartmentItem>(`/departments/${id}`, payload, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function deleteDepartment(token: string, id: string): Promise<void> {
+  await apiClient.delete(`/departments/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+}
+export async function addDepartmentMember(token: string, id: string, memberId: string): Promise<DepartmentItem> {
+  const res = await apiClient.post<DepartmentItem>(`/departments/${id}/members/${memberId}`, {}, { headers: { Authorization: `Bearer ${token}` } });
+  return res.data;
+}
+export async function removeDepartmentMember(token: string, id: string, memberId: string): Promise<DepartmentItem> {
+  const res = await apiClient.delete<DepartmentItem>(`/departments/${id}/members/${memberId}`, { headers: { Authorization: `Bearer ${token}` } });
   return res.data;
 }
 export interface NotificationItem {

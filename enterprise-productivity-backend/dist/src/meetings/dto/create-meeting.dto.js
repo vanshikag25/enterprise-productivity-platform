@@ -13,10 +13,10 @@ exports.CreateMeetingDto = void 0;
 const class_validator_1 = require("class-validator");
 let IsFutureDateConstraint = class IsFutureDateConstraint {
     validate(value) {
-        return !isNaN(Date.parse(value)) && new Date(value).getTime() > Date.now();
+        return !isNaN(Date.parse(value));
     }
     defaultMessage() {
-        return 'scheduledDate must be a valid future date';
+        return 'scheduledDate must be a valid date';
     }
 };
 IsFutureDateConstraint = __decorate([
@@ -35,6 +35,37 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateMeetingDto.prototype, "description", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateMeetingDto.prototype, "agenda", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateMeetingDto.prototype, "notes", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.IsString)({ each: true }),
+    __metadata("design:type", Array)
+], CreateMeetingDto.prototype, "attachments", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateMeetingDto.prototype, "recordingLink", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateMeetingDto.prototype, "meetingUrl", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsIn)(['Scheduled', 'Ongoing', 'Completed', 'Cancelled']),
+    __metadata("design:type", String)
+], CreateMeetingDto.prototype, "meetingStatus", void 0);
 __decorate([
     (0, class_validator_1.IsISO8601)(),
     (0, class_validator_1.Validate)(IsFutureDateConstraint),

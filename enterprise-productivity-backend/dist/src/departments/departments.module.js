@@ -11,12 +11,13 @@ const common_1 = require("@nestjs/common");
 const departments_service_1 = require("./departments.service");
 const database_module_1 = require("../database/database.module");
 const users_module_1 = require("../users/users.module");
+const stream_module_1 = require("../stream/stream.module");
 let DepartmentsModule = class DepartmentsModule {
 };
 exports.DepartmentsModule = DepartmentsModule;
 exports.DepartmentsModule = DepartmentsModule = __decorate([
     (0, common_1.Module)({
-        imports: [database_module_1.DatabaseModule, users_module_1.UsersModule],
+        imports: [database_module_1.DatabaseModule, users_module_1.UsersModule, stream_module_1.StreamModule],
         providers: [departments_service_1.DepartmentsService],
         exports: [departments_service_1.DepartmentsService],
     })

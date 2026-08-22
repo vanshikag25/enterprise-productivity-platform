@@ -11,6 +11,7 @@ export const departments = pgTable('departments', {
   id: uuid('id').defaultRandom().primaryKey(),
   name: varchar('name', { length: 255 }).notNull(),
   description: text('description'),
+  managerId: varchar('manager_id', { length: 255 }),
   memberIds: jsonb('member_ids').$type<string[]>().notNull().default([]),
   channelId: varchar('channel_id', { length: 255 }),
   createdBy: varchar('created_by', { length: 255 }).notNull(),

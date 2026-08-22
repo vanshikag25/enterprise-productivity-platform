@@ -11,6 +11,7 @@ export declare class DepartmentsController {
         updatedAt: Date;
         channelId: string | null;
         description: string | null;
+        managerId: string | null;
         memberIds: string[];
         createdBy: string;
     }>;
@@ -21,6 +22,7 @@ export declare class DepartmentsController {
         updatedAt: Date;
         channelId: string | null;
         description: string | null;
+        managerId: string | null;
         memberIds: string[];
         createdBy: string;
     }[]>;
@@ -31,6 +33,7 @@ export declare class DepartmentsController {
         updatedAt: Date;
         channelId: string | null;
         description: string | null;
+        managerId: string | null;
         memberIds: string[];
         createdBy: string;
     }>;
@@ -41,6 +44,7 @@ export declare class DepartmentsController {
         updatedAt: Date;
         channelId: string | null;
         description: string | null;
+        managerId: string | null;
         memberIds: string[];
         createdBy: string;
     }>;
@@ -52,6 +56,7 @@ export declare class DepartmentsController {
         updatedAt: Date;
         channelId: string | null;
         description: string | null;
+        managerId: string | null;
         memberIds: string[];
         createdBy: string;
     }>;
@@ -62,6 +67,7 @@ export declare class DepartmentsController {
         updatedAt: Date;
         channelId: string | null;
         description: string | null;
+        managerId: string | null;
         memberIds: string[];
         createdBy: string;
     }>;

@@ -16,8 +16,8 @@ export declare class RemindersController {
         sourceMessageId: string | null;
         sourceSenderId: string | null;
         sourceChannelName: string | null;
-        scheduledFor: Date;
         notes: string | null;
+        scheduledFor: Date;
         isTriggered: boolean;
     }>;
     findAll(auth: AuthObject, includeTriggered?: string): Promise<{
@@ -31,8 +31,8 @@ export declare class RemindersController {
         sourceMessageId: string | null;
         sourceSenderId: string | null;
         sourceChannelName: string | null;
-        scheduledFor: Date;
         notes: string | null;
+        scheduledFor: Date;
         isTriggered: boolean;
     }[]>;
     findOne(auth: AuthObject, id: string): Promise<{
@@ -46,8 +46,8 @@ export declare class RemindersController {
         sourceMessageId: string | null;
         sourceSenderId: string | null;
         sourceChannelName: string | null;
-        scheduledFor: Date;
         notes: string | null;
+        scheduledFor: Date;
         isTriggered: boolean;
     }>;
     update(auth: AuthObject, id: string, dto: UpdateReminderDto): Promise<{
@@ -61,8 +61,8 @@ export declare class RemindersController {
         sourceMessageId: string | null;
         sourceSenderId: string | null;
         sourceChannelName: string | null;
-        scheduledFor: Date;
         notes: string | null;
+        scheduledFor: Date;
         isTriggered: boolean;
     }>;
     trigger(auth: AuthObject, id: string): Promise<{
@@ -76,8 +76,8 @@ export declare class RemindersController {
         sourceMessageId: string | null;
         sourceSenderId: string | null;
         sourceChannelName: string | null;
-        scheduledFor: Date;
         notes: string | null;
+        scheduledFor: Date;
         isTriggered: boolean;
     }>;
     remove(auth: AuthObject, id: string): Promise<void>;

@@ -4,7 +4,6 @@ import { useWorkspace } from './workspace-context';
 import { ChannelWorkspace } from './channel-workspace';
 import { ProjectWorkspace } from './project-workspace';
 import { TaskWorkspace } from './task-workspace';
-import { MeetingWorkspace } from './meeting-workspace';
 import { StarredWorkspace } from './starred-workspace';
 import { IconSearch } from '@/components/ui/icons';
 
@@ -18,7 +17,7 @@ export function WorkspaceCenter() {
           <IconSearch width={24} height={24} />
         </div>
         <p className="text-sm font-medium text-slate-500">Select a conversation</p>
-        <p className="text-xs">Pick a channel, project, task, meeting, or starred message.</p>
+        <p className="text-xs">Pick a channel, project, task, or starred message.</p>
       </div>
     );
   }
@@ -30,8 +29,6 @@ export function WorkspaceCenter() {
       return <ProjectWorkspace projectId={mode.projectId} />;
     case 'task':
       return <TaskWorkspace taskId={mode.taskId} />;
-    case 'meeting':
-      return <MeetingWorkspace meetingId={mode.meetingId} />;
     case 'starred':
       return <StarredWorkspace />;
     default:

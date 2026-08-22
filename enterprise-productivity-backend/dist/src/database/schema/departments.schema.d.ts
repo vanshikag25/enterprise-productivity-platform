@@ -55,6 +55,25 @@ export declare const departments: import("drizzle-orm/pg-core").PgTableWithColum
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
+        managerId: import("drizzle-orm/pg-core").PgColumn<{
+            name: "manager_id";
+            tableName: "departments";
+            dataType: "string";
+            columnType: "PgVarchar";
+            data: string;
+            driverParam: string;
+            notNull: false;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: [string, ...string[]];
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {
+            length: 255;
+        }>;
         memberIds: import("drizzle-orm/pg-core").PgColumn<{
             name: "member_ids";
             tableName: "departments";

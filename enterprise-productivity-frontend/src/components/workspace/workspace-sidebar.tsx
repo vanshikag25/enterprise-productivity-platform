@@ -13,10 +13,10 @@ import { Avatar } from '@/components/ui/avatar';
 import { Spinner } from '@/components/ui/spinner';
 import {
   IconBookmark,
-  IconCalendar,
   IconChevronDown,
   IconChevronsLeft,
   IconChevronsRight,
+  IconDepartment,
   IconMegaphone,
   IconMessageCircle,
   IconPlus,
@@ -30,7 +30,6 @@ const SECTION_ICONS = {
   teams: IconUsers,
   projects: IconProject,
   tasks: IconTasks,
-  meetings: IconCalendar,
   announcements: IconMegaphone,
   starred: IconBookmark,
   archived: IconMessageCircle,
@@ -40,6 +39,7 @@ const WORKSPACE_FILTERS = [
   'All',
   'Direct Messages',
   'Teams',
+  'Departments',
   'Projects',
   'Starred Messages',
   'Tasks',
@@ -53,17 +53,15 @@ export function WorkspaceSidebar() {
   const userId = client?.userID ?? channel?.getClient()?.userID ?? '';
   const {
     mode,
-    selectedChannelId,
     selectChannel,
     openProject,
     openTask,
-    openMeeting,
     openStarred,
     sidebarCollapsed,
     setSidebarOpen,
     toggleSidebarCollapsed,
   } = useWorkspace();
-  const { projects, tasks, meetings, bookmarks, isLoading } = useWorkspaceListData();
+  const { projects, tasks, departments, bookmarks, isLoading } = useWorkspaceListData();
   const router = useRouter();
   const [showNewGroup, setShowNewGroup] = useState(false);
   const [filter, setFilter] = useState<WorkspaceFilter>('All');
@@ -93,7 +91,6 @@ export function WorkspaceSidebar() {
               channels={groups.dms}
               channelPreview={channelPreview}
               onChannelClick={handleChannelClick}
-              activeChannelId={selectedChannelId}
             />
           )}
           {shows('Teams') && (
@@ -103,7 +100,20 @@ export function WorkspaceSidebar() {
               channels={groups.teams}
               channelPreview={channelPreview}
               onChannelClick={handleChannelClick}
-              activeChannelId={selectedChannelId}
+            />
+          )}
+          {shows('Departments') && (
+            <ApiSection
+              icon={<IconDepartment width={13} height={13} />}
+              label="Departments"
+              items={departments.map((d) => ({
+                id: d.id,
+                title: d.name,
+                subtitle: d.channelId ? 'Channel ready' : 'No channel',
+                onOpen: () => {
+                  if (d.channelId) router.push(`/dashboard?channel=${encodeURIComponent(d.channelId)}`);
+                },
+              }))}
             />
           )}
           {shows('Projects') && (
@@ -132,19 +142,6 @@ export function WorkspaceSidebar() {
               active={mode?.type === 'task'}
             />
           )}
-          {filter === 'All' && (
-            <ApiSection
-              icon={<IconCalendar width={13} height={13} />}
-              label="Meetings"
-              items={meetings.map((m) => ({
-                id: m.id,
-                title: m.title,
-                subtitle: `${m.scheduledDate} ${m.startTime}`,
-                onOpen: () => openMeeting(m.id),
-              }))}
-              active={mode?.type === 'meeting'}
-            />
-          )}
           {shows('Announcements') && (
             <ChannelSection
               icon={<IconMegaphone width={13} height={13} />}
@@ -152,7 +149,6 @@ export function WorkspaceSidebar() {
               channels={groups.announcements}
               channelPreview={channelPreview}
               onChannelClick={handleChannelClick}
-              activeChannelId={selectedChannelId}
             />
           )}
           {shows('Starred Messages') && (
@@ -184,7 +180,6 @@ export function WorkspaceSidebar() {
               channels={groups.archived}
               channelPreview={channelPreview}
               onChannelClick={handleChannelClick}
-              activeChannelId={selectedChannelId}
               archived
             />
           )}
@@ -194,14 +189,12 @@ export function WorkspaceSidebar() {
     [
       projects,
       tasks,
-      meetings,
+      departments,
       bookmarks,
       mode,
-      selectedChannelId,
       handleChannelClick,
       openProject,
       openTask,
-      openMeeting,
       openStarred,
       router,
       filter,
@@ -311,7 +304,6 @@ function ChannelSection({
   channels,
   channelPreview,
   onChannelClick,
-  activeChannelId,
   archived,
 }: {
   label: string;
@@ -319,7 +311,6 @@ function ChannelSection({
   channels: StreamChannel[];
   channelPreview: (channel: StreamChannel) => React.ReactNode;
   onChannelClick: (channel: StreamChannel) => void;
-  activeChannelId: string | null;
   archived?: boolean;
 }) {
   if (channels.length === 0) return null;
@@ -414,7 +405,6 @@ function CollapsedRail({
     { key: 'teams', icon: SECTION_ICONS.teams, label: 'Teams' },
     { key: 'projects', icon: SECTION_ICONS.projects, label: 'Projects' },
     { key: 'tasks', icon: SECTION_ICONS.tasks, label: 'Tasks' },
-    { key: 'meetings', icon: SECTION_ICONS.meetings, label: 'Meetings' },
     { key: 'announcements', icon: SECTION_ICONS.announcements, label: 'Announcements' },
     { key: 'starred', icon: SECTION_ICONS.starred, label: 'Starred' },
     { key: 'archived', icon: SECTION_ICONS.archived, label: 'Archived' },

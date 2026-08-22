@@ -13,11 +13,26 @@ export declare class MeetingsService {
     private readonly logger;
     constructor(db: NodePgDatabase, streamService: StreamService, notificationsService: NotificationsService, messageSourceService: MessageSourceService);
     private validateTimes;
+    private requireMeetingAccess;
+    private archiveMeetingChat;
+    private buildMeetingUrl;
+    private makeMeetingCode;
+    private generateUniqueMeetingCode;
+    private meetingsSchemaHasMeetingColumn;
+    private meetingsSchemaHasMeetingUrl;
+    private meetingsSchemaHasMeetingCode;
+    private normalizeMeetingRow;
+    private insertMeetingRecordFallback;
     create(userId: string, dto: CreateMeetingDto): Promise<Meeting>;
+    findAllForUser(userId: string): Promise<Meeting[]>;
     findAll(): Promise<Meeting[]>;
+    private findOneByCodeInternal;
     findOne(id: string): Promise<Meeting>;
+    findOneByCode(code: string, userId?: string): Promise<Meeting>;
+    findOneForUser(id: string, userId: string): Promise<Meeting>;
     update(id: string, userId: string, dto: UpdateMeetingDto): Promise<Meeting>;
     remove(id: string, userId: string): Promise<void>;
+    updateStatus(id: string, userId: string, status: string): Promise<Meeting>;
     join(id: string, userId: string): Promise<Meeting>;
     leave(id: string, userId: string): Promise<Meeting>;
 }

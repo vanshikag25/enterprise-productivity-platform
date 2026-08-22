@@ -18,6 +18,7 @@ import { UserRole } from '../rbac/roles';
 import { MeetingsService } from './meetings.service';
 import { CreateMeetingDto } from './dto/create-meeting.dto';
 import { UpdateMeetingDto } from './dto/update-meeting.dto';
+import { UpdateMeetingStatusDto } from './dto/update-meeting-status.dto';
 
 function requireUserId(auth: AuthObject): string {
   if (!auth.userId)
@@ -37,13 +38,18 @@ export class MeetingsController {
   }
 
   @Get()
-  findAll() {
-    return this.meetingsService.findAll();
+  findAll(@CurrentUser() auth: AuthObject) {
+    return this.meetingsService.findAllForUser(requireUserId(auth));
+  }
+
+  @Get('code/:code')
+  findOneByCode(@CurrentUser() auth: AuthObject, @Param('code') code: string) {
+    return this.meetingsService.findOneByCode(code, requireUserId(auth));
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.meetingsService.findOne(id);
+  findOne(@CurrentUser() auth: AuthObject, @Param('id') id: string) {
+    return this.meetingsService.findOneForUser(id, requireUserId(auth));
   }
 
   @Patch(':id')
@@ -53,6 +59,15 @@ export class MeetingsController {
     @Body() dto: UpdateMeetingDto,
   ) {
     return this.meetingsService.update(id, requireUserId(auth), dto);
+  }
+
+  @Patch(':id/status')
+  updateStatus(
+    @CurrentUser() auth: AuthObject,
+    @Param('id') id: string,
+    @Body() dto: UpdateMeetingStatusDto,
+  ) {
+    return this.meetingsService.updateStatus(id, requireUserId(auth), dto.status);
   }
 
   @Delete(':id')

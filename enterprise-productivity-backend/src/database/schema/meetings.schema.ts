@@ -19,6 +19,12 @@ export const meetings = pgTable('meetings', {
   id: uuid('id').defaultRandom().primaryKey(),
   title: varchar('title', { length: 255 }).notNull(),
   description: text('description'),
+  agenda: text('agenda'),
+  notes: text('notes'),
+  attachments: jsonb('attachments').$type<string[]>().notNull().default([]),
+  recordingLink: varchar('recording_link', { length: 500 }),
+  meetingCode: varchar('meeting_code', { length: 32 }),
+  meetingUrl: varchar('meeting_url', { length: 500 }),
   scheduledDate: timestamp('scheduled_date', { withTimezone: true }).notNull(),
   startTime: varchar('start_time', { length: 5 }).notNull(), // "HH:mm"
   endTime: varchar('end_time', { length: 5 }).notNull(),

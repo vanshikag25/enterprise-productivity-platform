@@ -22,6 +22,7 @@ const roles_1 = require("../rbac/roles");
 const meetings_service_1 = require("./meetings.service");
 const create_meeting_dto_1 = require("./dto/create-meeting.dto");
 const update_meeting_dto_1 = require("./dto/update-meeting.dto");
+const update_meeting_status_dto_1 = require("./dto/update-meeting-status.dto");
 function requireUserId(auth) {
     if (!auth.userId)
         throw new common_1.UnauthorizedException('Session has no resolvable userId');
@@ -34,14 +35,20 @@ let MeetingsController = class MeetingsController {
     create(auth, dto) {
         return this.meetingsService.create(requireUserId(auth), dto);
     }
-    findAll() {
-        return this.meetingsService.findAll();
+    findAll(auth) {
+        return this.meetingsService.findAllForUser(requireUserId(auth));
     }
-    findOne(id) {
-        return this.meetingsService.findOne(id);
+    findOneByCode(auth, code) {
+        return this.meetingsService.findOneByCode(code, requireUserId(auth));
+    }
+    findOne(auth, id) {
+        return this.meetingsService.findOneForUser(id, requireUserId(auth));
     }
     update(auth, id, dto) {
         return this.meetingsService.update(id, requireUserId(auth), dto);
+    }
+    updateStatus(auth, id, dto) {
+        return this.meetingsService.updateStatus(id, requireUserId(auth), dto.status);
     }
     remove(auth, id) {
         return this.meetingsService.remove(id, requireUserId(auth));
@@ -65,15 +72,25 @@ __decorate([
 ], MeetingsController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], MeetingsController.prototype, "findAll", null);
 __decorate([
-    (0, common_1.Get)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Get)('code/:code'),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
+    __param(1, (0, common_1.Param)('code')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", void 0)
+], MeetingsController.prototype, "findOneByCode", null);
+__decorate([
+    (0, common_1.Get)(':id'),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
+    __param(1, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", void 0)
 ], MeetingsController.prototype, "findOne", null);
 __decorate([
@@ -85,6 +102,15 @@ __decorate([
     __metadata("design:paramtypes", [Object, String, update_meeting_dto_1.UpdateMeetingDto]),
     __metadata("design:returntype", void 0)
 ], MeetingsController.prototype, "update", null);
+__decorate([
+    (0, common_1.Patch)(':id/status'),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
+    __param(1, (0, common_1.Param)('id')),
+    __param(2, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String, update_meeting_status_dto_1.UpdateMeetingStatusDto]),
+    __metadata("design:returntype", void 0)
+], MeetingsController.prototype, "updateStatus", null);
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, roles_decorator_1.Roles)(roles_1.UserRole.TEAM_LEAD),

@@ -8,4 +8,5 @@ export class CreateDepartmentDto {
 export class UpdateDepartmentDto {
   @IsOptional() @IsString() name?: string;
   @IsOptional() @IsString() description?: string;
+  @IsOptional() @IsArray() @IsString({ each: true }) memberIds?: string[];
 }

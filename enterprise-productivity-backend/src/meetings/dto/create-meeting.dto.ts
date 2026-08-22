@@ -9,15 +9,16 @@ import {
   Validate,
   ValidatorConstraint,
   ValidatorConstraintInterface,
+  IsIn,
 } from 'class-validator';
 
 @ValidatorConstraint({ name: 'IsFutureDate', async: false })
 class IsFutureDateConstraint implements ValidatorConstraintInterface {
   validate(value: string) {
-    return !isNaN(Date.parse(value)) && new Date(value).getTime() > Date.now();
+    return !isNaN(Date.parse(value));
   }
   defaultMessage() {
-    return 'scheduledDate must be a valid future date';
+    return 'scheduledDate must be a valid date';
   }
 }
 
@@ -25,6 +26,13 @@ export class CreateMeetingDto {
   @IsString() @IsNotEmpty() title: string;
 
   @IsOptional() @IsString() description?: string;
+  @IsOptional() @IsString() agenda?: string;
+  @IsOptional() @IsString() notes?: string;
+  @IsOptional() @IsArray() @IsString({ each: true }) attachments?: string[];
+  @IsOptional() @IsString() recordingLink?: string;
+  @IsOptional() @IsString() meetingUrl?: string;
+  @IsOptional() @IsIn(['Scheduled', 'Ongoing', 'Completed', 'Cancelled'])
+  meetingStatus?: 'Scheduled' | 'Ongoing' | 'Completed' | 'Cancelled';
 
   @IsISO8601() @Validate(IsFutureDateConstraint) scheduledDate: string;
 

@@ -21,13 +21,14 @@ import {
 import type { CallResponse } from '@stream-io/video-client';
 import { useAuth, useUser } from '@/lib/auth';
 import { useToast } from '@/hooks/use-toast';
-import { fetchVideoToken } from '@/lib/api-client';
+import { fetchVideoToken, updateMeetingStatus } from '@/lib/api-client';
 import { useVideoContext } from '@/lib/video-client';
 import { CallOverlay } from './call-overlay';
 
 export interface CallSession {
   call: Call;
   channelId: string;
+  meetingId?: string;
   mode: 'voice' | 'video';
   direction: 'outgoing' | 'incoming';
   /** True when the call runs in backstage mode (host must start it). */
@@ -43,6 +44,11 @@ interface CallManagerValue {
     kind: 'dm' | 'group';
     mode: 'voice' | 'video';
   }) => Promise<void>;
+  joinMeetingCall: (opts: {
+    channelId: string;
+    meetingId?: string;
+    mode: 'voice' | 'video';
+  }) => Promise<void>;
   acceptCall: () => Promise<void>;
   declineCall: () => Promise<void>;
   cancelCall: () => Promise<void>;
@@ -54,6 +60,7 @@ const CallManagerContext = createContext<CallManagerValue>({
   session: null,
   isStarting: false,
   startCall: async () => {},
+  joinMeetingCall: async () => {},
   acceptCall: async () => {},
   declineCall: async () => {},
   cancelCall: async () => {},
@@ -148,6 +155,59 @@ export function CallManagerProvider({ children }: { children: ReactNode }) {
     [videoClient, getToken, notify, user],
   );
 
+  const joinMeetingCall = useCallback(
+    async (opts: { channelId: string; meetingId?: string; mode: 'voice' | 'video' }) => {
+      if (sessionRef.current || !videoClient) return;
+      setIsStarting(true);
+      try {
+        const clerkToken = await getToken();
+        if (!clerkToken) throw new Error('Unable to retrieve session token.');
+
+        const { memberIds } = await fetchVideoToken(clerkToken, {
+          channelId: opts.channelId,
+          kind: 'group',
+        });
+
+        const call = videoClient.call('default', opts.channelId);
+        await call.getOrCreate({
+          data: {
+            members: memberIds.map((user_id) => ({ user_id, role: 'call_member' })),
+            settings_override: {
+              backstage: { enabled: true },
+            },
+            custom: { callMode: opts.mode },
+          },
+          notify: false,
+          video: opts.mode === 'video',
+        });
+
+        if (opts.mode === 'voice') {
+          await call.camera.disable();
+        }
+
+        await call.join();
+
+        setSession({
+          call,
+          channelId: opts.channelId,
+          meetingId: opts.meetingId,
+          mode: opts.mode,
+          direction: 'outgoing',
+          backstageEnabled: true,
+          callerName: user?.fullName ?? user?.username ?? user?.id ?? null,
+        });
+      } catch (err) {
+        notify(
+          err instanceof Error ? err.message : 'Could not join the meeting.',
+          'error',
+        );
+      } finally {
+        setIsStarting(false);
+      }
+    },
+    [videoClient, getToken, notify, user],
+  );
+
   const acceptCall = useCallback(async () => {
     const current = sessionRef.current;
     if (!current) return;
@@ -191,12 +251,18 @@ export function CallManagerProvider({ children }: { children: ReactNode }) {
     const current = sessionRef.current;
     if (!current) return;
     try {
+      if (current.meetingId) {
+        const clerkToken = await getToken();
+        if (clerkToken) {
+          await updateMeetingStatus(clerkToken, current.meetingId, 'Completed');
+        }
+      }
       await current.call.leave();
     } catch {
       // Ignore.
     }
     clearSession();
-  }, [clearSession]);
+  }, [clearSession, getToken]);
 
   const startLive = useCallback(async () => {
     const current = sessionRef.current;
@@ -306,6 +372,7 @@ export function CallManagerProvider({ children }: { children: ReactNode }) {
       session,
       isStarting,
       startCall,
+      joinMeetingCall,
       acceptCall,
       declineCall,
       cancelCall,
@@ -316,6 +383,7 @@ export function CallManagerProvider({ children }: { children: ReactNode }) {
       session,
       isStarting,
       startCall,
+      joinMeetingCall,
       acceptCall,
       declineCall,
       cancelCall,

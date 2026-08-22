@@ -9,10 +9,12 @@ import {
   deleteMeeting,
   joinMeeting,
   leaveMeeting,
+  updateMeetingStatus,
   type MeetingItem,
   type MeetingPayload,
 } from '@/lib/api-client';
 import { useToast } from '@/hooks/use-toast';
+import { useCallManager } from '@/components/calls/call-manager-provider';
 import { useTaskDirectory } from '@/hooks/use-task-directory';
 import { useRole } from '@/hooks/use-role';
 import { Button } from '@/components/ui/button';
@@ -34,6 +36,7 @@ export function MeetingWorkspace({ meetingId }: { meetingId: string }) {
   const { getToken, userId } = useAuth();
   const { showToast } = useToast();
   const router = useRouter();
+  const { endCall, joinMeetingCall, isStarting: isJoiningCall } = useCallManager();
   const { nameById, users } = useTaskDirectory();
   const { can } = useRole();
   const { setMode } = useWorkspace();
@@ -45,13 +48,13 @@ export function MeetingWorkspace({ meetingId }: { meetingId: string }) {
   const [isBusy, setIsBusy] = useState(false);
 
   useEffect(() => {
-    setIsLoading(true);
-    setError(null);
-    setMeeting(null);
-    setIsEditing(false);
-
     let cancelled = false;
     (async () => {
+      setIsLoading(true);
+      setError(null);
+      setMeeting(null);
+      setIsEditing(false);
+
       try {
         const token = await getToken();
         if (!token) throw new Error('Unable to retrieve Clerk session token.');
@@ -119,13 +122,39 @@ export function MeetingWorkspace({ meetingId }: { meetingId: string }) {
       if (!token) throw new Error('Unable to retrieve Clerk session token.');
       const updated = await joinMeeting(token, meeting.id);
       setMeeting(updated);
-      showToast('Joined meeting.');
+      if (meeting.meetingChatChannelId) {
+        await joinMeetingCall({
+          channelId: meeting.meetingChatChannelId,
+          meetingId: meeting.id,
+          mode: 'video',
+        });
+        showToast('Joined meeting and video call started.');
+      } else {
+        showToast('Joined meeting.');
+      }
     } catch (err) {
       showToast(err instanceof Error ? err.message : 'Failed to join meeting.', 'error');
     } finally {
       setIsBusy(false);
     }
-  }, [meeting, getToken, showToast]);
+  }, [meeting, getToken, showToast, joinMeetingCall]);
+
+  const handleEndMeeting = useCallback(async () => {
+    if (!meeting) return;
+    setIsBusy(true);
+    try {
+      const token = await getToken();
+      if (!token) throw new Error('Unable to retrieve Clerk session token.');
+      const updated = await updateMeetingStatus(token, meeting.id, 'Completed');
+      setMeeting(updated);
+      await endCall();
+      showToast('Meeting ended.');
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : 'Failed to end meeting.', 'error');
+    } finally {
+      setIsBusy(false);
+    }
+  }, [meeting, getToken, showToast, endCall]);
 
   const handleLeave = useCallback(async () => {
     if (!meeting) return;
@@ -148,6 +177,15 @@ export function MeetingWorkspace({ meetingId }: { meetingId: string }) {
       router.push(`/dashboard?channel=${meeting.meetingChatChannelId}`);
     }
   }, [meeting, router]);
+
+  const handleCopyLink = useCallback(() => {
+    if (!meeting) return;
+    const url = `${window.location.origin}${meeting.meetingUrl ?? `/meet/${meeting.meetingCode ?? meeting.id}`}`;
+    void navigator.clipboard.writeText(url);
+    showToast('Meeting link copied.');
+  }, [meeting, showToast]);
+
+  const canJoinMeeting = meeting ? ['Scheduled', 'Ongoing'].includes(meeting.meetingStatus) : false;
 
   if (isLoading) {
     return (
@@ -201,6 +239,13 @@ export function MeetingWorkspace({ meetingId }: { meetingId: string }) {
               {meeting.description || 'No description.'}
             </p>
 
+            {meeting.agenda && (
+              <div className="mt-4 rounded-xl border border-blue-100 bg-blue-50/40 p-3">
+                <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-700">Agenda</p>
+                <p className="whitespace-pre-wrap text-sm text-slate-700">{meeting.agenda}</p>
+              </div>
+            )}
+
             <dl className="mt-5 space-y-3 rounded-xl border border-slate-100 bg-slate-50/60 p-4 text-sm">
               <div className="flex items-center justify-between gap-3">
                 <dt className="text-xs font-medium uppercase tracking-wide text-slate-400">Organizer</dt>
@@ -222,9 +267,41 @@ export function MeetingWorkspace({ meetingId }: { meetingId: string }) {
               </div>
             </dl>
 
+            {(meeting.notes || meeting.recordingLink || meeting.attachments.length > 0) && (
+              <div className="mt-5 space-y-3 rounded-xl border border-slate-100 bg-slate-50/60 p-4 text-sm">
+                {meeting.notes && (
+                  <div>
+                    <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400">Notes</p>
+                    <p className="whitespace-pre-wrap text-slate-700">{meeting.notes}</p>
+                  </div>
+                )}
+                {meeting.attachments.length > 0 && (
+                  <div>
+                    <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400">Documents</p>
+                    <ul className="list-disc space-y-1 pl-5 text-slate-700">
+                      {meeting.attachments.map((attachment) => (
+                        <li key={attachment}>{attachment}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {meeting.recordingLink && (
+                  <div>
+                    <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400">Recording</p>
+                    <a href={meeting.recordingLink} target="_blank" rel="noreferrer" className="text-blue-700 underline break-all">{meeting.recordingLink}</a>
+                  </div>
+                )}
+              </div>
+            )}
+
             <div className="mt-6 flex flex-wrap gap-2">
-              {!isParticipant && !isOrganizer && (
-                <Button variant="success" onClick={handleJoin} disabled={isBusy}>Join</Button>
+              {meeting.meetingUrl && (
+                <Button variant="outline" onClick={handleCopyLink}>Copy Link</Button>
+              )}
+              {canJoinMeeting && (
+                <Button variant="success" onClick={handleJoin} disabled={isBusy || isJoiningCall}>
+                  {isJoiningCall ? 'Joining…' : 'Join Now'}
+                </Button>
               )}
               {isParticipant && !isOrganizer && (
                 <Button variant="outline" onClick={handleLeave} disabled={isBusy}>Leave</Button>
@@ -238,6 +315,11 @@ export function MeetingWorkspace({ meetingId }: { meetingId: string }) {
               {isOrganizer && (
                 <Button variant="outline" onClick={() => setIsEditing(true)}>
                   Edit
+                </Button>
+              )}
+              {isOrganizer && (
+                <Button variant="danger" onClick={handleEndMeeting} disabled={isBusy}>
+                  End Meeting
                 </Button>
               )}
               {isOrganizer && can('create_meeting') && (

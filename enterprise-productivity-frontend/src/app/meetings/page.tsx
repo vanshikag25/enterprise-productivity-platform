@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useAuth } from '@/lib/auth';
 import { fetchMeetings, type MeetingItem, type CreationRequestItem } from '@/lib/api-client';
 import { useTaskDirectory } from '@/hooks/use-task-directory';
@@ -28,6 +29,7 @@ const STATUS_VARIANT: Record<string, 'blue' | 'amber' | 'green' | 'red'> = {
 
 export default function MeetingsPage() {
   const { getToken, userId } = useAuth();
+  const searchParams = useSearchParams();
   const { users } = useTaskDirectory();
 
   const [meetings, setMeetings] = useState<MeetingItem[]>([]);
@@ -65,6 +67,13 @@ export default function MeetingsPage() {
     const timer = setTimeout(load, 0);
     return () => clearTimeout(timer);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const selectedMeeting = useMemo(() => {
+    if (selected) return selected;
+    const meetingId = searchParams.get('meeting');
+    if (!meetingId || meetings.length === 0) return null;
+    return meetings.find((m) => m.id === meetingId || m.meetingUrl?.includes(meetingId)) ?? null;
+  }, [selected, searchParams, meetings]);
 
   const filtered = useMemo(() => {
     let result = meetings;
@@ -142,9 +151,9 @@ export default function MeetingsPage() {
         </div>
       )}
 
-      {selected && (
+      {selectedMeeting && (
         <MeetingDetailDrawer
-          meeting={selected}
+          meeting={selectedMeeting}
           currentUserId={userId}
           onClose={() => setSelected(null)}
           onUpdated={(updated) => {

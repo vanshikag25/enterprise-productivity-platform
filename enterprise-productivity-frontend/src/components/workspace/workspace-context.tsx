@@ -13,7 +13,6 @@ export type WorkspaceMode =
   | { type: 'channel' }
   | { type: 'project'; projectId: string }
   | { type: 'task'; taskId: string }
-  | { type: 'meeting'; meetingId: string }
   | { type: 'starred' };
 
 interface WorkspaceContextValue {
@@ -23,7 +22,6 @@ interface WorkspaceContextValue {
   selectChannel: (channelId: string) => void;
   openProject: (projectId: string) => void;
   openTask: (taskId: string) => void;
-  openMeeting: (meetingId: string) => void;
   openStarred: () => void;
   sidebarCollapsed: boolean;
   toggleSidebarCollapsed: () => void;
@@ -67,11 +65,6 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     setSidebarOpen(false);
   }, []);
 
-  const openMeeting = useCallback((meetingId: string) => {
-    setMode({ type: 'meeting', meetingId });
-    setSidebarOpen(false);
-  }, []);
-
   const openStarred = useCallback(() => {
     setMode({ type: 'starred' });
     setSidebarOpen(false);
@@ -89,7 +82,6 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       selectChannel,
       openProject,
       openTask,
-      openMeeting,
       openStarred,
       sidebarCollapsed,
       toggleSidebarCollapsed,
@@ -103,7 +95,6 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       selectChannel,
       openProject,
       openTask,
-      openMeeting,
       openStarred,
       sidebarCollapsed,
       toggleSidebarCollapsed,

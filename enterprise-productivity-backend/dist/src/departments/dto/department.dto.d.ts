@@ -6,4 +6,5 @@ export declare class CreateDepartmentDto {
 export declare class UpdateDepartmentDto {
     name?: string;
     description?: string;
+    memberIds?: string[];
 }
