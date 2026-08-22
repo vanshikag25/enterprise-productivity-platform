@@ -3,7 +3,7 @@ export declare class OpenAiConversationSummaryProvider implements ConversationSu
     private readonly apiKey;
     private readonly baseUrl;
     private readonly model;
-    readonly name = "openai";
+    readonly name = "gemini";
     private readonly logger;
     constructor(apiKey: string, baseUrl: string, model: string);
     generate(context: ConversationSummaryContext): Promise<ConversationSummaryResult>;

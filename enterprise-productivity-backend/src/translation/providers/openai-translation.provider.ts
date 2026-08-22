@@ -6,19 +6,21 @@ import {
 } from '../translation.provider';
 import { languageLabel } from '../../languages';
 
-interface ChatCompletionResponse {
-  choices?: Array<{ message?: { content?: string } }>;
+interface GeminiGenerateResponse {
+  candidates?: Array<{
+    content?: {
+      parts?: Array<{ text?: string }>;
+    };
+  }>;
 }
 
 /**
- * OpenAI-compatible provider for message translation. Used when
- * AI_PROVIDER=openai and OPENAI_API_KEY are configured. Talks to the
- * /chat/completions endpoint via fetch so no extra runtime dependency is
- * needed; OPENAI_BASE_URL can point at any compatible gateway.
+ * Gemini-backed provider for message translation. Used when
+ * AI_PROVIDER=gemini and GEMINI_API_KEY are configured.
  */
 @Injectable()
 export class OpenAiTranslationProvider implements TranslationProvider {
-  readonly name = 'openai';
+  readonly name = 'gemini';
   private readonly logger = new Logger(OpenAiTranslationProvider.name);
 
   constructor(
@@ -28,29 +30,34 @@ export class OpenAiTranslationProvider implements TranslationProvider {
   ) {}
 
   async translate(request: TranslationRequest): Promise<TranslationResult> {
-    const response = await fetch(`${this.baseUrl}/chat/completions`, {
+    const url = new URL(
+      `${this.baseUrl.replace(/\/$/, '')}/models/${encodeURIComponent(this.model)}:generateContent`,
+    );
+    url.searchParams.set('key', this.apiKey);
+
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.apiKey}`,
       },
       body: JSON.stringify({
-        model: this.model,
-        temperature: 0.2,
-        max_tokens: 600,
-        response_format: { type: 'json_object' },
-        messages: [
-          { role: 'system', content: this.systemPrompt() },
-          {
-            role: 'user',
-            content: [
-              `Target language: ${String(request.targetLanguage)} (${languageLabel(request.targetLanguage)})`,
-              '',
-              'Text to translate:',
-              request.text,
-            ].join('\n'),
-          },
-        ],
+        systemInstruction: {
+          parts: [{ text: this.systemPrompt() }],
+        },
+        contents: [{
+          role: 'user',
+          parts: [{ text: [
+            `Target language: ${String(request.targetLanguage)} (${languageLabel(request.targetLanguage)})`,
+            '',
+            'Text to translate:',
+            request.text,
+          ].join('\n') }],
+        }],
+        generationConfig: {
+          temperature: 0.2,
+          maxOutputTokens: 600,
+          responseMimeType: 'application/json',
+        },
       }),
     });
 
@@ -61,8 +68,12 @@ export class OpenAiTranslationProvider implements TranslationProvider {
       );
     }
 
-    const data = (await response.json()) as ChatCompletionResponse;
-    const content = data.choices?.[0]?.message?.content;
+    const data = (await response.json()) as GeminiGenerateResponse;
+    const content =
+      data.candidates?.[0]?.content?.parts
+        ?.map((part) => part.text ?? '')
+        .join('')
+        .trim() ?? '';
     if (!content) {
       throw new Error('AI provider returned an empty response');
     }

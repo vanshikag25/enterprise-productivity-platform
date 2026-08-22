@@ -19,6 +19,9 @@ declare const _default: () => {
     };
     ai: {
         provider: string;
+        geminiApiKey: string | undefined;
+        geminiModel: string;
+        geminiBaseUrl: string;
         openaiApiKey: string | undefined;
         openaiModel: string;
         openaiBaseUrl: string;

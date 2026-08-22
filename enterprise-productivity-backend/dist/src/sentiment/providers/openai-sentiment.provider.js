@@ -31,25 +31,27 @@ let OpenAiSentimentProvider = OpenAiSentimentProvider_1 = class OpenAiSentimentP
         this.apiKey = apiKey;
         this.baseUrl = baseUrl;
         this.model = model;
-        this.name = 'openai';
+        this.name = 'gemini';
         this.logger = new common_1.Logger(OpenAiSentimentProvider_1.name);
     }
     async analyze(context) {
-        const response = await fetch(`${this.baseUrl}/chat/completions`, {
+        const url = new URL(`${this.baseUrl.replace(/\/$/, '')}/models/${encodeURIComponent(this.model)}:generateContent`);
+        url.searchParams.set('key', this.apiKey);
+        const response = await fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${this.apiKey}`,
             },
             body: JSON.stringify({
-                model: this.model,
-                temperature: 0.1,
-                max_tokens: 1200,
-                response_format: { type: 'json_object' },
-                messages: [
-                    { role: 'system', content: this.systemPrompt() },
-                    { role: 'user', content: this.buildPrompt(context) },
-                ],
+                systemInstruction: {
+                    parts: [{ text: this.systemPrompt() }],
+                },
+                contents: [{ role: 'user', parts: [{ text: this.buildPrompt(context) }] }],
+                generationConfig: {
+                    temperature: 0.1,
+                    maxOutputTokens: 1200,
+                    responseMimeType: 'application/json',
+                },
             }),
         });
         if (!response.ok) {
@@ -57,7 +59,10 @@ let OpenAiSentimentProvider = OpenAiSentimentProvider_1 = class OpenAiSentimentP
             throw new Error(`AI provider request failed (${response.status}): ${body.slice(0, 300)}`);
         }
         const data = (await response.json());
-        const content = data.choices?.[0]?.message?.content;
+        const content = data.candidates?.[0]?.content?.parts
+            ?.map((part) => part.text ?? '')
+            .join('')
+            .trim() ?? '';
         if (!content) {
             throw new Error('AI provider returned an empty response');
         }

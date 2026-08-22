@@ -5,19 +5,21 @@ import {
   SmartReplyResult,
 } from '../smart-reply.provider';
 
-interface ChatCompletionResponse {
-  choices?: Array<{ message?: { content?: string } }>;
+interface GeminiGenerateResponse {
+  candidates?: Array<{
+    content?: {
+      parts?: Array<{ text?: string }>;
+    };
+  }>;
 }
 
 /**
- * OpenAI-compatible provider for smart replies. Used when AI_PROVIDER=openai
- * and OPENAI_API_KEY are configured. Talks to the /chat/completions endpoint
- * via fetch so no extra runtime dependency is needed; OPENAI_BASE_URL can
- * point at any compatible gateway.
+ * Gemini-backed provider for smart replies. Used when AI_PROVIDER=gemini and
+ * GEMINI_API_KEY are configured.
  */
 @Injectable()
 export class OpenAiSmartReplyProvider implements SmartReplyProvider {
-  readonly name = 'openai';
+  readonly name = 'gemini';
   private readonly logger = new Logger(OpenAiSmartReplyProvider.name);
 
   constructor(
@@ -29,24 +31,26 @@ export class OpenAiSmartReplyProvider implements SmartReplyProvider {
   async generate(context: SmartReplyContext): Promise<SmartReplyResult> {
     const prompt = this.buildPrompt(context);
 
-    const response = await fetch(`${this.baseUrl}/chat/completions`, {
+    const url = new URL(
+      `${this.baseUrl.replace(/\/$/, '')}/models/${encodeURIComponent(this.model)}:generateContent`,
+    );
+    url.searchParams.set('key', this.apiKey);
+
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.apiKey}`,
       },
       body: JSON.stringify({
-        model: this.model,
-        temperature: 0.7,
-        max_tokens: 160,
-        response_format: { type: 'json_object' },
-        messages: [
-          {
-            role: 'system',
-            content: this.systemPrompt(),
-          },
-          { role: 'user', content: prompt },
-        ],
+        systemInstruction: {
+          parts: [{ text: this.systemPrompt() }],
+        },
+        contents: [{ role: 'user', parts: [{ text: prompt }] }],
+        generationConfig: {
+          temperature: 0.7,
+          maxOutputTokens: 160,
+          responseMimeType: 'application/json',
+        },
       }),
     });
 
@@ -57,8 +61,12 @@ export class OpenAiSmartReplyProvider implements SmartReplyProvider {
       );
     }
 
-    const data = (await response.json()) as ChatCompletionResponse;
-    const content = data.choices?.[0]?.message?.content;
+    const data = (await response.json()) as GeminiGenerateResponse;
+    const content =
+      data.candidates?.[0]?.content?.parts
+        ?.map((part) => part.text ?? '')
+        .join('')
+        .trim() ?? '';
     if (!content) {
       throw new Error('AI provider returned an empty response');
     }

@@ -20,18 +20,23 @@ import { OpenAiTranslationProvider } from './providers/openai-translation.provid
 function buildProvider(configService: ConfigService): TranslationProvider {
   const provider = configService.get<string>('ai.provider') ?? 'mock';
 
-  if (provider === 'openai') {
-    const apiKey = configService.get<string>('ai.openaiApiKey');
+  if (provider === 'gemini' || provider === 'openai') {
+    const apiKey =
+      configService.get<string>('ai.geminiApiKey') ??
+      configService.get<string>('ai.openaiApiKey');
     if (apiKey) {
       return new OpenAiTranslationProvider(
         apiKey,
-        configService.get<string>('ai.openaiBaseUrl') ??
-          'https://api.openai.com/v1',
-        configService.get<string>('ai.openaiModel') ?? 'gpt-4o-mini',
+        configService.get<string>('ai.geminiBaseUrl') ??
+          configService.get<string>('ai.openaiBaseUrl') ??
+          'https://generativelanguage.googleapis.com/v1beta',
+        configService.get<string>('ai.geminiModel') ??
+          configService.get<string>('ai.openaiModel') ??
+          'gemini-2.0-flash',
       );
     }
     new Logger('TranslationModule').warn(
-      'AI_PROVIDER=openai is set but OPENAI_API_KEY is missing; falling back to the mock provider.',
+      'AI_PROVIDER=gemini/openai is set but the API key is missing; falling back to the mock provider.',
     );
   }
 

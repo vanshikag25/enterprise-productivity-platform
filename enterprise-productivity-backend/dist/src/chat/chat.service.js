@@ -316,11 +316,19 @@ let ChatService = ChatService_1 = class ChatService {
             return undefined;
         return cid.includes(':') ? cid.split(':')[1] : cid;
     }
+    messageOwnerId(message) {
+        return (message.user?.id ??
+            message.user_id ??
+            message.user?.username ??
+            message.userId ??
+            null);
+    }
     async editMessage(userId, messageId, text) {
         const client = this.streamService.getClient();
         const result = await client.getMessage(messageId);
         const message = result.message;
-        if (!message.user?.id || message.user.id !== userId) {
+        const ownerId = this.messageOwnerId(message);
+        if (!ownerId || ownerId !== userId) {
             throw new common_1.ForbiddenException('You can only edit your own messages.');
         }
         await client.updateMessage({ id: messageId, text, user_id: userId });
@@ -339,7 +347,8 @@ let ChatService = ChatService_1 = class ChatService {
         const message = result.message;
         const channelId = this.channelIdOf(message.channel?.cid);
         const actor = await this.loadActor(userId);
-        const isOwner = !!message.user?.id && message.user.id === userId;
+        const ownerId = this.messageOwnerId(message);
+        const isOwner = !!ownerId && ownerId === userId;
         if (isOwner) {
             await client.deleteMessage(messageId, { hardDelete: false });
             await this.audit('message_delete', actor, {

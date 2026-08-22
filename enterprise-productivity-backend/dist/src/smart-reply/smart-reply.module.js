@@ -18,13 +18,17 @@ const mock_smart_reply_provider_1 = require("./providers/mock-smart-reply.provid
 const openai_smart_reply_provider_1 = require("./providers/openai-smart-reply.provider");
 function buildProvider(configService) {
     const provider = configService.get('ai.provider') ?? 'mock';
-    if (provider === 'openai') {
-        const apiKey = configService.get('ai.openaiApiKey');
+    if (provider === 'gemini' || provider === 'openai') {
+        const apiKey = configService.get('ai.geminiApiKey') ??
+            configService.get('ai.openaiApiKey');
         if (apiKey) {
-            return new openai_smart_reply_provider_1.OpenAiSmartReplyProvider(apiKey, configService.get('ai.openaiBaseUrl') ??
-                'https://api.openai.com/v1', configService.get('ai.openaiModel') ?? 'gpt-4o-mini');
+            return new openai_smart_reply_provider_1.OpenAiSmartReplyProvider(apiKey, configService.get('ai.geminiBaseUrl') ??
+                configService.get('ai.openaiBaseUrl') ??
+                'https://generativelanguage.googleapis.com/v1beta', configService.get('ai.geminiModel') ??
+                configService.get('ai.openaiModel') ??
+                'gemini-2.0-flash');
         }
-        new common_1.Logger('SmartReplyModule').warn('AI_PROVIDER=openai is set but OPENAI_API_KEY is missing; falling back to the mock provider.');
+        new common_1.Logger('SmartReplyModule').warn('AI_PROVIDER=gemini/openai is set but the API key is missing; falling back to the mock provider.');
     }
     return new mock_smart_reply_provider_1.MockSmartReplyProvider();
 }

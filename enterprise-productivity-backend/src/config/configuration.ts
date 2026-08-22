@@ -25,6 +25,11 @@ export default () => ({
 
   ai: {
     provider: process.env.AI_PROVIDER ?? 'mock',
+    geminiApiKey: process.env.GEMINI_API_KEY ?? process.env.OPENAI_API_KEY,
+    geminiModel:
+      process.env.GEMINI_MODEL ?? process.env.OPENAI_MODEL ?? 'gemini-2.0-flash',
+    geminiBaseUrl:
+      process.env.GEMINI_BASE_URL ?? 'https://generativelanguage.googleapis.com/v1beta',
     openaiApiKey: process.env.OPENAI_API_KEY,
     openaiModel: process.env.OPENAI_MODEL ?? 'gpt-4o-mini',
     openaiBaseUrl: process.env.OPENAI_BASE_URL ?? 'https://api.openai.com/v1',

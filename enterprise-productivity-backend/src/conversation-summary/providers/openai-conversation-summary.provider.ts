@@ -5,19 +5,21 @@ import {
   ConversationSummaryResult,
 } from '../conversation-summary.provider';
 
-interface ChatCompletionResponse {
-  choices?: Array<{ message?: { content?: string } }>;
+interface GeminiGenerateResponse {
+  candidates?: Array<{
+    content?: {
+      parts?: Array<{ text?: string }>;
+    };
+  }>;
 }
 
 /**
- * OpenAI-compatible provider for conversation summaries. Used when
- * AI_PROVIDER=openai and OPENAI_API_KEY are configured. Talks to the
- * /chat/completions endpoint via fetch so no extra runtime dependency is
- * needed; OPENAI_BASE_URL can point at any compatible gateway.
+ * Gemini-backed provider for conversation summaries. Used when
+ * AI_PROVIDER=gemini and GEMINI_API_KEY are configured.
  */
 @Injectable()
 export class OpenAiConversationSummaryProvider implements ConversationSummaryProvider {
-  readonly name = 'openai';
+  readonly name = 'gemini';
   private readonly logger = new Logger(OpenAiConversationSummaryProvider.name);
 
   constructor(
@@ -31,27 +33,31 @@ export class OpenAiConversationSummaryProvider implements ConversationSummaryPro
   ): Promise<ConversationSummaryResult> {
     const prompt = this.buildPrompt(context);
 
-    const response = await fetch(`${this.baseUrl}/chat/completions`, {
+    const url = new URL(
+      `${this.baseUrl.replace(/\/$/, '')}/models/${encodeURIComponent(this.model)}:generateContent`,
+    );
+    url.searchParams.set('key', this.apiKey);
+
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.apiKey}`,
       },
       body: JSON.stringify({
-        model: this.model,
-        temperature: 0.3,
-        response_format: { type: 'json_object' },
-        messages: [
-          {
-            role: 'system',
-            content:
+        systemInstruction: {
+          parts: [{
+            text:
               'You summarize workplace chat conversations. Respond with valid JSON only, using this exact shape: ' +
               '{"overview": string, "keyDecisions": string[], "actionItems": string[], "unresolvedTopics": string[]}. ' +
               'Keep overview under 3 sentences; each array item must be a concise bullet. ' +
               'If a category has nothing, return an empty array.',
-          },
-          { role: 'user', content: prompt },
-        ],
+          }],
+        },
+        contents: [{ role: 'user', parts: [{ text: prompt }] }],
+        generationConfig: {
+          temperature: 0.3,
+          responseMimeType: 'application/json',
+        },
       }),
     });
 
@@ -62,8 +68,12 @@ export class OpenAiConversationSummaryProvider implements ConversationSummaryPro
       );
     }
 
-    const data = (await response.json()) as ChatCompletionResponse;
-    const content = data.choices?.[0]?.message?.content;
+    const data = (await response.json()) as GeminiGenerateResponse;
+    const content =
+      data.candidates?.[0]?.content?.parts
+        ?.map((part) => part.text ?? '')
+        .join('')
+        .trim() ?? '';
     if (!content) {
       throw new Error('AI provider returned an empty response');
     }

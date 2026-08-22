@@ -66,8 +66,17 @@ export function ChannelWorkspace() {
       if (!message?.id) throw new Error('Cannot delete a message - missing message ID.');
       const token = await getToken();
       if (!token) throw new Error('Unable to retrieve session token.');
-      await deleteChatMessage(token, message.id);
-      return (await channel!.getClient().deleteMessage(message.id, { hardDelete: false })).message;
+
+      const streamClient = channel!.getClient();
+      const deleted = await streamClient.deleteMessage(message.id, { hardDelete: false });
+
+      try {
+        await deleteChatMessage(token, message.id);
+      } catch (error) {
+        console.warn('Backend delete message failed after Stream delete succeeded:', error);
+      }
+
+      return deleted.message;
     },
     [getToken, channel],
   );

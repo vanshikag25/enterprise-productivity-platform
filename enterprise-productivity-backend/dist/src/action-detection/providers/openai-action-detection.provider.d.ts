@@ -3,7 +3,7 @@ export declare class OpenAiActionDetectionProvider implements ActionDetectionPro
     private readonly apiKey;
     private readonly baseUrl;
     private readonly model;
-    readonly name = "openai";
+    readonly name = "gemini";
     private readonly logger;
     constructor(apiKey: string, baseUrl: string, model: string);
     detect(context: ActionDetectionContext): Promise<ActionDetectionResult>;

@@ -7,8 +7,12 @@ import {
 } from '../nl-search.provider';
 import { toValidIso } from '../date-utils';
 
-interface ChatCompletionResponse {
-  choices?: Array<{ message?: { content?: string } }>;
+interface GeminiGenerateResponse {
+  candidates?: Array<{
+    content?: {
+      parts?: Array<{ text?: string }>;
+    };
+  }>;
 }
 
 interface RawIntent {
@@ -38,14 +42,12 @@ function asStringArray(value: unknown, max: number): string[] {
 }
 
 /**
- * OpenAI-compatible intent parser for natural-language search. Used when
- * AI_PROVIDER=openai and OPENAI_API_KEY are configured. Talks to the
- * /chat/completions endpoint via fetch (no extra runtime dependency);
- * OPENAI_BASE_URL can point at any compatible gateway.
+ * Gemini-backed intent parser for natural-language search. Used when
+ * AI_PROVIDER=gemini and GEMINI_API_KEY are configured.
  */
 @Injectable()
 export class OpenAiNlSearchProvider implements NlSearchProvider {
-  readonly name = 'openai';
+  readonly name = 'gemini';
   private readonly logger = new Logger(OpenAiNlSearchProvider.name);
 
   constructor(
@@ -55,21 +57,26 @@ export class OpenAiNlSearchProvider implements NlSearchProvider {
   ) {}
 
   async parse(context: NlSearchContext): Promise<NlSearchProviderResult> {
-    const response = await fetch(`${this.baseUrl}/chat/completions`, {
+    const url = new URL(
+      `${this.baseUrl.replace(/\/$/, '')}/models/${encodeURIComponent(this.model)}:generateContent`,
+    );
+    url.searchParams.set('key', this.apiKey);
+
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.apiKey}`,
       },
       body: JSON.stringify({
-        model: this.model,
-        temperature: 0.1,
-        max_tokens: 400,
-        response_format: { type: 'json_object' },
-        messages: [
-          { role: 'system', content: this.systemPrompt() },
-          { role: 'user', content: this.buildPrompt(context) },
-        ],
+        systemInstruction: {
+          parts: [{ text: this.systemPrompt() }],
+        },
+        contents: [{ role: 'user', parts: [{ text: this.buildPrompt(context) }] }],
+        generationConfig: {
+          temperature: 0.1,
+          maxOutputTokens: 400,
+          responseMimeType: 'application/json',
+        },
       }),
     });
 
@@ -80,8 +87,12 @@ export class OpenAiNlSearchProvider implements NlSearchProvider {
       );
     }
 
-    const data = (await response.json()) as ChatCompletionResponse;
-    const content = data.choices?.[0]?.message?.content;
+    const data = (await response.json()) as GeminiGenerateResponse;
+    const content =
+      data.candidates?.[0]?.content?.parts
+        ?.map((part) => part.text ?? '')
+        .join('')
+        .trim() ?? '';
     if (!content) {
       throw new Error('AI provider returned an empty response');
     }

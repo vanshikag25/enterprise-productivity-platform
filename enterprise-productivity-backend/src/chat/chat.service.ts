@@ -479,6 +479,20 @@ export class ChatService {
     return cid.includes(':') ? cid.split(':')[1] : cid;
   }
 
+  private messageOwnerId(message: {
+    user?: { id?: string; username?: string };
+    user_id?: string;
+    userId?: string;
+  }): string | null {
+    return (
+      message.user?.id ??
+      message.user_id ??
+      message.user?.username ??
+      message.userId ??
+      null
+    );
+  }
+
   /**
    * Edits a message through the backend so the change is captured in the audit
    * trail. Only the message author may edit their own message.
@@ -493,11 +507,14 @@ export class ChatService {
     const message = result.message as {
       id: string;
       text?: string;
-      user?: { id?: string };
+      user?: { id?: string; username?: string };
+      user_id?: string;
+      userId?: string;
       channel?: { cid?: string };
     };
+    const ownerId = this.messageOwnerId(message);
 
-    if (!message.user?.id || message.user.id !== userId) {
+    if (!ownerId || ownerId !== userId) {
       throw new ForbiddenException('You can only edit your own messages.');
     }
 
@@ -527,12 +544,15 @@ export class ChatService {
     const result = await client.getMessage(messageId);
     const message = result.message as {
       id: string;
-      user?: { id?: string };
+      user?: { id?: string; username?: string };
+      user_id?: string;
+      userId?: string;
       channel?: { cid?: string };
     };
     const channelId = this.channelIdOf(message.channel?.cid);
     const actor = await this.loadActor(userId);
-    const isOwner = !!message.user?.id && message.user.id === userId;
+    const ownerId = this.messageOwnerId(message);
+    const isOwner = !!ownerId && ownerId === userId;
 
     if (isOwner) {
       await client.deleteMessage(messageId, { hardDelete: false });

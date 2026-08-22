@@ -55,6 +55,7 @@ export declare class ChatService {
     assignModerator(channelId: string, userId: string, memberId: string): Promise<GroupInfo>;
     demoteModerator(channelId: string, userId: string, memberId: string): Promise<GroupInfo>;
     private channelIdOf;
+    private messageOwnerId;
     editMessage(userId: string, messageId: string, text: string): Promise<{
         id: string;
         updated: boolean;
