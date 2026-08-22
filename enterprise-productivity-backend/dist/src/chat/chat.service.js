@@ -349,8 +349,11 @@ let ChatService = ChatService_1 = class ChatService {
         const actor = await this.loadActor(userId);
         const ownerId = this.messageOwnerId(message);
         const isOwner = !!ownerId && ownerId === userId;
+        const alreadyDeleted = !!message.deleted_at;
         if (isOwner) {
-            await client.deleteMessage(messageId, { hardDelete: false });
+            if (!alreadyDeleted) {
+                await client.deleteMessage(messageId, { hardDelete: false });
+            }
             await this.audit('message_delete', actor, {
                 resourceType: 'message',
                 resourceId: messageId,
@@ -359,7 +362,17 @@ let ChatService = ChatService_1 = class ChatService {
             });
             return { id: messageId, deleted: true };
         }
-        await this.moderationService.deleteMessage(actor, messageId, 'Deleted by request.');
+        if (!alreadyDeleted) {
+            await this.moderationService.deleteMessage(actor, messageId, 'Deleted by request.');
+        }
+        else {
+            await this.audit('message_delete', actor, {
+                resourceType: 'message',
+                resourceId: messageId,
+                channelId,
+                newValue: { deleted: true },
+            });
+        }
         return { id: messageId, deleted: true };
     }
 };

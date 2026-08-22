@@ -114,7 +114,7 @@ export declare class ModerationController {
             moderatorId: string;
             moderatorName: string;
             moderatorRole: "super_admin" | "organization_owner" | "admin" | "manager" | "team_lead" | "employee" | "guest";
-            actionType: "message_delete" | "member_remove" | "user_mute" | "user_unmute" | "user_ban" | "user_unban" | "channel_lock" | "channel_unlock" | "report_review" | "report_resolve" | "report_dismiss";
+            actionType: "message_delete" | "user_mute" | "user_unmute" | "member_remove" | "user_ban" | "user_unban" | "channel_lock" | "channel_unlock" | "report_review" | "report_resolve" | "report_dismiss";
             targetUserId: string | null;
             targetMessageId: string | null;
             channelId: string | null;

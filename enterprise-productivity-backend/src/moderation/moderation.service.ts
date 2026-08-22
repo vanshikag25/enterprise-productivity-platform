@@ -377,7 +377,11 @@ export class ModerationService implements OnModuleInit {
     const channel = await this.watchChannel(channelId);
     await this.assertCanModerateChannel(channel, actor);
 
-    await client.deleteMessage(messageId, { hardDelete: false });
+    // Stream rejects a repeated delete of an already soft-deleted message
+    // with code 16; treat that state as already handled.
+    if (!message.deleted_at) {
+      await client.deleteMessage(messageId, { hardDelete: false });
+    }
     await this.log(actor, 'message_delete', {
       targetMessageId: messageId,
       channelId,

@@ -1,10 +1,10 @@
 'use client';
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
 import {
   ContextMenu as StreamContextMenu,
   ContextMenuContent,
+  DialogPortalEntry,
   useDialogIsOpen,
 } from 'stream-chat-react';
 import type { ComponentProps, CSSProperties } from 'react';
@@ -226,6 +226,14 @@ function MessageActionsContextMenuInner(props: ContextMenuProps) {
   useEffect(() => {
     if (!isOpen) return;
 
+    // Interactions inside another dialog portal (e.g. the SDK's
+    // delete-confirmation modal opened from this menu, which renders at the
+    // chat root rather than in this menu's subtree) must NOT dismiss the menu:
+    // unmounting it would also unmount that modal mid-interaction.
+    const isInsideDialogPortal = (target: Node) =>
+      target instanceof Element &&
+      target.closest('[data-str-chat__portal-id]') !== null;
+
     const handlePointerDown = (event: PointerEvent) => {
       const target = event.target;
       if (!(target instanceof Node)) return;
@@ -236,6 +244,7 @@ function MessageActionsContextMenuInner(props: ContextMenuProps) {
       ) {
         return;
       }
+      if (isInsideDialogPortal(target)) return;
       onClose?.();
     };
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -244,6 +253,7 @@ function MessageActionsContextMenuInner(props: ContextMenuProps) {
       if (target instanceof Node && containerRef.current?.contains(target)) {
         return;
       }
+      if (target instanceof Node && isInsideDialogPortal(target)) return;
       onClose?.();
     };
 
@@ -280,19 +290,20 @@ function MessageActionsContextMenuInner(props: ContextMenuProps) {
     wrapperStyle[MAX_HEIGHT_VAR] = `${layout.maxHeight}px`;
   }
 
-  return createPortal(
-    <div
-      ref={containerRef}
-      className="str-chat"
-      data-str-chat-placement={placement}
-      style={wrapperStyle}
-    >
-      <ContextMenuContent
-        {...(contentProps as ComponentProps<typeof ContextMenuContent>)}
-        anchorReferenceElement={referenceElement ?? null}
-      />
-    </div>,
-    document.body,
+  return (
+    <DialogPortalEntry dialogId={id ?? ''} dialogManagerId={dialogManagerId}>
+      <div
+        ref={containerRef}
+        className="str-chat str-chat__dialog-contents"
+        data-str-chat-placement={placement}
+        style={wrapperStyle}
+      >
+        <ContextMenuContent
+          {...(contentProps as ComponentProps<typeof ContextMenuContent>)}
+          anchorReferenceElement={referenceElement ?? null}
+        />
+      </div>
+    </DialogPortalEntry>
   );
 }
 

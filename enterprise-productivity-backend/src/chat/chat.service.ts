@@ -544,6 +544,7 @@ export class ChatService {
     const result = await client.getMessage(messageId);
     const message = result.message as {
       id: string;
+      deleted_at?: string | null;
       user?: { id?: string; username?: string };
       user_id?: string;
       userId?: string;
@@ -554,8 +555,15 @@ export class ChatService {
     const ownerId = this.messageOwnerId(message);
     const isOwner = !!ownerId && ownerId === userId;
 
+    // Clients soft-delete through Stream first and call this endpoint
+    // afterwards for the audit trail, so the message may already be deleted;
+    // Stream rejects a repeated delete with code 16.
+    const alreadyDeleted = !!message.deleted_at;
+
     if (isOwner) {
-      await client.deleteMessage(messageId, { hardDelete: false });
+      if (!alreadyDeleted) {
+        await client.deleteMessage(messageId, { hardDelete: false });
+      }
       await this.audit('message_delete', actor, {
         resourceType: 'message',
         resourceId: messageId,
@@ -565,11 +573,20 @@ export class ChatService {
       return { id: messageId, deleted: true };
     }
 
-    await this.moderationService.deleteMessage(
-      actor,
-      messageId,
-      'Deleted by request.',
-    );
+    if (!alreadyDeleted) {
+      await this.moderationService.deleteMessage(
+        actor,
+        messageId,
+        'Deleted by request.',
+      );
+    } else {
+      await this.audit('message_delete', actor, {
+        resourceType: 'message',
+        resourceId: messageId,
+        channelId,
+        newValue: { deleted: true },
+      });
+    }
     return { id: messageId, deleted: true };
   }
 }

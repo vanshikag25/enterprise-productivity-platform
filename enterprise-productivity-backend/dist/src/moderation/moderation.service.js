@@ -230,7 +230,9 @@ let ModerationService = ModerationService_1 = class ModerationService {
         }
         const channel = await this.watchChannel(channelId);
         await this.assertCanModerateChannel(channel, actor);
-        await client.deleteMessage(messageId, { hardDelete: false });
+        if (!message.deleted_at) {
+            await client.deleteMessage(messageId, { hardDelete: false });
+        }
         await this.log(actor, 'message_delete', {
             targetMessageId: messageId,
             channelId,
