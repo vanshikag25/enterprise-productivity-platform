@@ -33,12 +33,23 @@ interface ChannelMeta {
 const MESSAGES_LIMIT = 500;
 const BACKFILL_INITIAL_DELAY_MS = 15_000;
 
+// Pacing: how long to wait between individual AI provider calls during
+// backfill, so we never burst past the provider's rate limit (e.g. Gemini
+// free tier is commonly ~15 requests/min; 4.5s between calls keeps us
+// comfortably under that even in the worst case).
+const BACKFILL_CHANNEL_DELAY_MS = 4_500;
+
+// Retry tuning for transient 429s from the AI provider.
+const PROVIDER_MAX_RETRIES = 4;
+const PROVIDER_RETRY_BASE_MS = 2_000;
+
 @Injectable()
 export class ConversationSummaryService
   implements OnModuleInit, OnModuleDestroy
 {
   private readonly logger = new Logger(ConversationSummaryService.name);
   private backfillTimer: ReturnType<typeof setInterval> | null = null;
+  private backfillRunning = false;
 
   constructor(
     @Inject(DRIZZLE) private readonly db: NodePgDatabase,
@@ -167,15 +178,17 @@ export class ConversationSummaryService
       messagesOverride ??
       (await this.fetchMessagesInPeriod(channelId, start, end));
 
-    const result = await this.provider.generate({
-      channelId,
-      channelName: meta.name,
-      memberCount: meta.memberCount,
-      periodType,
-      periodStart: start.toISOString(),
-      periodEnd: end.toISOString(),
-      messages,
-    });
+    const result = await this.withProviderRetry(() =>
+      this.provider.generate({
+        channelId,
+        channelName: meta.name,
+        memberCount: meta.memberCount,
+        periodType,
+        periodStart: start.toISOString(),
+        periodEnd: end.toISOString(),
+        messages,
+      }),
+    );
 
     const generatedAt = new Date(result.generatedAt);
     const [row] = await this.db
@@ -241,47 +254,67 @@ export class ConversationSummaryService
   // --- Background backfill -------------------------------------------------
 
   private async runBackfill(): Promise<void> {
-    const channelIds = await this.allChannelIds();
-    const today = this.startOfUtcDay(new Date());
-    const weekStart = this.startOfUtcWeek(new Date());
+    if (this.backfillRunning) {
+      this.logger.warn(
+        'Summary backfill still running from a previous cycle, skipping this tick',
+      );
+      return;
+    }
 
-    for (const channelId of channelIds) {
-      try {
-        const meta = await this.describeChannel(channelId);
-        await this.ensurePeriod(
-          channelId,
-          'daily',
-          this.addDays(today, -1),
-          today,
-          meta,
-        );
-        await this.ensurePeriod(
-          channelId,
-          'weekly',
-          this.addDays(weekStart, -7),
-          weekStart,
-          meta,
-        );
-      } catch (err) {
-        this.logger.warn(
-          `Summary backfill skipped channel ${channelId}: ${
-            err instanceof Error ? err.message : err
-          }`,
-        );
+    this.backfillRunning = true;
+    try {
+      const channelIds = await this.allChannelIds();
+      const today = this.startOfUtcDay(new Date());
+      const weekStart = this.startOfUtcWeek(new Date());
+
+      for (const channelId of channelIds) {
+        try {
+          const meta = await this.describeChannel(channelId);
+
+          const didDaily = await this.ensurePeriod(
+            channelId,
+            'daily',
+            this.addDays(today, -1),
+            today,
+            meta,
+          );
+          // Only pace out actual AI provider calls, not skipped
+          // (already-summarized) periods.
+          if (didDaily) await this.sleep(BACKFILL_CHANNEL_DELAY_MS);
+
+          const didWeekly = await this.ensurePeriod(
+            channelId,
+            'weekly',
+            this.addDays(weekStart, -7),
+            weekStart,
+            meta,
+          );
+          if (didWeekly) await this.sleep(BACKFILL_CHANNEL_DELAY_MS);
+        } catch (err) {
+          this.logger.warn(
+            `Summary backfill skipped channel ${channelId}: ${
+              err instanceof Error ? err.message : err
+            }`,
+          );
+        }
       }
+    } finally {
+      this.backfillRunning = false;
     }
   }
 
+  /** Returns true if a summary was actually generated (i.e. an AI call was made). */
   private async ensurePeriod(
     channelId: string,
     periodType: SummaryPeriodType,
     start: Date,
     end: Date,
     meta: ChannelMeta,
-  ): Promise<void> {
+  ): Promise<boolean> {
     const existing = await this.findByPeriod(channelId, periodType, start);
-    if (existing) return;
+    if (existing) return false;
     await this.buildAndStore(channelId, periodType, start, end, meta);
+    return true;
   }
 
   private async allChannelIds(): Promise<string[]> {
@@ -446,5 +479,43 @@ export class ConversationSummaryService
 
   private addDays(date: Date, days: number): Date {
     return new Date(date.getTime() + days * 86_400_000);
+  }
+
+  // --- Rate limiting / retry helpers ----------------------------------------
+
+  private sleep(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  /**
+   * Wraps a provider call with exponential backoff + jitter on 429s.
+   * Parses the status code out of the provider's error message
+   * (format: "AI provider request failed (429): ...").
+   */
+  private async withProviderRetry<T>(
+    fn: () => Promise<T>,
+    attempt = 0,
+  ): Promise<T> {
+    try {
+      return await fn();
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      const statusMatch = /\((\d{3})\)/.exec(message);
+      const status = statusMatch ? Number(statusMatch[1]) : undefined;
+
+      if (status === 429 && attempt < PROVIDER_MAX_RETRIES) {
+        const delay =
+          PROVIDER_RETRY_BASE_MS * 2 ** attempt + Math.random() * 500;
+        this.logger.warn(
+          `Provider rate-limited (429), retrying in ${Math.round(
+            delay,
+          )}ms (attempt ${attempt + 1}/${PROVIDER_MAX_RETRIES})`,
+        );
+        await this.sleep(delay);
+        return this.withProviderRetry(fn, attempt + 1);
+      }
+
+      throw err;
+    }
   }
 }
