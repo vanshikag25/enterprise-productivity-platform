@@ -30,18 +30,28 @@ interface ChannelMeta {
   members: string[];
 }
 
+interface ChannelBackfillCandidate {
+  id: string;
+  lastMessageAt: Date | null;
+}
+
 const MESSAGES_LIMIT = 500;
 const BACKFILL_INITIAL_DELAY_MS = 15_000;
-
-// Pacing: how long to wait between individual AI provider calls during
-// backfill, so we never burst past the provider's rate limit (e.g. Gemini
-// free tier is commonly ~15 requests/min; 4.5s between calls keeps us
-// comfortably under that even in the worst case).
-const BACKFILL_CHANNEL_DELAY_MS = 4_500;
 
 // Retry tuning for transient 429s from the AI provider.
 const PROVIDER_MAX_RETRIES = 4;
 const PROVIDER_RETRY_BASE_MS = 2_000;
+
+// --- Free-tier Gemini quota guardrails -------------------------------------
+// Your project's actual limits (check https://aistudio.google.com/rate-limit
+// for the model you're using — these are NOT universal and change over time).
+// Defaults below are deliberately conservative; override via config:
+//   summaries.geminiRpm, summaries.geminiRpd
+const DEFAULT_GEMINI_RPM = 5;
+const DEFAULT_GEMINI_RPD = 20;
+// Leave a safety margin below the hard cap so other callers (on-demand
+// `generate()` calls from users) still have headroom during the day.
+const RPD_SAFETY_MARGIN = 0.8;
 
 @Injectable()
 export class ConversationSummaryService
@@ -50,6 +60,13 @@ export class ConversationSummaryService
   private readonly logger = new Logger(ConversationSummaryService.name);
   private backfillTimer: ReturnType<typeof setInterval> | null = null;
   private backfillRunning = false;
+
+  // Rolling daily request counter for the AI provider, reset at midnight
+  // Pacific (matches Gemini's RPD reset per Google's docs). This is
+  // process-local; if you run multiple instances, either coordinate this
+  // through a shared store (e.g. Redis) or divide the budget across instances.
+  private dailyRequestCount = 0;
+  private dailyResetAt = this.nextPacificMidnight();
 
   constructor(
     @Inject(DRIZZLE) private readonly db: NodePgDatabase,
@@ -178,6 +195,8 @@ export class ConversationSummaryService
       messagesOverride ??
       (await this.fetchMessagesInPeriod(channelId, start, end));
 
+    await this.consumeProviderBudget();
+
     const result = await this.withProviderRetry(() =>
       this.provider.generate({
         channelId,
@@ -263,40 +282,70 @@ export class ConversationSummaryService
 
     this.backfillRunning = true;
     try {
-      const channelIds = await this.allChannelIds();
+      const channels = await this.listChannelsForBackfill();
       const today = this.startOfUtcDay(new Date());
       const weekStart = this.startOfUtcWeek(new Date());
+      const dailyStart = this.addDays(today, -1);
+      const weeklyStart = this.addDays(weekStart, -7);
 
-      for (const channelId of channelIds) {
+      let budgetExhausted = false;
+      let skippedInactive = 0;
+
+      for (let i = 0; i < channels.length; i++) {
+        if (budgetExhausted) break;
+        const { id: channelId, lastMessageAt } = channels[i];
+
+        // No messages since the period even started — nothing to
+        // summarize, so don't spend quota on it. `lastMessageAt` is null
+        // for channels with no messages at all (never active).
+        const hasDailyActivity =
+          !!lastMessageAt && lastMessageAt.getTime() >= dailyStart.getTime();
+        const hasWeeklyActivity =
+          !!lastMessageAt && lastMessageAt.getTime() >= weeklyStart.getTime();
+
+        if (!hasDailyActivity && !hasWeeklyActivity) {
+          skippedInactive++;
+          continue;
+        }
+
         try {
           const meta = await this.describeChannel(channelId);
 
-          const didDaily = await this.ensurePeriod(
-            channelId,
-            'daily',
-            this.addDays(today, -1),
-            today,
-            meta,
-          );
-          // Only pace out actual AI provider calls, not skipped
-          // (already-summarized) periods.
-          if (didDaily) await this.sleep(BACKFILL_CHANNEL_DELAY_MS);
+          if (hasDailyActivity) {
+            await this.ensurePeriod(channelId, 'daily', dailyStart, today, meta);
+          }
 
-          const didWeekly = await this.ensurePeriod(
-            channelId,
-            'weekly',
-            this.addDays(weekStart, -7),
-            weekStart,
-            meta,
-          );
-          if (didWeekly) await this.sleep(BACKFILL_CHANNEL_DELAY_MS);
+          if (hasWeeklyActivity) {
+            await this.ensurePeriod(
+              channelId,
+              'weekly',
+              weeklyStart,
+              weekStart,
+              meta,
+            );
+          }
         } catch (err) {
+          const message = err instanceof Error ? err.message : String(err);
+
+          if (message.includes('daily budget exhausted')) {
+            budgetExhausted = true;
+            const remaining = channels.length - i;
+            this.logger.warn(
+              `Summary backfill halted: ${message} — ${remaining} channel(s) left unprocessed this cycle.`,
+            );
+            break;
+          }
+
           this.logger.warn(
-            `Summary backfill skipped channel ${channelId}: ${
-              err instanceof Error ? err.message : err
-            }`,
+            `Summary backfill skipped channel ${channelId}: ${message}`,
           );
         }
+      }
+
+      if (skippedInactive > 0) {
+        this.logger.log(
+          `Summary backfill skipped ${skippedInactive} inactive channel(s) with no new messages this cycle.`,
+        );
       }
     } finally {
       this.backfillRunning = false;
@@ -317,7 +366,7 @@ export class ConversationSummaryService
     return true;
   }
 
-  private async allChannelIds(): Promise<string[]> {
+  private async listChannelsForBackfill(): Promise<ChannelBackfillCandidate[]> {
     try {
       const channels = await this.client().queryChannels(
         { type: 'messaging' },
@@ -325,8 +374,16 @@ export class ConversationSummaryService
         { limit: 200 },
       );
       return channels
-        .map((channel) => channel.id)
-        .filter((id): id is string => Boolean(id));
+        .filter((channel) => Boolean(channel.id))
+        .map((channel) => {
+          const lastMessageAt = (
+            channel.data as { last_message_at?: string } | undefined
+          )?.last_message_at;
+          return {
+            id: channel.id as string,
+            lastMessageAt: lastMessageAt ? new Date(lastMessageAt) : null,
+          };
+        });
     } catch (err) {
       this.logger.warn(
         `Failed to list channels for summary backfill: ${
@@ -485,6 +542,70 @@ export class ConversationSummaryService
 
   private sleep(ms: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  private nextPacificMidnight(): number {
+    // Gemini's RPD resets at midnight Pacific. We approximate Pacific time
+    // via the `America/Los_Angeles` IANA zone so DST is handled correctly.
+    const now = new Date();
+    const pacificNow = new Date(
+      now.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }),
+    );
+    const nextMidnightPacific = new Date(
+      pacificNow.getFullYear(),
+      pacificNow.getMonth(),
+      pacificNow.getDate() + 1,
+    );
+    const offsetMs = now.getTime() - pacificNow.getTime();
+    return nextMidnightPacific.getTime() + offsetMs;
+  }
+
+  private get geminiRpm(): number {
+    return (
+      this.configService.get<number>('summaries.geminiRpm') ??
+      DEFAULT_GEMINI_RPM
+    );
+  }
+
+  private get geminiRpd(): number {
+    return (
+      this.configService.get<number>('summaries.geminiRpd') ??
+      DEFAULT_GEMINI_RPD
+    );
+  }
+
+  private lastProviderCallAt = 0;
+
+  /**
+   * Enforces both RPM pacing and a daily request budget before letting a
+   * provider call through. Throws if the daily budget is exhausted so
+   * callers (backfill loop, on-demand `generate()`) can react distinctly
+   * rather than hammering an already-exhausted quota.
+   */
+  private async consumeProviderBudget(): Promise<void> {
+    const now = Date.now();
+    if (now >= this.dailyResetAt) {
+      this.dailyRequestCount = 0;
+      this.dailyResetAt = this.nextPacificMidnight();
+    }
+
+    const budget = Math.max(1, Math.floor(this.geminiRpd * RPD_SAFETY_MARGIN));
+    if (this.dailyRequestCount >= budget) {
+      throw new Error(
+        `AI provider daily budget exhausted (${this.dailyRequestCount}/${budget} of ${this.geminiRpd} RPD, ${Math.round(
+          RPD_SAFETY_MARGIN * 100,
+        )}% safety margin). Resets at ${new Date(
+          this.dailyResetAt,
+        ).toISOString()}.`,
+      );
+    }
+
+    const minIntervalMs = Math.ceil(60_000 / Math.max(1, this.geminiRpm));
+    const wait = Math.max(0, minIntervalMs - (now - this.lastProviderCallAt));
+    if (wait > 0) await this.sleep(wait);
+
+    this.lastProviderCallAt = Date.now();
+    this.dailyRequestCount++;
   }
 
   /**
